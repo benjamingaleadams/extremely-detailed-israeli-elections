@@ -25,7 +25,7 @@ const HE = (() => {
 const tr = (en, he) => HE ? he : en;
 const BLOC_HE = { "Bibi bloc": "גוש ביבי", "Change bloc": "גוש השינוי", "Arab parties": "המפלגות הערביות" };
 const blocName = b => HE ? (BLOC_HE[b] || b) : b;
-const SUBTITLE_HE = { 2022: "הכנסת ה-25, 1 בנובמבר 2022", 2026: "הכנסת ה-26, 27 באוקטובר 2026 · גרסה ראשונה, קלפיות רגילות בלבד" };
+const SUBTITLE_HE = { 2022: "הכנסת ה-25, 1 בנובמבר 2022", 2026: "הכנסת ה-26, 27 באוקטובר 2026 · קלפיות רגילות בלבד" };
 const TOWN_TOTAL = tr("Town total", "סה״כ ביישוב");
 
 function applyLanguage() {
