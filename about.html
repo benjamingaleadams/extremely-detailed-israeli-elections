@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About the Method</title>
+<meta name="description" content="How the election map colours each statistical area, places polling stations and handles double-envelope votes.">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="index.html" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</a>
+  <nav aria-label="Site">
+    <a href="index.html" data-he="מפה">Map</a>
+    <a href="about.html" aria-current="page"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
+    <a href="sources.html"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
+    <a href="index.html?lang=he" id="lang-switch" lang="he">עברית</a>
+  </nav>
+</header>
+<main class="page" id="content">
+  <h1>About the method</h1>
+  <p class="lede">The map shows how each neighbourhood voted, using the smallest unit Israel's Central Bureau of
+    Statistics publishes: the statistical area. Figures on this page are for the 2022 election.</p>
+
+  <h2>The unit: statistical areas</h2>
+  <p>The Central Bureau of Statistics (CBS) splits towns of roughly 10,000 people or more into statistical areas
+    of a few thousand residents each. Smaller towns, villages, kibbutzim and moshavim are one area each. The map
+    uses the CBS 2022 boundaries: 3,857 areas, of which 3,524 contain at least one polling
+    station.</p>
+  <p>Votes are counted where they are cast. An area's result is the total of the polling stations that stand inside
+    it. Voters are assigned to a station near their address, so this is close to how the area's residents voted, but
+    not exactly: a station can serve streets on both sides of an area boundary.</p>
+<p>Polling stations sit in a few buildings, mostly schools, so many neighbourhoods have people but no station
+inside their own boundary; their residents vote in the school next door. Such an area shows the result of the
+nearest area with a station in the same town, and its details say "estimated". An area counts as lived in when
+the 2022 census gives it residents, or when OpenStreetMap maps at least 15% of it (and at least 3 hectares) as
+housing; the second test catches neighbourhoods the census file leaves out. Areas nobody lives in stay pale
+cream, as in the original map. Built-up land where nobody lives, such as ports, refineries, industrial zones and
+business parks, is grey: areas of at most 10 km² at least half covered by industrial, commercial or campus land in
+OpenStreetMap.</p>
+
+  <h2>The colour rule: more than two thirds</h2>
+  <p>Parties are grouped into the two camps of Israeli politics, the Bibi bloc (Netanyahu's parties) and the
+Change bloc (the parties of the Bennett-Lapid government), plus the Arab parties:</p>
+  <table>
+    <thead><tr><th>Bloc</th><th>Parties</th></tr></thead>
+    <tbody><tr><td>Bibi bloc</td><td>Likud, Religious Zionism, Shas, United Torah Judaism</td></tr><tr><td>Change bloc</td><td>Yesh Atid, National Unity, Yisrael Beytenu, Labor, Meretz</td></tr><tr><td>Arab parties</td><td>Ra'am, Hadash-Ta'al, Balad</td></tr></tbody>
+  </table>
+  <p>An area takes a colour only when one bloc won <b>more than two thirds of valid votes</b> there. The colour is
+    that bloc's leading party in the area. If no bloc passes two thirds, the area is pale yellow ("no bloc above
+    2/3"). Votes for lists that fell below the electoral threshold still count in the total, so they make it harder
+    for any bloc to reach two thirds.</p>
+  <p class="note">This is a strict test on purpose. A pale yellow area is not a close race; it is any area where the
+    losing blocs together won at least a third of the vote.</p>
+
+  <p><b>Bloc view.</b> The "Bloc" switch shows only the two camps: dark where a bloc won more than two thirds of
+valid votes, light where it won a majority, green where the Arab parties hold a majority (they belong to neither
+camp), and pale yellow where no one has a majority.</p>
+
+<h2>Stripes: a strong second party</h2>
+  <p>Inside a coloured area, the second party <b>of the same bloc</b> is shown as stripes over the leader's colour
+    when it won <b>at least half as many votes as the leader</b>. At most two parties are shown per area, so the
+    legend stays short. A strong second party from a different bloc is never shown as stripes; it already shows in
+    the area being coloured at all, or not.</p>
+
+  <h2>Placing polling stations</h2>
+  <p>The results file lists every polling station by town and station number, without coordinates. Each station
+    was placed in a statistical area by the first method that worked, best first:</p>
+  <ol>
+    <li><b>One-area towns.</b> If the town is a single statistical area, the station belongs to it. This is exact
+      and covers most of the country's localities.</li>
+    <li><b>Address or venue.</b> The station's address and venue from the Central Elections Committee's official
+      2022 station list, located with our own OpenStreetMap lookup: the house number where it is mapped, else the
+      venue by name (usually a school), else the street. Where the address and the venue are both found but more
+      than 500 m apart, neither is trusted.</li>
+    <li><b>Nearest-numbered neighbour.</b> Stations are numbered roughly by neighbourhood, so a station with no usable
+      location borrows the area of the nearest-numbered station in the same town. These are marked
+      "placed approximately" in the details panel. 690 of 11,127 mapped stations were placed
+      this way.</li>
+  </ol>
+  <p>A point only counts if it falls inside its own town's boundary. That check catches most bad coordinates.</p>
+  <p>In East Jerusalem, large neighbourhoods have no polling station because most residents are not citizens and
+    cannot vote for the Knesset. There, an area whose whole census group has no station takes the result of the
+    nearest area in the city where Arab parties won, not of the nearest station, which is often in a Jewish
+    neighbourhood.</p>
+  <p>In some towns, mostly Arab towns, the official list gives only the town name as the address and the venues are
+    not in OpenStreetMap, so no station can be placed. There, every populated area shows the whole town's result,
+    and the details panel says so.</p>
+  <p>Some places that vote have no CBS boundary at all: army bases and several Negev Bedouin tribes. They are drawn
+    as rough outlines taken from OpenStreetMap, or as circles where OpenStreetMap has nothing, with a dashed border. They hold 7,230 votes. CBS also publishes about 130 localities, mostly West Bank
+settlements, as a tiny placeholder instead of a boundary; they are drawn with their built-up area as mapped in
+OpenStreetMap.</p>
+
+  <h2>Double envelopes and other votes off the map</h2>
+  <p>Soldiers, hospital patients, prisoners, diplomats and some others vote in "double envelopes". These are counted
+    together in one national pseudo-locality with no address, so they cannot be mapped. In 2022 they came to
+    458,714 valid votes, 9.6% of the national total of 4,764,742. The map's side panel
+    has a box giving them by bloc and by party, so they are not lost.</p>
+  <p>A further 166,993 votes come from stations that could not be placed in any statistical area. They
+    are counted but not drawn.</p>
+  <table>
+    <thead><tr><th>Valid votes, 2022</th><th class="n">Votes</th></tr></thead>
+    <tbody>
+      <tr><td>Drawn in statistical areas</td><td class="n">4,131,805</td></tr>
+      <tr><td>Drawn as rough outlines (bases, Bedouin tribes)</td><td class="n">7,230</td></tr>
+      <tr><td>Double envelopes</td><td class="n">458,714</td></tr>
+      <tr><td>Stations that could not be placed</td><td class="n">166,993</td></tr>
+      <tr><td><b>Total</b></td><td class="n"><b>4,764,742</b></td></tr>
+    </tbody>
+  </table>
+
+  <h2>What is approximate</h2>
+  <ul>
+    <li>Stations placed by a nearest-numbered neighbour (flagged in the details panel).</li>
+<li>Areas with residents but no station of their own, coloured from the nearest station (marked "estimated").</li>
+<li>Which land is lived in or built up: the census where it has a figure, OpenStreetMap land use otherwise. The
+OpenStreetMap data is current, so a neighbourhood built after the election can count as lived in.</li>
+<li>Settlement outlines from OpenStreetMap where CBS gives only a placeholder.</li>
+    <li>Outlines for army bases and Bedouin tribes, which come from OpenStreetMap or are plain circles.</li>
+    <li>Area boundaries are simplified for the web: to about 3 metres when zoomed in, and more coarsely when zoomed
+      out, where the difference is smaller than a screen pixel.</li>
+    <li>Station locations come from OpenStreetMap, which maps house numbers in only some towns; elsewhere the
+      venue or the street is used.</li>
+    <li>Towns founded after the 2022 CBS boundaries were drawn are shown as the combined boundary of the localities
+      they replaced.</li>
+    <li>Small areas with few voters can swing a lot on a handful of votes.</li>
+  </ul>
+
+  <h2>Differences from the original</h2>
+  <p>The layout and the two-thirds rule follow Sergei Kondrashov's map of the 25th Knesset results. Two things
+    differ. This map groups parties into the two camps Israeli media used in 2022, the Bibi bloc (Netanyahu's
+    parties) and the Change bloc (the parties of the outgoing Bennett-Lapid government), plus the Arab parties.
+    The original used ideological trends instead: it counts Yisrael Beytenu with the right and National Unity with
+    neither camp, which is why Ariel and parts of the Tel Aviv coast look different. This map also adds the
+    double-envelope box. Nothing from the original image or its data is reused; every number here was rebuilt
+    from public sources.</p>
+
+  <h2>Using the map</h2>
+  <ul>
+    <li>Hover over an area, or tap it on a phone, to see its results. The panel gives bloc shares, every party above
+      half a percent, and any placement caveats.</li>
+    <li>Type a town in English or Hebrew in the search box to zoom to it and see the town's total.</li>
+    <li>Keyboard: <kbd>/</kbd> jumps to search; arrow keys pick a town and <kbd>Enter</kbd> zooms to it. Click the
+      map (or tab to it) and use the arrow keys to move, <kbd>+</kbd> and <kbd>-</kbd> to zoom, and
+      <kbd>Enter</kbd> to read the area under the cross in the middle.</li>
+    <li>The map's position is kept in the address bar, so a link can be shared to a particular view.</li>
+  </ul>
+</main>
+<footer class="site-footer" data-he="מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. הנתונים נבנו ב-2026-10-28. <a href=&quot;sources-he.html&quot;>מקורות וקרדיטים</a>.">
+  An independent, unofficial map. Not affiliated with the Central Elections Committee or the
+  Central Bureau of Statistics. Data built 2026-10-28. <a href="sources.html">Sources and credits</a>.
+</footer>
+<script>
+  const sw = document.getElementById("lang-switch");
+  if (sw) sw.href = "about-he.html";  // the same page in Hebrew
+</script>
+</body>
+</html>

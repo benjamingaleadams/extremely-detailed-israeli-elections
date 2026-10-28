@@ -1,0 +1,208 @@
+{
+ "year": 2022,
+ "subtitle": "25th Knesset, 1 November 2022",
+ "parties": [
+  {
+   "letters": "מחל",
+   "english": "Likud",
+   "transliteration": "haLikud",
+   "hebrew": "הליכוד",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "ט",
+   "english": "Religious Zionism",
+   "transliteration": "haTzionut haDatit",
+   "hebrew": "הציונות הדתית",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "שס",
+   "english": "Shas",
+   "transliteration": "Shas",
+   "hebrew": "ש״ס",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "ג",
+   "english": "United Torah Judaism",
+   "transliteration": "Yahadut haTorah",
+   "hebrew": "יהדות התורה",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "פה",
+   "english": "Yesh Atid",
+   "transliteration": "Yesh Atid",
+   "hebrew": "יש עתיד",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "כן",
+   "english": "National Unity",
+   "transliteration": "haMachane haMamlachti",
+   "hebrew": "המחנה הממלכתי",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "ל",
+   "english": "Yisrael Beytenu",
+   "transliteration": "Yisrael Beytenu",
+   "hebrew": "ישראל ביתנו",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "אמת",
+   "english": "Labor",
+   "transliteration": "haAvoda",
+   "hebrew": "העבודה",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "מרצ",
+   "english": "Meretz",
+   "transliteration": "Meretz",
+   "hebrew": "מרצ",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "עם",
+   "english": "Ra'am",
+   "transliteration": "Ra'am",
+   "hebrew": "רע״ם",
+   "bloc": "Arab parties"
+  },
+  {
+   "letters": "ום",
+   "english": "Hadash-Ta'al",
+   "transliteration": "Hadash-Ta'al",
+   "hebrew": "חד״ש-תע״ל",
+   "bloc": "Arab parties"
+  },
+  {
+   "letters": "ד",
+   "english": "Balad",
+   "transliteration": "Balad",
+   "hebrew": "בל״ד",
+   "bloc": "Arab parties"
+  }
+ ],
+ "colors": {
+  "מחל": "#2f6fd1",
+  "ט": "#4f9298",
+  "שס": "#f08a24",
+  "ג": "#360113",
+  "פה": "#d6338f",
+  "כן": "#f2a7c9",
+  "ל": "#8e5bb5",
+  "אמת": "#d7262e",
+  "מרצ": "#b8005c",
+  "עם": "#03771a",
+  "ום": "#5eb814",
+  "ד": "#07d51f"
+ },
+ "states": {
+  "none": "#f6eea0",
+  "no_station": "#fbf8ea",
+  "outline": "#8a8a8a",
+  "locality_outline": "#2b2b2b",
+  "west_bank_line": "#5c5c5c",
+  "arab_majority": "#16834f",
+  "built_empty": "#bdb9b0"
+ },
+ "blocs": {
+  "Bibi bloc": "#2c5aa0",
+  "Change bloc": "#c2306f",
+  "Arab parties": "#16834f"
+ },
+ "blocs_light": {
+  "Bibi bloc": "#9fbbe6",
+  "Change bloc": "#eda9c8"
+ },
+ "notes": {
+  "total_valid": 4764742,
+  "mapped_valid": 4131805,
+  "dots_valid": 7230,
+  "double_envelope": {
+   "valid": 458714,
+   "by_party": {
+    "מחל": 107885,
+    "ט": 70887,
+    "שס": 31378,
+    "ג": 17144,
+    "פה": 77681,
+    "כן": 48847,
+    "ל": 26156,
+    "אמת": 23488,
+    "מרצ": 14349,
+    "עם": 8015,
+    "ום": 7830,
+    "ד": 7311
+   }
+  },
+  "unplaced": {
+   "valid": 166993,
+   "by_town": {
+    "טירה": 11912,
+    "טייבה": 11160,
+    "כפר קרע": 8489,
+    "כפר כנא": 8221,
+    "סחנין": 7621,
+    "מגאר": 7377,
+    "ריינה": 6230,
+    "שפרעם": 6006,
+    "אעבלין": 5672,
+    "אבו סנאן": 5382,
+    "דייר חנא": 5277,
+    "כפר יאסיף": 5237,
+    "אכסאל": 5212,
+    "עין מאהל": 5001,
+    "טורעאן": 4961,
+    "בית גן": 4832,
+    "גלגוליה": 4746,
+    "טמרה": 4370,
+    "גדיידהמכר": 4361,
+    "ביר אלמכסור": 4261,
+    "דבוריה": 4206,
+    "שער שומרון": 4162,
+    "גסר אזרקא": 4108,
+    "לקיה": 4083,
+    "מסעודין אלעזאזמה": 3929,
+    "בועיינהנוגידאת": 3924,
+    "כוכב יאיר": 2607,
+    "נחף": 2594,
+    "כסראסמיע": 1945,
+    "קלנסווה": 1485,
+    "אבו רובייעה שבט": 1473,
+    "עראבה": 1212,
+    "אבו קורינאת שבט": 1209,
+    "טירת כרמל": 492,
+    "מגד אלכרום": 453,
+    "קודייראת אצאנעשבט": 340,
+    "דימונה": 323,
+    "סייד שבט": 321,
+    "מגדל שמס": 312,
+    "גת": 245,
+    "חברון": 215,
+    "עוקבי בנו עוקבה": 174,
+    "אסד שבט": 128,
+    "מחנה יפה": 120,
+    "מחנה תל נוף": 111,
+    "מחנה הילה": 106,
+    "מחנה יהודית": 97,
+    "מחנה טלי": 80,
+    "תראבין אצאנע שבט": 72,
+    "מחנה יוכבד": 57,
+    "מחנה מרים": 48,
+    "עטאוונה שבט": 34
+   }
+  }
+ },
+ "bounds": [
+  34.2674,
+  29.4905,
+  35.8954,
+  33.3351
+ ],
+ "built": "2026-10-28"
+}
