@@ -1,0 +1,207 @@
+{
+ "year": 2026,
+ "subtitle": "26th Knesset, 27 October 2026 · first version, regular boxes only",
+ "parties": [
+  {
+   "letters": "מחל",
+   "english": "Likud",
+   "transliteration": "haLikud",
+   "hebrew": "הליכוד",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "ב",
+   "english": "Otzma Yehudit",
+   "transliteration": "Otzma Yehudit",
+   "hebrew": "עוצמה יהודית",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "ט",
+   "english": "Religious Zionism and Zehut",
+   "transliteration": "haTzionut haDatit veZehut",
+   "hebrew": "הציונות הדתית וזהות",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "שס",
+   "english": "Shas",
+   "transliteration": "Shas",
+   "hebrew": "ש״ס",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "ג",
+   "english": "United Torah Judaism",
+   "transliteration": "Yahadut haTorah",
+   "hebrew": "יהדות התורה",
+   "bloc": "Bibi bloc"
+  },
+  {
+   "letters": "דרך",
+   "english": "Yashar!",
+   "transliteration": "Yashar",
+   "hebrew": "ישר!",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "רק",
+   "english": "Together",
+   "transliteration": "Beyachad",
+   "hebrew": "ביחד",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "אמת",
+   "english": "The Democrats",
+   "transliteration": "haDemokratim",
+   "hebrew": "הדמוקרטים",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "ל",
+   "english": "Yisrael Beytenu",
+   "transliteration": "Yisrael Beytenu",
+   "hebrew": "ישראל ביתנו",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "ודם",
+   "english": "The Joint List",
+   "transliteration": "haReshima haMeshutefet",
+   "hebrew": "הרשימה המשותפת",
+   "bloc": "Arab parties"
+  },
+  {
+   "letters": "עם",
+   "english": "Ra'am",
+   "transliteration": "Ra'am",
+   "hebrew": "רע״ם",
+   "bloc": "Arab parties"
+  }
+ ],
+ "colors": {
+  "מחל": "#2f6fd1",
+  "ב": "#ff4500",
+  "ט": "#4f9298",
+  "שס": "#f08a24",
+  "ג": "#360113",
+  "דרך": "#f2a7c9",
+  "רק": "#d6338f",
+  "אמת": "#2a38d7",
+  "ל": "#8e5bb5",
+  "ודם": "#5eb814",
+  "עם": "#03771a"
+ },
+ "states": {
+  "none": "#f6eea0",
+  "no_station": "#fbf8ea",
+  "outline": "#8a8a8a",
+  "locality_outline": "#2b2b2b",
+  "west_bank_line": "#5c5c5c",
+  "arab_majority": "#16834f",
+  "built_empty": "#bdb9b0"
+ },
+ "blocs": {
+  "Bibi bloc": "#2c5aa0",
+  "Change bloc": "#c2306f",
+  "Arab parties": "#16834f"
+ },
+ "blocs_light": {
+  "Bibi bloc": "#9fbbe6",
+  "Change bloc": "#eda9c8"
+ },
+ "notes": {
+  "total_valid": 4854102,
+  "mapped_valid": 4505601,
+  "dots_valid": 22477,
+  "double_envelope": {
+   "valid": 0,
+   "by_party": {
+    "מחל": 0,
+    "ב": 0,
+    "ט": 0,
+    "שס": 0,
+    "ג": 0,
+    "דרך": 0,
+    "רק": 0,
+    "אמת": 0,
+    "ל": 0,
+    "ודם": 0,
+    "עם": 0
+   }
+  },
+  "unplaced": {
+   "valid": 326024,
+   "by_town": {
+    "שפרעם": 21055,
+    "יהוד-מונוסון": 18416,
+    "טמרה": 16773,
+    "זכרון יעקב": 14995,
+    "סחנין": 14560,
+    "טירה": 14146,
+    "כפר כנא": 14011,
+    "עראבה": 13836,
+    "כפר מנדא": 12470,
+    "כפר קרע": 11900,
+    "מגאר": 11137,
+    "ריינה": 10056,
+    "מגד אל-כרום": 9664,
+    "אכסאל": 9233,
+    "טורעאן": 9102,
+    "עין מאהל": 8760,
+    "אבו סנאן": 7912,
+    "דייר אל-אסד": 7732,
+    "גסר א-זרקא": 7276,
+    "נחף": 7178,
+    "כפר יאסיף": 6563,
+    "מסעודין אל-עזאזמה": 6285,
+    "בועיינה-נוגידאת": 6149,
+    "דבוריה": 6055,
+    "כאבול": 5660,
+    "דייר חנא": 5338,
+    "לקיה": 5148,
+    "בית גן": 4598,
+    "אעבלין": 4559,
+    "ביר אל-מכסור": 4432,
+    "גלגוליה": 4119,
+    "כסרא-סמיע": 3784,
+    "אבו רובייעה (שבט)": 3227,
+    "קלנסווה": 2688,
+    "כוכב יאיר-צור יגאל": 2512,
+    "אבו קורינאת (שבט)": 2293,
+    "אילת": 2195,
+    "כפר קאסם": 1862,
+    "מגדל שמס": 1485,
+    "באר שבע": 1021,
+    "דימונה": 772,
+    "נס ציונה": 547,
+    "בת ים": 524,
+    "קרית גת": 521,
+    "סייד (שבט)": 460,
+    "גבעות עדן": 430,
+    "רמת גן": 362,
+    "ירושלים": 360,
+    "אסד (שבט)": 351,
+    "עוקבי (בנו עוקבה)": 288,
+    "חברון": 238,
+    "תראבין א-צאנע (שבט)": 185,
+    "מחנה יפה": 165,
+    "מחנה תל נוף": 151,
+    "מחנה הילה": 97,
+    "מחנה יהודית": 97,
+    "מחנה טלי": 92,
+    "מחנה מרים": 87,
+    "מחנה יוכבד": 66,
+    "עטאוונה (שבט)": 46
+   }
+  }
+ },
+ "bounds": [
+  34.2674,
+  29.4905,
+  35.8954,
+  33.3351
+ ],
+ "built": "2026-10-28"
+}

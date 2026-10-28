@@ -6,6 +6,10 @@ that won more than two thirds of its valid votes, in that bloc's leading party's
 
 Live site: https://benjamingaleadams.github.io/extremely-detailed-israeli-elections/
 
+Years: 2022 (25th Knesset) and 2026 (26th Knesset). The 2026 map is a first version: regular ballot boxes only
+(double-envelope votes are counted later), and some big-city boxes are placed by nearest box number until the
+2026 station list is available.
+
 The name is a nod to the New York Times' "An Extremely Detailed Map of the 2016 Election".
 
 ## Sources

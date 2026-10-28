@@ -25,7 +25,7 @@ const HE = (() => {
 const tr = (en, he) => HE ? he : en;
 const BLOC_HE = { "Bibi bloc": "גוש ביבי", "Change bloc": "גוש השינוי", "Arab parties": "המפלגות הערביות" };
 const blocName = b => HE ? (BLOC_HE[b] || b) : b;
-const SUBTITLE_HE = { 2022: "הכנסת ה-25, 1 בנובמבר 2022", 2026: "הכנסת ה-26, 27 באוקטובר 2026" };
+const SUBTITLE_HE = { 2022: "הכנסת ה-25, 1 בנובמבר 2022", 2026: "הכנסת ה-26, 27 באוקטובר 2026 · גרסה ראשונה, קלפיות רגילות בלבד" };
 const TOWN_TOTAL = tr("Town total", "סה״כ ביישוב");
 
 function applyLanguage() {
@@ -198,6 +198,19 @@ function envelopes() {
   const blocTotals = Object.fromEntries(BLOCS.map(b => [b, meta.parties.filter(p => p.bloc === b)
     .reduce((s, p) => s + (env.by_party[p.letters] || 0), 0)]));
   const byParty = [...meta.parties].sort((a, b) => (env.by_party[b.letters] || 0) - (env.by_party[a.letters] || 0));
+  const offMap = `<div class="sub" style="margin-top:6px">${tr(`Also off the map: ${fmt(n.unplaced.valid)} votes from stations
+      that could not be placed in a statistical area.`, `גם מחוץ למפה: ${fmt(n.unplaced.valid)} קולות מקלפיות שלא ניתן היה
+      לשייך לאזור סטטיסטי.`)}</div>`;
+  if (!env.valid) {  // the committee counts double envelopes days after the regular boxes
+    $("envelopes").innerHTML = `
+    <h2>${tr("Votes not on the map", "קולות שאינם על המפה")}</h2>
+    <div class="sub">${tr(`Double-envelope votes (soldiers, hospitals, prisons, diplomats) have no location and are
+      <b>not yet counted</b>: the committee adds them days after the regular boxes (about 459,000 votes in 2022).
+      This map shows the regular boxes only.`,
+      `קולות המעטפות הכפולות (חיילים, בתי חולים, בתי סוהר, נציגויות) אין להם מיקום ו<b>טרם נספרו</b>: ועדת הבחירות
+      מוסיפה אותם ימים אחרי הקלפיות הרגילות (כ-459,000 קולות ב-2022). המפה מציגה את הקלפיות הרגילות בלבד.`)}</div>${offMap}`;
+    return;
+  }
   $("envelopes").innerHTML = `
     <h2>${tr("Votes not on the map", "קולות שאינם על המפה")}</h2>
     <div class="sub">${tr(`Double-envelope votes (soldiers, hospitals, prisons, diplomats) have no location:
@@ -222,13 +235,13 @@ function areaRecord(i) {
   const r = A.areas[i], t = A.towns[r[0]];
   return { name: t[2] || t[1], he: t[1], stat: r[1], valid: r[2], stations: r[3], approx: r[4],
     bloc: r[5], shares: sharesFromArray(r[8]), other: r[9] || 0, kind: t[5],
-    estFrom: r[10], estVotes: r[11], population: r[12], placeholder: r[13], grey: r[14] === 1 };
+    estFrom: r[10], estVotes: r[11], population: r[12], placeholder: r[13], grey: r[14] === 1, bloc2: r[15] };
 }
 
 function dotRecord(p) {
   const shares = Object.keys(p).filter(k => k.startsWith("pct_") && k !== "pct_other").map(k => [k.slice(4), +p[k]]);
   return { name: p.SHEM_YISHUV_ENGLISH || p.SHEM_YISHUV, he: p.SHEM_YISHUV, valid: +p.valid, stations: +p.stations,
-    approx: +p.approx_stations, bloc: p.bloc, shares, other: +(p.pct_other || 0), kind: "dot", shape: p.shape_source };
+    approx: +p.approx_stations, bloc: p.bloc, shares, other: +(p.pct_other || 0), kind: "dot", shape: p.shape_source, bloc2: p.bloc2 };
 }
 
 function dotKind(he) {
@@ -249,7 +262,12 @@ function resultsHtml(rec, verdict) {
   if (mode === "bloc" && verdict !== TOWN_TOTAL) {  // headline in the two-bloc view's own terms
     const top = TWO_BLOCS.find(b => blocShare[b] > 50);
     const arab = BLOCS.filter(b => !TWO_BLOCS.includes(b)).reduce((s, b) => s + blocShare[b], 0);
-    verdict = top ? `${blocName(top)}, ${blocShare[top] > 200 / 3 ? tr("over 2/3", "מעל שני שלישים") : tr("majority", "רוב")}`
+    // the map's own class (from unrounded votes) when there is one, so hover and colour agree
+    const [b2, level] = (rec.bloc2 || "").split("|");
+    if (rec.bloc2 && rec.bloc2 !== "no_station") verdict = level
+      ? `${blocName(b2)}, ${level === "strong" ? tr("over 2/3", "מעל שני שלישים") : tr("majority", "רוב")}`
+      : b2 === "arab" ? tr("Arab parties majority", "רוב למפלגות הערביות") : tr("No bloc with a majority", "אין גוש עם רוב");
+    else verdict = top ? `${blocName(top)}, ${blocShare[top] > 200 / 3 ? tr("over 2/3", "מעל שני שלישים") : tr("majority", "רוב")}`
       : arab > 50 ? tr("Arab parties majority", "רוב למפלגות הערביות") : tr("No bloc with a majority", "אין גוש עם רוב");
   }
   const counts = rec.estFrom != null
