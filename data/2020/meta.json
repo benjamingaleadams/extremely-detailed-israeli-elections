@@ -94,7 +94,8 @@
   "arab_majority": "#16834f",
   "built_empty": "#bdb9b0",
   "park": "#cfe1b0",
-  "beach": "#f0e8d4"
+  "beach": "#f0e8d4",
+  "water": "#c6dcea"
  },
  "blocs": {
   "Bibi bloc": "#2c5aa0",

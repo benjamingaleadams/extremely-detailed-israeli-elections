@@ -80,10 +80,10 @@ const FS = PREVIEW ? { source: "areas" } : { source: "areas", sourceLayer: "area
 // ---------- colour mode: leading party (as on the reference map) or bloc ----------
 
 // two-bloc view: dark over 2/3 of valid votes, light over half; Arab parties sit outside both blocs
-function twoBlocStops() {
+function twoBlocStops(f = c => c) {
   const light = meta.blocs_light || {};
-  return [...TWO_BLOCS.flatMap(x => [`${x}|strong`, blocColor[x], `${x}|majority`, light[x] || blocColor[x]]),
-    "arab", meta.states.arab_majority || "#22b573", "none", meta.states.none, "no_station", meta.states.no_station];
+  return [...TWO_BLOCS.flatMap(x => [`${x}|strong`, f(blocColor[x]), `${x}|majority`, f(light[x] || blocColor[x])]),
+    "arab", f(meta.states.arab_majority || "#22b573"), "none", f(meta.states.none), "no_station", meta.states.no_station];
 }
 
 // one-party view: the party's share of valid votes in classes, from a pale tint to its full colour
@@ -94,25 +94,29 @@ function mix(hex, t) {  // hex colour blended towards white; t = 1 keeps the col
   return "#" + c.map(v => Math.round(255 - (255 - v) * t).toString(16).padStart(2, "0")).join("");
 }
 const shareColors = () => SHARE_TINT.map(t => mix(colors[shareParty], t));
-function shareSteps(value) {
-  const c = shareColors();
+function shareSteps(value, f = c => c) {
+  const c = shareColors().map(f);
   return ["step", value, c[0], ...SHARE_BREAKS.flatMap((b, i) => [b, c[i + 1]])];
 }
 
-function colorExpr(b, l, k) {
+
+function colorExpr(b, l, k, f = c => c) {
   const grey = meta.states.built_empty || "#bdb9b0";
   if (mode === "share") return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
     ["==", ["get", b], "no_station"], meta.states.no_station,
     // areas take their share from areas.json (feature state); dots carry it as pct_<letters>
-    b === "b" ? ["case", ["==", ["typeof", ["feature-state", "v"]], "number"], shareSteps(["feature-state", "v"]), "#e4e4e1"]
-      : shareSteps(["coalesce", ["get", "pct_" + shareParty], 0])];
+    b === "b" ? ["case", ["==", ["typeof", ["feature-state", "v"]], "number"], shareSteps(["feature-state", "v"], f), "#e4e4e1"]
+      : shareSteps(["coalesce", ["get", "pct_" + shareParty], 0], f)];
   if (mode === "bloc") return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
-    ["match", ["coalesce", ["get", k], ""], ...twoBlocStops(), "#999999"]];
+    ["match", ["coalesce", ["get", k], ""], ...twoBlocStops(f), "#999999"]];
   return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
     ["==", ["get", b], "no_station"], meta.states.no_station,
-    ["==", ["get", b], "none"], meta.states.none,
-    ["match", ["coalesce", ["get", l], ""], ...Object.entries(colors).flat(), "#999999"]];
+    ["==", ["get", b], "none"], f(meta.states.none),
+    ["match", ["coalesce", ["get", l], ""], ...Object.entries(colors).flatMap(([x, c]) => [x, f(c)]), "#999999"]];
 }
+// areas with no station of their own show their nearest area's result in the same plain colour (Ben,
+// 30 Oct: no marking, keep the map clean); the hover panel says so
+const areaColor = () => colorExpr("b", "l", "k");
 
 let showNames = true;
 function setNames(on) {
@@ -164,7 +168,7 @@ function applyShares() {
 function repaint() {
   if (!map || !map.getLayer("fill")) return;
   applyShares();
-  map.setPaintProperty("fill", "fill-color", colorExpr("b", "l", "k"));
+  map.setPaintProperty("fill", "fill-color", areaColor());
   map.setPaintProperty("dots-fill", "fill-color", colorExpr("bloc", "leader", "bloc2"));
   map.setPaintProperty("dots", "circle-color", colorExpr("bloc", "leader", "bloc2"));
   map.setLayoutProperty("hatch", "visibility", mode === "party" ? "visible" : "none");
@@ -298,18 +302,10 @@ function yearButtons(years, year) {
   });
 }
 
-// areas with no station of their own that show their nearest area's result (tile property e = 1)
-const BORROWED_OPACITY = 0.55;
-const borrowedOpacity = () => ["case", ["==", ["coalesce", ["get", "e"], 0], 1], BORROWED_OPACITY, 1];
-// blank land (no voters, not grey) is left clear so the land base and its parks, beaches and industry show
+// blank land (no voters, not grey) is left clear so the land base and its parks, beaches and industry show;
+// everything else is fully opaque
 const fillOpacity = () => ["case", ["==", ["coalesce", ["get", "g"], 0], 1], 1,
-  ["==", ["get", "b"], "no_station"], 0, borrowedOpacity()];
-// a colour from the current view for the "lighter" legend swatch
-function lightSample() {
-  if (mode === "share") return shareColors()[SHARE_TINT.length - 1];
-  if (mode === "bloc") return blocColor[TWO_BLOCS[0]] || "#999";
-  return colors[meta.parties[0].letters] || "#999";
-}
+  ["==", ["get", "b"], "no_station"], 0, 1];
 
 function legend() {
   const lg = $("legend-body");
@@ -347,8 +343,6 @@ function legend() {
       "שטח בנוי ללא תושבים (תעשייה, נמל, שדה תעופה, קמפוס, משרדים)")}</div>
     <div class="row">${swatch(meta.states.park || "#cfe1b0")}${tr("Park", "פארק")}</div>
     <div class="row">${swatch(meta.states.beach || "#f0e8d4")}${tr("Beach", "חוף")}</div>
-    <div class="row"><span class="sw" style="background:${lightSample()};opacity:${BORROWED_OPACITY}"></span>
-      ${tr("Lighter: no polling station here; shows the nearest area's result", "בהיר יותר: אין כאן קלפי; מוצגת התוצאה של האזור הקרוב")}</div>
     <div class="row"><span class="sw" style="border:1.5px dashed #333;background:transparent"></span>
       ${tr("Locality without a CBS boundary (outline approximate)", "יישוב ללא גבול למ״ס (קו מתאר משוער)")}</div>`;
   lg.innerHTML = html;
@@ -581,6 +575,10 @@ function initMap(base) {
       const [a, c] = pr.split("|");
       map.addImage(`h-${a}-${c}`, hatch(colors[a], colors[c]));
     }
+    // the sea near Israel and the Sea of Galilee in water blue (scripts/land_features.py); the land base
+    // sits on top and already stops at the coast
+    map.addSource("water", { type: "geojson", data: "data/water.geojson" });
+    map.addLayer({ id: "water", type: "fill", source: "water", paint: { "fill-color": meta.states.water || "#c6dcea" } });
     // one land base under everything: CBS areas plus the West Bank, gaps closed, so nothing is unclaimed
     map.addSource("land", { type: "geojson", data: "data/land.geojson" });
     map.addLayer({ id: "land", type: "fill", source: "land", paint: { "fill-color": meta.states.no_station } });
@@ -596,10 +594,10 @@ function initMap(base) {
     } else map.addSource("areas", { type: "vector", url: "pmtiles://" + tiles });
     const src = PREVIEW ? { source: "areas" } : { source: "areas", "source-layer": "areas" };
     const locSrc = PREVIEW ? { source: "loc" } : { source: "areas", "source-layer": "loc" };
-    map.addLayer({ id: "fill", type: "fill", ...src, paint: { "fill-color": colorExpr("b", "l", "k"), "fill-opacity": fillOpacity() } });
+    map.addLayer({ id: "fill", type: "fill", ...src, paint: { "fill-color": areaColor(), "fill-opacity": fillOpacity() } });
     map.addLayer({ id: "hatch", type: "fill", ...src, filter: ["has", "s"],
       layout: { visibility: mode === "party" ? "visible" : "none" },
-      paint: { "fill-pattern": ["concat", "h-", ["get", "l"], "-", ["get", "s"]], "fill-opacity": borrowedOpacity() } });
+      paint: { "fill-pattern": ["concat", "h-", ["get", "l"], "-", ["get", "s"]] } });
     // as on the reference: bold outlines round places where people vote, a hairline for regional-council
     // land, and no inner lines on empty land
     map.addLayer({ id: "area-line", type: "line", ...src, filter: ["!=", ["get", "b"], "no_station"],
@@ -614,7 +612,7 @@ function initMap(base) {
     map.addSource("dots", { type: "geojson", data: DOTS });
     const poly = ["==", ["geometry-type"], "Polygon"];
     map.addLayer({ id: "dots-fill", type: "fill", source: "dots", filter: poly,
-      paint: { "fill-color": colorExpr("bloc", "leader", "bloc2"), "fill-opacity": 0.9 } });
+      paint: { "fill-color": colorExpr("bloc", "leader", "bloc2") } });
     map.addLayer({ id: "dots-line", type: "line", source: "dots", filter: poly,
       paint: { "line-color": "#333", "line-width": 1, "line-dasharray": [2, 1] } });
     map.addLayer({ id: "dots", type: "circle", source: "dots", filter: ["==", ["geometry-type"], "Point"], paint: {
