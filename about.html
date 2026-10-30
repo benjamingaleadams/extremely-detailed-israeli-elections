@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About the Method</title>
+<title>About the Method · Extremely Detailed Israeli Elections</title>
+<meta property="og:site_name" content="Extremely Detailed Israeli Elections">
 <meta name="description" content="How the election map colours each statistical area, places polling stations and handles double-envelope votes.">
 <link rel="stylesheet" href="site.css">
 </head>
@@ -57,6 +58,20 @@ Change bloc (the parties of the Bennett-Lapid government), plus the Arab parties
   <p><b>Bloc view.</b> The "Bloc" switch shows only the two camps: dark where a bloc won more than two thirds of
 valid votes, light where it won a majority, green where the Arab parties hold a majority (they belong to neither
 camp), and pale yellow where no one has a majority.</p>
+  <p><b>Uncommitted parties.</b> A party that would not commit to either camp before the vote is listed as
+uncommitted. In the bloc view it counts for neither camp. In the leading-party view uncommitted parties are
+grouped together like a bloc, so an area where they win more than two thirds takes their leading party's
+colour.</p>
+
+  <h3>Earlier elections</h3>
+  <p>The camps changed between elections, so each election uses the camps Israeli media used at the time. Before
+2019 the press spoke of a right-wing bloc and a centre-left bloc; from 2019 the dividing line was Netanyahu
+himself (the Anti-Netanyahu bloc); the Change bloc took its name in 2021. Parties that switched sides (Yisrael Beytenu after April 2019,
+Yamina and New Hope in 2021) are counted where they stood at that election.</p>
+  <table>
+    <thead><tr><th>Election</th><th>Right camp</th><th>Left camp</th><th>Uncommitted</th><th>Arab parties</th></tr></thead>
+    <tbody><tr><td>25th Knesset, 1 November 2022</td><td><b>Bibi bloc</b>: Likud, Religious Zionism, Shas, United Torah Judaism</td><td><b>Change bloc</b>: Yesh Atid, National Unity, Yisrael Beytenu, Labor, Meretz</td><td></td><td>Ra'am, Hadash-Ta'al, Balad</td></tr><tr><td>24th Knesset, 23 March 2021</td><td><b>Right-wing bloc</b>: Likud, Shas, United Torah Judaism, Religious Zionism, Yamina</td><td><b>Change bloc</b>: Yesh Atid, Blue and White, Labor, Yisrael Beytenu, New Hope, Meretz</td><td></td><td>Joint List, Ra'am</td></tr><tr><td>23rd Knesset, 2 March 2020</td><td><b>Right-wing bloc</b>: Likud, Shas, United Torah Judaism, Yamina</td><td><b>Anti-Netanyahu bloc</b>: Blue and White, Labor-Gesher-Meretz, Yisrael Beytenu</td><td></td><td>Joint List</td></tr><tr><td>22nd Knesset, 17 September 2019</td><td><b>Right-wing bloc</b>: Likud, Shas, United Torah Judaism, Yamina</td><td><b>Anti-Netanyahu bloc</b>: Blue and White, Labor-Gesher, Democratic Union</td><td>Yisrael Beytenu</td><td>Joint List</td></tr><tr><td>21st Knesset, 9 April 2019</td><td><b>Right-wing bloc</b>: Likud, Shas, United Torah Judaism, Yisrael Beytenu, Union of Right-Wing Parties, Kulanu</td><td><b>Anti-Netanyahu bloc</b>: Blue and White, Labor, Meretz</td><td></td><td>Hadash-Ta'al, Ra'am-Balad</td></tr><tr><td>20th Knesset, 17 March 2015</td><td><b>Right-wing bloc</b>: Likud, The Jewish Home, Shas, Yisrael Beytenu, United Torah Judaism</td><td><b>Centre-left bloc</b>: Zionist Union, Yesh Atid, Meretz</td><td>Kulanu</td><td>Joint List</td></tr><tr><td>19th Knesset, 22 January 2013</td><td><b>Right-wing bloc</b>: Likud Beytenu, The Jewish Home, Shas, United Torah Judaism</td><td><b>Centre-left bloc</b>: Yesh Atid, Labor, Hatnua, Meretz, Kadima</td><td></td><td>Ra'am-Ta'al, Hadash, Balad</td></tr></tbody>
+  </table>
 
 <h2>Stripes: a strong second party</h2>
   <p>Inside a coloured area, the second party <b>of the same bloc</b> is shown as stripes over the leader's colour
@@ -143,12 +158,12 @@ OpenStreetMap data is current, so a neighbourhood built after the election can c
     <li>Keyboard: <kbd>/</kbd> jumps to search; arrow keys pick a town and <kbd>Enter</kbd> zooms to it. Click the
       map (or tab to it) and use the arrow keys to move, <kbd>+</kbd> and <kbd>-</kbd> to zoom, and
       <kbd>Enter</kbd> to read the area under the cross in the middle.</li>
-    <li>The map's position is kept in the address bar, so a link can be shared to a particular view.</li>
+    <li>The address bar keeps the election, the view, the party, the selected place and the map position, so a link (or <b>Copy link</b>) opens exactly what you see.</li>
   </ul>
 </main>
-<footer class="site-footer" data-he="מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. הנתונים נבנו ב-2026-10-29. <a href=&quot;sources-he.html&quot;>מקורות וקרדיטים</a>.">
+<footer class="site-footer" data-he="מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. הנתונים נבנו ב-2026-10-30. <a href=&quot;sources-he.html&quot;>מקורות וקרדיטים</a>.">
   An independent, unofficial map. Not affiliated with the Central Elections Committee or the
-  Central Bureau of Statistics. Data built 2026-10-29. <a href="sources.html">Sources and credits</a>.
+  Central Bureau of Statistics. Data built 2026-10-30. <a href="sources.html">Sources and credits</a>.
 </footer>
 <script>
   const sw = document.getElementById("lang-switch");

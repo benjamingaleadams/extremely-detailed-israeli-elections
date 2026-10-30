@@ -1,6 +1,22 @@
 {
- "year": 2022,
+ "year": "2022",
  "subtitle": "25th Knesset, 1 November 2022",
+ "subtitle_he": "הכנסת ה-25, 1 בנובמבר 2022",
+ "bloc_order": [
+  "Bibi bloc",
+  "Change bloc",
+  "Arab parties"
+ ],
+ "bloc_he": {
+  "Bibi bloc": "גוש ביבי",
+  "Change bloc": "גוש השינוי",
+  "Arab parties": "המפלגות הערביות"
+ },
+ "bloc_side": {
+  "Bibi bloc": "right",
+  "Change bloc": "left",
+  "Arab parties": "arab"
+ },
  "parties": [
   {
    "letters": "מחל",
@@ -113,11 +129,21 @@
  "blocs": {
   "Bibi bloc": "#2c5aa0",
   "Change bloc": "#c2306f",
-  "Arab parties": "#16834f"
+  "Arab parties": "#16834f",
+  "Anti-Netanyahu bloc": "#c2306f",
+  "Right-wing bloc": "#2c5aa0",
+  "Uncommitted": "#8a6fb0",
+  "Centre-left bloc": "#c2306f",
+  "Right-religious bloc": "#2c5aa0"
  },
  "blocs_light": {
   "Bibi bloc": "#9fbbe6",
-  "Change bloc": "#eda9c8"
+  "Change bloc": "#eda9c8",
+  "Anti-Netanyahu bloc": "#eda9c8",
+  "Right-wing bloc": "#9fbbe6",
+  "Uncommitted": "#d3c6e6",
+  "Centre-left bloc": "#eda9c8",
+  "Right-religious bloc": "#9fbbe6"
  },
  "notes": {
   "total_valid": 4764742,
@@ -203,5 +229,5 @@
   35.8954,
   33.3351
  ],
- "built": "2026-10-28"
+ "built": "2026-10-30"
 }

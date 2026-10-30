@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Extremely Detailed Israeli Elections</title>
 <meta name="description" content="Knesset election results by CBS statistical area, coloured by bloc and leading party.">
+<link rel="canonical" href="https://israelielections.org/">
+<meta property="og:site_name" content="Extremely Detailed Israeli Elections">
+<meta property="og:title" content="Extremely Detailed Israeli Elections">
+<meta property="og:description" content="Knesset election results by CBS statistical area, coloured by bloc and leading party.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://israelielections.org/">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebSite", "name": "Extremely Detailed Israeli Elections",
+ "alternateName": "בחירות ישראל ברזולוציה מלאה", "url": "https://israelielections.org/"}
+</script>
 <link rel="preconnect" href="https://unpkg.com">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link rel="stylesheet" href="site.css">
@@ -33,7 +43,7 @@
   .panel table { width: 100%; border-collapse: collapse; font-size: 12px; }
   .panel td { padding: 2px 0; vertical-align: top; }
   .panel td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 6px; }
-  .years { display: flex; gap: 6px; margin: 6px 0; }
+  .years { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
   .years button { font: inherit; font-size: 13px; padding: 3px 10px; border-radius: 6px;
     border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; }
   .years button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
@@ -41,6 +51,17 @@
   .flag { color: var(--flag); font-size: 12px; margin-top: 6px; }
   details > summary { cursor: pointer; color: var(--muted); font-size: 12px; }
   #legend-box > summary { font-size: 13px; color: var(--text); font-weight: 600; margin-top: 6px; }
+  .pick { margin: 4px 0 8px; }
+  .pick label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+  .pick select { width: 100%; font: inherit; font-size: 14px; padding: 5px 6px; border-radius: 6px;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+  .tools { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .tools .check { margin: 2px 0; }
+  .linkbtn { font: inherit; font-size: 13px; background: none; border: 0; padding: 0; color: var(--accent);
+    cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+  #copy-done { margin: 0 0 0 6px; }
+  html[dir="rtl"] #copy-done { margin: 0 6px 0 0; }
+  .panel tr.sel td { font-weight: 650; }
   .blocbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 4px 0 8px; background: var(--border); }
 
   /* search */
@@ -107,8 +128,17 @@
     <div class="years" role="group" aria-label="Colour areas by" id="modes">
       <button type="button" data-mode="party" aria-pressed="true" data-he="מפלגה מובילה">Leading party</button>
       <button type="button" data-mode="bloc" aria-pressed="false" data-he="גוש">Bloc</button>
+      <button type="button" data-mode="share" aria-pressed="false" data-he="מפלגה אחת">One party</button>
     </div>
-    <label class="check"><input type="checkbox" id="names" checked> <span data-he="הצגת שמות יישובים">Show town names</span></label>
+    <div class="pick" id="party-pick" hidden>
+      <label for="party" data-he="מפלגה">Party</label>
+      <select id="party"></select>
+    </div>
+    <div class="tools">
+      <label class="check"><input type="checkbox" id="names" checked> <span data-he="הצגת שמות יישובים">Show town names</span></label>
+      <span><button type="button" class="linkbtn" id="copy-link" data-he="העתקת קישור">Copy link</button>
+        <span class="sub" id="copy-done" role="status"></span></span>
+    </div>
 
     <div class="search" role="search">
       <label for="town" data-he="חיפוש יישוב (בעברית או באנגלית) <kbd>/</kbd>">Find a town (English or Hebrew) <kbd>/</kbd></label>

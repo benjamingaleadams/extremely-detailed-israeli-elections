@@ -2,8 +2,10 @@
 // town search from the same file. Built into site/ by scripts/build_site.py.
 "use strict";
 
-const KNOWN_YEARS = [2022, 2026];
-const BLOCS = ["Bibi bloc", "Change bloc", "Arab parties"];
+// elections with a button even before their data is built (results not yet published)
+const KNOWN_YEARS = ["2026"];
+// this election's blocs, right camp first; names differ by election (tables/blocs.csv)
+let BLOCS = [], TWO_BLOCS = [], ARAB_BLOCS = [], BLOC_HE = {};
 const $ = id => document.getElementById(id);
 const fmt = n => Math.round(n).toLocaleString("en-US");
 const pctFmt = x => (Math.round(x * 10) / 10).toFixed(1) + "%";
@@ -16,6 +18,29 @@ let meta, A = null, DOTS = { type: "FeatureCollection", features: [] }, map, par
 let hovered = null, mode = "party";
 const PREVIEW = window.PREVIEW_DATA === true;
 
+// ---------- the address is the state: ?year=&view=&party=&place=&lang= plus #zoom/lat/lng ----------
+// Shared links depend on these names (CLAUDE.md, "Shareable links"): never rename or reuse one.
+const Q = new URLSearchParams(location.search);
+const MODES = ["party", "bloc", "share"];
+let year = null, shareParty = null, place = null;
+const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const partySlug = l => slug(parties[l].english);
+
+function stateParams() {
+  const q = new URLSearchParams();
+  q.set("year", year);
+  if (mode !== "party") q.set("view", mode);
+  if (mode === "share" && shareParty) q.set("party", partySlug(shareParty));
+  if (place) q.set("place", place);
+  if (HE) q.set("lang", "he");
+  return q;
+}
+function syncURL() {
+  if (!year) return;
+  history.replaceState(history.state, "", "?" + stateParams().toString() + location.hash);
+}
+
 // ---------- language: English by default, Hebrew with ?lang=he (remembered per browser) ----------
 const HE = (() => {
   const q = new URLSearchParams(location.search).get("lang");
@@ -23,17 +48,23 @@ const HE = (() => {
   try { return localStorage.getItem("lang") === "he"; } catch (e) { return false; }
 })();
 const tr = (en, he) => HE ? he : en;
-const BLOC_HE = { "Bibi bloc": "גוש ביבי", "Change bloc": "גוש השינוי", "Arab parties": "המפלגות הערביות" };
 const blocName = b => HE ? (BLOC_HE[b] || b) : b;
-const SUBTITLE_HE = { 2022: "הכנסת ה-25, 1 בנובמבר 2022", 2026: "הכנסת ה-26, 27 באוקטובר 2026 · הספירה טרם הסתיימה" };
+// "2019-04" -> "Apr 2019"; plain years stay as they are
+const MONTHS = { en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  he: ["ינו׳", "פבר׳", "מרץ", "אפר׳", "מאי", "יוני", "יולי", "אוג׳", "ספט׳", "אוק׳", "נוב׳", "דצמ׳"] };
+const yearLabel = y => {
+  const [yr, mo] = String(y).split("-");
+  return mo ? `${MONTHS[HE ? "he" : "en"][+mo - 1]} ${yr}` : yr;
+};
 const TOWN_TOTAL = tr("Town total", "סה״כ ביישוב");
 
 function applyLanguage() {
   const sw = $("lang-switch");
   if (sw) {
-    const q = new URLSearchParams(location.search);
-    q.set("lang", HE ? "en" : "he");
-    sw.href = "?" + q.toString() + location.hash;
+    // built when followed, so it carries the current view and map position
+    const target = () => { const q = stateParams(); q.set("lang", HE ? "en" : "he"); return "?" + q.toString() + location.hash; };
+    sw.href = target();
+    sw.addEventListener("click", () => { sw.href = target(); });
     sw.textContent = HE ? "English" : "עברית";
     sw.lang = HE ? "en" : "he";
   }
@@ -50,15 +81,32 @@ const FS = PREVIEW ? { source: "areas" } : { source: "areas", sourceLayer: "area
 // ---------- colour mode: leading party (as on the reference map) or bloc ----------
 
 // two-bloc view: dark over 2/3 of valid votes, light over half; Arab parties sit outside both blocs
-const TWO_BLOCS = ["Bibi bloc", "Change bloc"];
 function twoBlocStops() {
   const light = meta.blocs_light || {};
   return [...TWO_BLOCS.flatMap(x => [`${x}|strong`, blocColor[x], `${x}|majority`, light[x] || blocColor[x]]),
     "arab", meta.states.arab_majority || "#22b573", "none", meta.states.none, "no_station", meta.states.no_station];
 }
 
+// one-party view: the party's share of valid votes in classes, from a pale tint to its full colour
+const SHARE_BREAKS = [5, 10, 20, 35, 50];
+const SHARE_TINT = [0.1, 0.25, 0.42, 0.6, 0.8, 1];
+function mix(hex, t) {  // hex colour blended towards white; t = 1 keeps the colour
+  const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255];
+  return "#" + c.map(v => Math.round(255 - (255 - v) * t).toString(16).padStart(2, "0")).join("");
+}
+const shareColors = () => SHARE_TINT.map(t => mix(colors[shareParty], t));
+function shareSteps(value) {
+  const c = shareColors();
+  return ["step", value, c[0], ...SHARE_BREAKS.flatMap((b, i) => [b, c[i + 1]])];
+}
+
 function colorExpr(b, l, k) {
   const grey = meta.states.built_empty || "#bdb9b0";
+  if (mode === "share") return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
+    ["==", ["get", b], "no_station"], meta.states.no_station,
+    // areas take their share from areas.json (feature state); dots carry it as pct_<letters>
+    b === "b" ? ["case", ["==", ["typeof", ["feature-state", "v"]], "number"], shareSteps(["feature-state", "v"]), "#e4e4e1"]
+      : shareSteps(["coalesce", ["get", "pct_" + shareParty], 0])];
   if (mode === "bloc") return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
     ["match", ["coalesce", ["get", k], ""], ...twoBlocStops(), "#999999"]];
   return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
@@ -79,19 +127,61 @@ function setMode(m) {
   mode = m;
   try { localStorage.setItem("colour-mode", m); } catch (e) { /* private window */ }
   for (const btn of $("modes").querySelectorAll("button")) btn.setAttribute("aria-pressed", btn.dataset.mode === m);
+  $("party-pick").hidden = m !== "share";
   if (!$("intro").dataset.party) $("intro").dataset.party = $("intro").innerHTML;
   $("intro").innerHTML = m === "bloc"
     ? tr(`Two camps only: dark when a bloc wins more than 2/3 of valid votes, light when it wins a majority.
        Arab parties belong to neither bloc. <a href="about.html">How this works</a>.`,
        `שני מחנות בלבד: כהה כשגוש זוכה ביותר משני שלישים מהקולות הכשרים, בהיר כשהוא זוכה ברוב.
        המפלגות הערביות אינן שייכות לאף גוש. <a href="about-he.html">איך זה עובד</a>.`)
+    : m === "share"
+    ? tr(`One party's share of valid votes in each area, whichever party leads there.
+       <a href="about.html">How this works</a>.`,
+       `שיעור הקולות הכשרים של מפלגה אחת בכל אזור, בלי קשר למפלגה המובילה בו.
+       <a href="about-he.html">איך זה עובד</a>.`)
     : $("intro").dataset.party;
   legend();
+  syncURL();
+  repaint();
+}
+
+function setShareParty(l) {
+  shareParty = l;
+  $("party").value = l;
+  legend();
+  syncURL();
+  repaint();
+}
+
+// the selected party's share in every area, as feature state (the tiles carry only the leader)
+let statesFor = null;
+function applyShares() {
+  if (mode !== "share" || !A || !map || !map.getSource("areas") || statesFor === shareParty) return;
+  const k = A.parties.indexOf(shareParty);
+  A.areas.forEach((r, i) => { if (r[8]) map.setFeatureState({ ...FS, id: i }, { v: k < 0 ? 0 : r[8][k] }); });
+  statesFor = shareParty;
+}
+
+function repaint() {
   if (!map || !map.getLayer("fill")) return;
+  applyShares();
   map.setPaintProperty("fill", "fill-color", colorExpr("b", "l", "k"));
   map.setPaintProperty("dots-fill", "fill-color", colorExpr("bloc", "leader", "bloc2"));
   map.setPaintProperty("dots", "circle-color", colorExpr("bloc", "leader", "bloc2"));
-  map.setLayoutProperty("hatch", "visibility", m === "bloc" ? "none" : "visible");
+  map.setLayoutProperty("hatch", "visibility", mode === "party" ? "visible" : "none");
+}
+
+function setPlace(p) { place = p; syncURL(); }
+
+// "Copy link": the address already holds the whole view
+async function copyLink() {
+  syncURL();
+  const done = $("copy-done");
+  try { await navigator.clipboard.writeText(location.href); }
+  catch (e) { window.prompt(tr("Copy this link:", "העתיקו את הקישור:"), location.href); return; }
+  done.textContent = tr("Link copied", "הקישור הועתק");
+  clearTimeout(copyLink.t);
+  copyLink.t = setTimeout(() => { done.textContent = ""; }, 2500);
 }
 
 function status(msg) { const s = $("status"); s.textContent = msg; s.hidden = !msg; }
@@ -105,37 +195,72 @@ async function start() {
   let years;
   try { years = await getJSON("data/years.json"); }
   catch (e) { status(tr("Could not load the map data.", "לא ניתן לטעון את נתוני המפה.")); throw e; }
-  const asked = +new URLSearchParams(location.search).get("year");
-  const year = years.includes(asked) ? asked : years[years.length - 1];
+  const asked = Q.get("year");
+  year = years.includes(asked) ? asked : years[years.length - 1];
   const base = `data/${year}/`;
 
   meta = await getJSON(base + "meta.json");
   colors = meta.colors;
   parties = Object.fromEntries(meta.parties.map(p => [p.letters, p]));
+  BLOCS = meta.bloc_order || [...new Set(meta.parties.map(p => p.bloc))];
+  // the two camps; the Arab parties and uncommitted parties belong to neither
+  const side = b => (meta.bloc_side || {})[b] || (b === "Arab parties" ? "arab" : "right");
+  TWO_BLOCS = BLOCS.filter(b => side(b) === "right" || side(b) === "left");
+  ARAB_BLOCS = BLOCS.filter(b => side(b) === "arab");
+  BLOC_HE = meta.bloc_he || {};
   for (const b of BLOCS) {
     const first = meta.parties.find(p => p.bloc === b);
     blocColor[b] = (meta.blocs && meta.blocs[b]) || (first ? colors[first.letters] : "#999");
   }
-  try { mode = localStorage.getItem("colour-mode") === "bloc" ? "bloc" : "party"; } catch (e) { mode = "party"; }
+  // a link's own view wins over this browser's last one
+  let saved = null;
+  try { saved = localStorage.getItem("colour-mode"); } catch (e) { /* private window */ }
+  mode = MODES.includes(Q.get("view")) ? Q.get("view") : MODES.includes(saved) ? saved : "party";
+  const askedParty = meta.parties.find(p => slug(p.english) === Q.get("party"));
+  shareParty = askedParty ? askedParty.letters : meta.parties[0].letters;
+  $("party").innerHTML = meta.parties.map(p => `<option value="${esc(p.letters)}">${esc(label(p.letters))}</option>`).join("");
+  $("party").value = shareParty;
+  $("party").addEventListener("change", e => setShareParty(e.target.value));
+  place = Q.get("place");
   $("modes").addEventListener("click", e => {
     const m = e.target.closest("button")?.dataset.mode;
     if (m) setMode(m);
   });
+  $("copy-link").addEventListener("click", copyLink);
   try { showNames = localStorage.getItem("town-names") !== "off"; } catch (e) { showNames = true; }
   $("names").addEventListener("change", e => setNames(e.target.checked));
   setNames(showNames);
-  const areasReady = getJSON(base + "areas.json").then(d => { A = d; buildSearch(); });
+  const areasReady = getJSON(base + "areas.json").then(d => { A = d; buildSearch(); applyShares(); });
   const dotsReady = getJSON(base + "dots.geojson").then(d => { DOTS = d; });
 
   applyLanguage();
-  $("subtitle").textContent = HE ? (SUBTITLE_HE[meta.year] || meta.subtitle) : meta.subtitle;
-  document.title = tr(`Extremely Detailed Israeli Elections: ${meta.year}`, `בחירות ישראל ברזולוציה מלאה: ${meta.year}`);
+  $("subtitle").textContent = HE ? (meta.subtitle_he || meta.subtitle) : meta.subtitle;
+  document.title = tr(`Extremely Detailed Israeli Elections: ${yearLabel(meta.year)}`,
+    `בחירות ישראל ברזולוציה מלאה: ${yearLabel(meta.year)}`);
   yearButtons(years, year);
   setMode(mode);
   envelopes();
   try { await dotsReady; } catch (e) { console.error(e); }
   initMap(base);
   try { await areasReady; } catch (e) { console.error(e); }
+  restorePlace();
+}
+
+// ?place=<locality code> (a town) or <locality code>-<statistical area> (one area)
+function restorePlace() {
+  if (!place || !A) return;
+  if (!map.getLayer("fill")) { map.once("load", restorePlace); return; }
+  const [code, stat] = place.split("-").map(Number);
+  const ti = A.towns.findIndex(t => t[0] === code);
+  if (ti < 0) { setPlace(null); return; }
+  const i = Number.isNaN(stat) || stat == null ? -1 : A.areas.findIndex(r => r[0] === ti && r[1] === stat);
+  if (i < 0) { choose(ti, !location.hash); return; }
+  showInfo(recordHtml(areaRecord(i)));
+  setHover(i);
+  if (!location.hash) {
+    const [w, s, e, n] = A.towns[ti][3];
+    map.fitBounds([[w, s], [e, n]], { padding: padding(), maxZoom: 14, duration: 0 });
+  }
 }
 
 // ---------- names ----------
@@ -151,22 +276,31 @@ function swatch(c) { return `<span class="sw" style="background:${c}"></span>`; 
 // ---------- side panel ----------
 
 function yearButtons(years, year) {
-  const all = [...new Set([...KNOWN_YEARS, ...years])].sort();
+  const all = [...new Set([...years, ...KNOWN_YEARS])].sort();
   $("years").innerHTML = all.map(y => {
     const have = years.includes(y);
     return `<button type="button" data-year="${y}" aria-pressed="${y === year}" ${have ? "" : "disabled"}
-      ${have ? "" : `title="${tr("Per-station results not published yet", "תוצאות לפי קלפי טרם פורסמו")}"`}>${y}${have ? "" : tr(" (pending)", " (בהמתנה)")}</button>`;
+      ${have ? "" : `title="${tr("Per-station results not published yet", "תוצאות לפי קלפי טרם פורסמו")}"`}>${yearLabel(y)}${have ? "" : tr(" (pending)", " (בהמתנה)")}</button>`;
   }).join("");
   $("years").addEventListener("click", e => {
     const y = e.target.closest("button")?.dataset.year;
-    if (y && +y !== year) location.search = `?year=${y}`;
+    if (!y || y === year) return;
+    const q = stateParams();  // same view, party, place and map position in the other election
+    q.set("year", y);
+    location.href = "?" + q.toString() + location.hash;
   });
 }
 
 function legend() {
   const lg = $("legend-body");
   let html = "";
-  if (mode === "bloc") {
+  if (mode === "share") {
+    const c = shareColors(), edges = [0, ...SHARE_BREAKS];
+    html += `<h2>${esc(label(shareParty))}</h2><div class="sub">${tr("Share of valid votes", "שיעור מהקולות הכשרים")}</div>`
+      + c.map((col, i) => `<div class="row">${swatch(col)}${i === c.length - 1
+        ? tr(`${edges[i]}% or more`, `${edges[i]}% ומעלה`)
+        : i === 0 ? tr(`Under ${edges[1]}%`, `פחות מ-${edges[1]}%`) : `${edges[i]}–${edges[i + 1]}%`}</div>`).join("");
+  } else if (mode === "bloc") {
     const light = meta.blocs_light || {};
     const pname = l => esc(HE ? parties[l].hebrew : parties[l].english);
     html += TWO_BLOCS.map(b => `<h2>${blocName(b)}</h2><div class="sub">${
@@ -175,14 +309,19 @@ function legend() {
       <div class="row">${swatch(light[b] || blocColor[b])}${tr("Majority (over half)", "רוב (יותר ממחצית)")}</div>`).join("")
       + `<h2>${tr("Neither bloc", "אף גוש")}</h2>
       <div class="row">${swatch(meta.states.arab_majority || "#22b573")}${tr("Arab parties hold a majority", "רוב למפלגות הערביות")} (${
-        meta.parties.filter(p => !TWO_BLOCS.includes(p.bloc)).map(p => pname(p.letters)).join(", ")})</div>`;
+        meta.parties.filter(p => ARAB_BLOCS.includes(p.bloc)).map(p => pname(p.letters)).join(", ")})</div>`
+      + (() => {  // parties that committed to neither camp before the vote
+        const unc = meta.parties.filter(p => !TWO_BLOCS.includes(p.bloc) && !ARAB_BLOCS.includes(p.bloc));
+        return unc.length ? `<div class="sub">${tr("Uncommitted, counted in neither bloc", "לא התחייבו לגוש, לא נספרים באף גוש")}: ${
+          unc.map(p => pname(p.letters)).join(", ")}</div>` : "";
+      })();
   } else for (const b of BLOCS) {
     const ps = meta.parties.filter(p => p.bloc === b);
     html += `<h2>${blocName(b)}</h2>` + ps.map(p => `<div class="row">${swatch(colors[p.letters])}${esc(label(p.letters))}</div>`).join("");
   }
   html += `<h2>${tr("Other", "אחר")}</h2>
-    <div class="row">${swatch(meta.states.none)}${mode === "bloc" ? tr("No bloc with a majority", "אין גוש עם רוב")
-      : tr("No bloc above 2/3", "אין גוש מעל שני שלישים")}</div>
+    ${mode === "share" ? "" : `<div class="row">${swatch(meta.states.none)}${mode === "bloc" ? tr("No bloc with a majority", "אין גוש עם רוב")
+      : tr("No bloc above 2/3", "אין גוש מעל שני שלישים")}</div>`}
     <div class="row">${swatch(meta.states.no_station)}${tr("Nobody lives here (no polling station)", "אין כאן תושבים (אין קלפי)")}</div>
     <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Built up, nobody lives here (campus, industry, offices)",
       "שטח בנוי ללא תושבים (קמפוס, תעשייה, משרדים)")}</div>
@@ -261,7 +400,7 @@ function resultsHtml(rec, verdict) {
     .filter(([l]) => parties[l] && parties[l].bloc === b).reduce((s, [, v]) => s + v, 0)]));
   if (mode === "bloc" && verdict !== TOWN_TOTAL) {  // headline in the two-bloc view's own terms
     const top = TWO_BLOCS.find(b => blocShare[b] > 50);
-    const arab = BLOCS.filter(b => !TWO_BLOCS.includes(b)).reduce((s, b) => s + blocShare[b], 0);
+    const arab = ARAB_BLOCS.reduce((s, b) => s + blocShare[b], 0);
     // the map's own class (from unrounded votes) when there is one, so hover and colour agree
     const [b2, level] = (rec.bloc2 || "").split("|");
     if (rec.bloc2 && rec.bloc2 !== "no_station") verdict = level
@@ -279,8 +418,8 @@ function resultsHtml(rec, verdict) {
     ${blocBar(blocShare)}
     <table>${BLOCS.map(b => `<tr><td><div class="row">${swatch(blocColor[b])}${blocName(b)}</div></td><td class="n">${pctFmt(blocShare[b])}</td></tr>`).join("")}</table>
     <h2>${tr("Parties", "מפלגות")}</h2><table>`;
-  for (const [l, v] of shares.filter(([, v]) => v >= 0.5)) {
-    html += `<tr><td><div class="row">${swatch(colors[l])}
+  for (const [l, v] of shares.filter(([l, v]) => v >= 0.5 || (mode === "share" && l === shareParty))) {
+    html += `<tr${mode === "share" && l === shareParty ? ' class="sel"' : ""}><td><div class="row">${swatch(colors[l])}
       <span>${esc(label(l))}<br><span class="he">${esc(HE ? parties[l].english : parties[l].hebrew)}</span></span></div></td>
       <td class="n">${pctFmt(v)}</td></tr>`;
   }
@@ -426,7 +565,7 @@ function initMap(base) {
     const locSrc = PREVIEW ? { source: "loc" } : { source: "areas", "source-layer": "loc" };
     map.addLayer({ id: "fill", type: "fill", ...src, paint: { "fill-color": colorExpr("b", "l", "k") } });
     map.addLayer({ id: "hatch", type: "fill", ...src, filter: ["has", "s"],
-      layout: { visibility: mode === "bloc" ? "none" : "visible" },
+      layout: { visibility: mode === "party" ? "visible" : "none" },
       paint: { "fill-pattern": ["concat", "h-", ["get", "l"], "-", ["get", "s"]] } });
     // as on the reference: bold outlines round places where people vote, a hairline for regional-council
     // land, and no inner lines on empty land
@@ -464,6 +603,7 @@ function initMap(base) {
       "symbol-sort-key": ["-", ["get", "v"]], "text-padding": 3, "text-max-width": 8 },
       paint: { "text-color": "#2b2b2b", "text-halo-color": "rgba(255,255,255,0.85)", "text-halo-width": 1.4 } });
 
+    applyShares();
     map.on("mousemove", e => pick(e.point, false));
     map.on("click", e => pick(e.point, true));
     map.on("mouseout", () => setHover(null));
@@ -487,9 +627,11 @@ function pick(point, sticky) {
     setHover(f.id);
     if (!A) { showInfo('<div class="sub">Loading area details...</div>'); return; }
     showInfo(recordHtml(areaRecord(f.id)));
+    if (sticky) { const r = A.areas[f.id]; setPlace(`${A.towns[r[0]][0]}-${r[1]}`); }
   } else {
     setHover(null);
     showInfo(recordHtml(dotRecord(f.properties)));
+    if (sticky) setPlace(String(f.properties.SEMEL_YISHUV));
   }
 }
 
@@ -586,13 +728,14 @@ function render() {
   } else input.removeAttribute("aria-activedescendant");
 }
 
-function choose(ti) {
+function choose(ti, fly = true) {
   const t = A.towns[ti], [w, s, e, n] = t[3];
   const input = $("town");
   input.value = t[2] || t[1];
   $("town-list").hidden = true;
   input.setAttribute("aria-expanded", "false");
-  map.fitBounds([[w, s], [e, n]], { padding: padding(), maxZoom: t[5] === "dot" ? 13 : 14, duration: reduceMotion ? 0 : 900 });
+  setPlace(String(t[0]));
+  if (fly) map.fitBounds([[w, s], [e, n]], { padding: padding(), maxZoom: t[5] === "dot" ? 13 : 14, duration: reduceMotion ? 0 : 900 });
   map.setFilter("town-hl", ["==", ["get", "c"], t[5] === "area" ? t[0] : -1]);
   setHover(null);
   if (t[5] === "dot") {
@@ -612,7 +755,7 @@ document.addEventListener("keydown", e => {
     $("town").focus();
   }
 });
-document.querySelector("#info .close").addEventListener("click", () => $("info").classList.add("empty"));
+document.querySelector("#info .close").addEventListener("click", () => { $("info").classList.add("empty"); setPlace(null); });
 if (isPhone()) $("legend-box").open = false;
 
 start().catch(e => { console.error(e); status(tr("Something went wrong loading the map.", "משהו השתבש בטעינת המפה.")); });
