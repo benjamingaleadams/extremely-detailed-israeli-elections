@@ -1,0 +1,195 @@
+{
+ "year": "2020",
+ "subtitle": "23rd Knesset, 2 March 2020",
+ "subtitle_he": "הכנסת ה-23, 2 במרץ 2020",
+ "bloc_order": [
+  "Right-wing bloc",
+  "Anti-Netanyahu bloc",
+  "Arab parties"
+ ],
+ "bloc_he": {
+  "Right-wing bloc": "גוש הימין",
+  "Anti-Netanyahu bloc": "גוש המתנגדים לנתניהו",
+  "Arab parties": "המפלגות הערביות"
+ },
+ "bloc_side": {
+  "Right-wing bloc": "right",
+  "Anti-Netanyahu bloc": "left",
+  "Arab parties": "arab"
+ },
+ "parties": [
+  {
+   "letters": "מחל",
+   "english": "Likud",
+   "transliteration": "haLikud",
+   "hebrew": "הליכוד",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "שס",
+   "english": "Shas",
+   "transliteration": "Shas",
+   "hebrew": "ש״ס",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "ג",
+   "english": "United Torah Judaism",
+   "transliteration": "Yahadut haTorah",
+   "hebrew": "יהדות התורה",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "טב",
+   "english": "Yamina",
+   "transliteration": "Yamina",
+   "hebrew": "ימינה",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "פה",
+   "english": "Blue and White",
+   "transliteration": "Kachol Lavan",
+   "hebrew": "כחול לבן",
+   "bloc": "Anti-Netanyahu bloc"
+  },
+  {
+   "letters": "אמת",
+   "english": "Labor-Gesher-Meretz",
+   "transliteration": "haAvoda-Gesher-Meretz",
+   "hebrew": "העבודה-גשר-מרצ",
+   "bloc": "Anti-Netanyahu bloc"
+  },
+  {
+   "letters": "ל",
+   "english": "Yisrael Beytenu",
+   "transliteration": "Yisrael Beytenu",
+   "hebrew": "ישראל ביתנו",
+   "bloc": "Anti-Netanyahu bloc"
+  },
+  {
+   "letters": "ודעם",
+   "english": "Joint List",
+   "transliteration": "haReshima haMeshutefet",
+   "hebrew": "הרשימה המשותפת",
+   "bloc": "Arab parties"
+  }
+ ],
+ "colors": {
+  "מחל": "#2f6fd1",
+  "שס": "#f08a24",
+  "ג": "#360113",
+  "טב": "#4f9298",
+  "פה": "#d6338f",
+  "אמת": "#d7262e",
+  "ל": "#8e5bb5",
+  "ודעם": "#5eb814"
+ },
+ "states": {
+  "none": "#f6eea0",
+  "no_station": "#fbf8ea",
+  "outline": "#8a8a8a",
+  "locality_outline": "#2b2b2b",
+  "west_bank_line": "#5c5c5c",
+  "arab_majority": "#16834f",
+  "built_empty": "#bdb9b0",
+  "park": "#cfe1b0",
+  "beach": "#f0e8d4"
+ },
+ "blocs": {
+  "Bibi bloc": "#2c5aa0",
+  "Change bloc": "#c2306f",
+  "Arab parties": "#16834f",
+  "Anti-Netanyahu bloc": "#c2306f",
+  "Right-wing bloc": "#2c5aa0",
+  "Uncommitted": "#8a6fb0",
+  "Centre-left bloc": "#c2306f",
+  "Right-religious bloc": "#2c5aa0"
+ },
+ "blocs_light": {
+  "Bibi bloc": "#9fbbe6",
+  "Change bloc": "#eda9c8",
+  "Anti-Netanyahu bloc": "#eda9c8",
+  "Right-wing bloc": "#9fbbe6",
+  "Uncommitted": "#d3c6e6",
+  "Centre-left bloc": "#eda9c8",
+  "Right-religious bloc": "#9fbbe6"
+ },
+ "notes": {
+  "total_valid": 4590062,
+  "mapped_valid": 4084376,
+  "dots_valid": 7735,
+  "double_envelope": {
+   "valid": 327702,
+   "by_party": {
+    "מחל": 107049,
+    "שס": 23264,
+    "ג": 13387,
+    "טב": 27357,
+    "פה": 97828,
+    "אמת": 24137,
+    "ל": 12815,
+    "ודעם": 18077
+   }
+  },
+  "unplaced": {
+   "valid": 170249,
+   "by_town": {
+    "סחנין": 17085,
+    "טירה": 13153,
+    "כפר כנא": 10348,
+    "כפר קרע": 9232,
+    "מגאר": 8623,
+    "ריינה": 7706,
+    "שפרעם": 7564,
+    "עין מאהל": 6575,
+    "אכסאל": 6512,
+    "אעבלין": 6183,
+    "אבו סנאן": 6037,
+    "טורעאן": 6029,
+    "דייר חנא": 5851,
+    "כפר יאסיף": 5530,
+    "גלגוליה": 5065,
+    "דבוריה": 4906,
+    "גסר אזרקא": 4885,
+    "גת": 4577,
+    "מסעודין אלעזאזמה": 4390,
+    "בועיינהנוגידאת": 4297,
+    "בית גן": 4277,
+    "לקיה": 3773,
+    "ביר אלמכסור": 3561,
+    "כסראסמיע": 3427,
+    "כוכב יאיר": 2567,
+    "אבו רובייעה שבט": 1503,
+    "אום אלפחם": 1344,
+    "אבו קורינאת שבט": 1328,
+    "עראבה": 928,
+    "קלנסווה": 555,
+    "קודייראת אצאנעשבט": 381,
+    "סייד שבט": 276,
+    "דימונה": 245,
+    "חברון": 215,
+    "עוקבי בנו עוקבה": 174,
+    "מחנה יפה": 163,
+    "מגדל שמס": 163,
+    "מחנה תל נוף": 140,
+    "אסד שבט": 130,
+    "מחנה הילה": 99,
+    "מחנה טלי": 96,
+    "מחנה יהודית": 94,
+    "מחנה מרים": 82,
+    "מחנה יוכבד": 74,
+    "תראבין אצאנע שבט": 48,
+    "עטאוונה שבט": 31,
+    "ירושלים": 27
+   }
+  }
+ },
+ "bounds": [
+  34.2674,
+  29.5321,
+  35.8954,
+  33.3351
+ ],
+ "built": "2026-10-30"
+}

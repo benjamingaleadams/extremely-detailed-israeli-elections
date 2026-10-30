@@ -117,15 +117,15 @@
   </nav>
 </header>
 <main>
-  <div id="map" role="region" aria-label="Election map"></div>
+  <div id="map" role="region" aria-label="Election map" data-he-label="מפת הבחירות"></div>
   <div id="cross" aria-hidden="true"></div>
   <div id="status" data-he="טוען מפה...">Loading map...</div>
 
   <section id="side" class="panel" aria-labelledby="title">
     <h1 id="title" data-he="תוצאות הבחירות לפי אזור סטטיסטי">Election results by statistical area</h1>
     <div class="sub" id="subtitle"></div>
-    <div class="years" role="group" aria-label="Election year" id="years"></div>
-    <div class="years" role="group" aria-label="Colour areas by" id="modes">
+    <div class="years" role="group" aria-label="Election year" data-he-label="שנת הבחירות" id="years"></div>
+    <div class="years" role="group" aria-label="Colour areas by" data-he-label="צביעת האזורים לפי" id="modes">
       <button type="button" data-mode="party" aria-pressed="true" data-he="מפלגה מובילה">Leading party</button>
       <button type="button" data-mode="bloc" aria-pressed="false" data-he="גוש">Bloc</button>
       <button type="button" data-mode="share" aria-pressed="false" data-he="מפלגה אחת">One party</button>
@@ -135,7 +135,7 @@
       <label for="town" data-he="חיפוש יישוב (בעברית או באנגלית) <kbd>/</kbd>">Find a town (English or Hebrew) <kbd>/</kbd></label>
       <input id="town" type="search" autocomplete="off" spellcheck="false" placeholder="e.g. Haifa or חיפה"
         role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="town-list">
-      <ul id="town-list" role="listbox" aria-label="Matching towns" hidden></ul>
+      <ul id="town-list" role="listbox" aria-label="Matching towns" data-he-label="יישובים מתאימים" hidden></ul>
     </div>
     <div class="tools">
       <label class="check"><input type="checkbox" id="names" checked> <span data-he="הצגת שמות יישובים">Show town names</span></label>
@@ -159,8 +159,8 @@
     </details>
   </section>
 
-  <section id="info" class="panel empty" aria-live="polite" aria-label="Area details">
-    <button class="close" type="button" aria-label="Close details">&times;</button>
+  <section id="info" class="panel empty" aria-live="polite" aria-label="Area details" data-he-label="פרטי האזור">
+    <button class="close" type="button" aria-label="Close details" data-he-label="סגירת הפרטים">&times;</button>
     <div id="info-body" class="sub" data-he="יש לרחף מעל אזור, או להקיש עליו, כדי לראות את התוצאות.">Hover over an area, or tap it, to see its results.</div>
   </section>
 </main>

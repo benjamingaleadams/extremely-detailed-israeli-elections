@@ -2,8 +2,6 @@
 // town search from the same file. Built into site/ by scripts/build_site.py.
 "use strict";
 
-// elections with a button even before their data is built (results not yet published)
-const KNOWN_YEARS = ["2026"];
 // this election's blocs, right camp first; names differ by election (tables/blocs.csv)
 let BLOCS = [], TWO_BLOCS = [], ARAB_BLOCS = [], BLOC_HE = {};
 const $ = id => document.getElementById(id);
@@ -72,6 +70,7 @@ function applyLanguage() {
   document.documentElement.lang = "he";
   document.documentElement.dir = "rtl";
   for (const el of document.querySelectorAll("[data-he]")) el.innerHTML = el.dataset.he;
+  for (const el of document.querySelectorAll("[data-he-label]")) el.setAttribute("aria-label", el.dataset.heLabel);
   $("town").placeholder = "למשל חיפה או Haifa";
   for (const a of document.querySelectorAll(".site-header nav a:not(#lang-switch), .site-footer a"))
     a.href = a.getAttribute("href").replace("about.html", "about-he.html").replace("sources.html", "sources-he.html");
@@ -172,6 +171,18 @@ function repaint() {
 }
 
 function setPlace(p) { place = p; syncURL(); }
+
+// the info panel's starting hint (index.html), kept before the page switches language
+const INFO_HINT_EN = $("info-body").innerHTML;
+// unpin: no place in the address, no highlight, the panel back to its hint
+function clearSelection() {
+  setPlace(null);
+  if (map) setHover(null);
+  if (map && map.getLayer("town-hl")) map.setFilter("town-hl", ["==", ["get", "c"], -1]);
+  $("info-body").innerHTML = tr(INFO_HINT_EN, $("info-body").dataset.he);
+  $("info-body").classList.add("sub");
+  $("info").classList.add("empty");
+}
 
 // "Copy link": the address already holds the whole view
 async function copyLink() {
@@ -276,12 +287,8 @@ function swatch(c) { return `<span class="sw" style="background:${c}"></span>`; 
 // ---------- side panel ----------
 
 function yearButtons(years, year) {
-  const all = [...new Set([...years, ...KNOWN_YEARS])].sort();
-  $("years").innerHTML = all.map(y => {
-    const have = years.includes(y);
-    return `<button type="button" data-year="${y}" aria-pressed="${y === year}" ${have ? "" : "disabled"}
-      ${have ? "" : `title="${tr("Per-station results not published yet", "תוצאות לפי קלפי טרם פורסמו")}"`}>${yearLabel(y)}${have ? "" : tr(" (pending)", " (בהמתנה)")}</button>`;
-  }).join("");
+  $("years").innerHTML = [...years].sort().map(y =>
+    `<button type="button" data-year="${y}" aria-pressed="${y === year}">${yearLabel(y)}</button>`).join("");
   $("years").addEventListener("click", e => {
     const y = e.target.closest("button")?.dataset.year;
     if (!y || y === year) return;
@@ -289,6 +296,19 @@ function yearButtons(years, year) {
     q.set("year", y);
     location.href = "?" + q.toString() + location.hash;
   });
+}
+
+// areas with no station of their own that show their nearest area's result (tile property e = 1)
+const BORROWED_OPACITY = 0.55;
+const borrowedOpacity = () => ["case", ["==", ["coalesce", ["get", "e"], 0], 1], BORROWED_OPACITY, 1];
+// blank land (no voters, not grey) is left clear so the land base and its parks, beaches and industry show
+const fillOpacity = () => ["case", ["==", ["coalesce", ["get", "g"], 0], 1], 1,
+  ["==", ["get", "b"], "no_station"], 0, borrowedOpacity()];
+// a colour from the current view for the "lighter" legend swatch
+function lightSample() {
+  if (mode === "share") return shareColors()[SHARE_TINT.length - 1];
+  if (mode === "bloc") return blocColor[TWO_BLOCS[0]] || "#999";
+  return colors[meta.parties[0].letters] || "#999";
 }
 
 function legend() {
@@ -323,12 +343,14 @@ function legend() {
     ${mode === "share" ? "" : `<div class="row">${swatch(meta.states.none)}${mode === "bloc" ? tr("No bloc with a majority", "אין גוש עם רוב")
       : tr("No bloc above 2/3", "אין גוש מעל שני שלישים")}</div>`}
     <div class="row">${swatch(meta.states.no_station)}${tr("Nobody lives here (no polling station)", "אין כאן תושבים (אין קלפי)")}</div>
-    <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Built up, nobody lives here (campus, industry, offices)",
-      "שטח בנוי ללא תושבים (קמפוס, תעשייה, משרדים)")}</div>
-    <div class="sub">${tr("Populated areas without a station of their own show the nearest station's results in the same town; hover says so.",
-      "אזורים מיושבים ללא קלפי משלהם מציגים את תוצאות הקלפי הקרובה באותו יישוב, והריחוף מציין זאת.")}</div>
+    <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Built up, nobody lives here (industry, port, airport, campus, offices)",
+      "שטח בנוי ללא תושבים (תעשייה, נמל, שדה תעופה, קמפוס, משרדים)")}</div>
+    <div class="row">${swatch(meta.states.park || "#cfe1b0")}${tr("Park", "פארק")}</div>
+    <div class="row">${swatch(meta.states.beach || "#f0e8d4")}${tr("Beach", "חוף")}</div>
+    <div class="row"><span class="sw" style="background:${lightSample()};opacity:${BORROWED_OPACITY}"></span>
+      ${tr("Lighter: no polling station here; shows the nearest area's result", "בהיר יותר: אין כאן קלפי; מוצגת התוצאה של האזור הקרוב")}</div>
     <div class="row"><span class="sw" style="border:1.5px dashed #333;background:transparent"></span>
-      ${tr("Army base or Bedouin locality with no CBS boundary (rough outline)", "בסיס צבאי או יישוב בדואי ללא גבול למ״ס (קו מתאר משוער)")}</div>`;
+      ${tr("Locality without a CBS boundary (outline approximate)", "יישוב ללא גבול למ״ס (קו מתאר משוער)")}</div>`;
   lg.innerHTML = html;
 }
 
@@ -360,10 +382,7 @@ function envelopes() {
       <td class="n">${pctFmt(100 * blocTotals[b] / env.valid)}</td></tr>`).join("")}</table>
     <details><summary>${tr("By party", "לפי מפלגה")}</summary><table>${byParty.map(p =>
       `<tr><td>${esc(label(p.letters))}</td><td class="n">${fmt(env.by_party[p.letters] || 0)}</td></tr>`).join("")}
-    </table></details>
-    <div class="sub" style="margin-top:6px">${tr(`Also off the map: ${fmt(n.unplaced.valid)} votes from stations
-      that could not be placed in a statistical area.`, `גם מחוץ למפה: ${fmt(n.unplaced.valid)} קולות מקלפיות שלא ניתן היה
-      לשייך לאזור סטטיסטי.`)}</div>`;
+    </table></details>${offMap}`;
 }
 
 // ---------- info panel ----------
@@ -384,9 +403,9 @@ function dotRecord(p) {
 }
 
 function dotKind(he) {
-  if (/^מחנה/.test(he)) return tr("Army base (location approximate)", "בסיס צבאי (מיקום משוער)");
-  if (/שבט/.test(he)) return tr("Bedouin tribe (location approximate)", "שבט בדואי (מיקום משוער)");
-  return tr("Locality without a CBS boundary (location approximate)", "יישוב ללא גבול למ״ס (מיקום משוער)");
+  if (/^מחנה/.test(he)) return tr("Army base", "בסיס צבאי");
+  if (/שבט/.test(he)) return tr("Bedouin tribe", "שבט בדואי");
+  return tr("Locality without a CBS boundary", "יישוב ללא גבול למ״ס");
 }
 
 function blocBar(blocShare) {
@@ -439,8 +458,11 @@ function recordHtml(rec) {
   if (rec.placeholder) html += `<div class="flag">${rec.placeholder === "osm"
     ? tr("CBS publishes only a point for this locality. Outline is its built-up area as mapped in OpenStreetMap, approximate.",
          "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. קו המתאר הוא השטח הבנוי כפי שממופה ב-OpenStreetMap, משוער.")
-    : tr("CBS publishes only a point for this locality. Circle drawn around that point, approximate.",
-         "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. עיגול סביב הנקודה, משוער.")}</div>`;
+    : rec.placeholder === "buildings"
+    ? tr("CBS publishes only a point for this locality. Outline drawn round its buildings (Microsoft building footprints), approximate.",
+         "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. קו המתאר משורטט סביב המבנים שלו (טביעות מבנים של Microsoft), משוער.")
+    : tr("CBS publishes only a point for this locality. Shape drawn round that point, approximate.",
+         "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. הצורה משורטטת סביב הנקודה, משוערת.")}</div>`;
   if (rec.estFrom === 0) html += `<div class="flag">${tr(`The polling stations in this town could not be placed in
     statistical areas, so every populated area shows the whole town's result (${fmt(rec.estVotes)} valid votes).`,
     `לא ניתן היה לשייך את הקלפיות ביישוב זה לאזורים סטטיסטיים, ולכן כל אזור מיושב מציג את תוצאות היישוב כולו
@@ -453,8 +475,11 @@ function recordHtml(rec) {
     "הוקם אחרי ששורטטו גבולות הלמ״ס של 2022; מוצג כגבול המשותף של היישובים שאותם החליף.")}</div>`;
   if (rec.shape === "osm") html += `<div class="flag">${tr("No CBS boundary: outline is the nearest matching area mapped in OpenStreetMap, approximate.",
     "אין גבול למ״ס: קו המתאר הוא השטח המתאים הקרוב ביותר ב-OpenStreetMap, משוער.")}</div>`;
-  if (rec.shape === "circle") html += `<div class="flag">${tr("No CBS boundary and nothing mapped in OpenStreetMap: circle drawn around the approximate location.",
-    "אין גבול למ״ס ואין מיפוי ב-OpenStreetMap: עיגול סביב המיקום המשוער.")}</div>`;
+  if (rec.shape === "buildings") html += `<div class="flag">${tr("No CBS boundary: outline drawn round its buildings (Microsoft building footprints), approximate.",
+    "אין גבול למ״ס: קו המתאר משורטט סביב המבנים שלו (טביעות מבנים של Microsoft), משוער.")}</div>`;
+  // "circle" is the older name for the same fallback
+  if (rec.shape === "point" || rec.shape === "circle") html += `<div class="flag">${tr("No CBS boundary and no buildings found: marker at its approximate location.",
+    "אין גבול למ״ס ולא נמצאו מבנים: סימון במיקום המשוער.")}</div>`;
   if (!isDot && rec.approx > 0) html += `<div class="flag">${tr(`${rec.approx} of ${rec.stations} station${rec.stations > 1 ? "s" : ""}
     placed approximately (location borrowed from a nearby-numbered station).`,
     `${rec.approx} מתוך ${rec.stations} קלפיות מוקמו בקירוב (לפי קלפי בעלת מספר סמוך).`)}</div>`;
@@ -521,11 +546,15 @@ function initMap(base) {
     bounds: meta.bounds, fitBoundsOptions: { padding: padding() },
     hash: true, attributionControl: false, dragRotate: false, pitchWithRotate: false, maxZoom: 16, minZoom: 4,
   });
+  // sea and large water follow the page theme, also when it changes after load
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => map.setPaintProperty("bg", "background-color",
+    getComputedStyle(document.documentElement).getPropertyValue("--map-bg").trim() || "#e6e6e3"));
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
   map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution:
-    '<a href="sources.html">CEC, CBS and others</a> · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }));
+    tr('<a href="sources.html">CEC, CBS and others</a> · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      '<a href="sources-he.html">ועדת הבחירות, הלמ״ס ואחרים</a> · © <a href="https://www.openstreetmap.org/copyright">תורמי OpenStreetMap</a>') }));
 
   const canvas = map.getCanvas();
   canvas.setAttribute("aria-label", tr("Election map. Arrow keys move, plus and minus zoom, Enter reads the area under the cross.",
@@ -555,6 +584,10 @@ function initMap(base) {
     // one land base under everything: CBS areas plus the West Bank, gaps closed, so nothing is unclaimed
     map.addSource("land", { type: "geojson", data: "data/land.geojson" });
     map.addLayer({ id: "land", type: "fill", source: "land", paint: { "fill-color": meta.states.no_station } });
+    // parks, beaches and industry (OpenStreetMap, scripts/land_features.py): seen only where blank land leaves them clear
+    map.addSource("landfeat", { type: "geojson", data: "data/land_features.geojson" });
+    map.addLayer({ id: "landfeat", type: "fill", source: "landfeat", minzoom: 9, paint: { "fill-color": ["match", ["get", "t"],
+      "park", meta.states.park || "#cfe1b0", "beach", meta.states.beach || "#f0e8d4", meta.states.built_empty || "#bdb9b0"] } });
     map.addSource("west-bank", { type: "geojson", data: "data/west_bank.geojson" });
 
     if (PREVIEW) {
@@ -563,10 +596,10 @@ function initMap(base) {
     } else map.addSource("areas", { type: "vector", url: "pmtiles://" + tiles });
     const src = PREVIEW ? { source: "areas" } : { source: "areas", "source-layer": "areas" };
     const locSrc = PREVIEW ? { source: "loc" } : { source: "areas", "source-layer": "loc" };
-    map.addLayer({ id: "fill", type: "fill", ...src, paint: { "fill-color": colorExpr("b", "l", "k") } });
+    map.addLayer({ id: "fill", type: "fill", ...src, paint: { "fill-color": colorExpr("b", "l", "k"), "fill-opacity": fillOpacity() } });
     map.addLayer({ id: "hatch", type: "fill", ...src, filter: ["has", "s"],
       layout: { visibility: mode === "party" ? "visible" : "none" },
-      paint: { "fill-pattern": ["concat", "h-", ["get", "l"], "-", ["get", "s"]] } });
+      paint: { "fill-pattern": ["concat", "h-", ["get", "l"], "-", ["get", "s"]], "fill-opacity": borrowedOpacity() } });
     // as on the reference: bold outlines round places where people vote, a hairline for regional-council
     // land, and no inner lines on empty land
     map.addLayer({ id: "area-line", type: "line", ...src, filter: ["!=", ["get", "b"], "no_station"],
@@ -606,7 +639,7 @@ function initMap(base) {
     applyShares();
     map.on("mousemove", e => pick(e.point, false));
     map.on("click", e => pick(e.point, true));
-    map.on("mouseout", () => setHover(null));
+    map.on("mouseout", () => { if (!pinned()) setHover(null); });
   });
 }
 
@@ -617,15 +650,21 @@ function setHover(id) {
   if (id !== null) map.setFeatureState({ ...FS, id }, { hover: true });
 }
 
+// a place is pinned once it is in the address and its details can be shown
+const pinned = () => place != null && A != null;
+
 function pick(point, sticky) {
   if (!map.getLayer("fill")) return;
   const f = map.queryRenderedFeatures(point, { layers: ["dots", "dots-fill", "fill"] })
     .find(x => x.properties.b !== "no_station" || x.properties.g === 1);  // empty land: no highlight
   map.getCanvas().style.cursor = f ? "pointer" : "";
-  if (!f) { setHover(null); return; }
+  // a pinned place (click, tap, search or link) keeps the panel and highlight; hover leaves it alone
+  if (!sticky && pinned()) return;
+  if (!f) { if (sticky) clearSelection(); else setHover(null); return; }
+  if (sticky) map.setFilter("town-hl", ["==", ["get", "c"], -1]);
   if (f.layer.id === "fill") {
     setHover(f.id);
-    if (!A) { showInfo('<div class="sub">Loading area details...</div>'); return; }
+    if (!A) { showInfo(`<div class="sub">${tr("Loading area details...", "טוען את פרטי האזור...")}</div>`); return; }
     showInfo(recordHtml(areaRecord(f.id)));
     if (sticky) { const r = A.areas[f.id]; setPlace(`${A.towns[r[0]][0]}-${r[1]}`); }
   } else {
@@ -719,7 +758,7 @@ function render() {
     const t = A.towns[ti];
     return `<li role="option" id="opt-${k}" data-k="${k}" aria-selected="${k === active}">
       <span>${esc(t[2] || t[1])}</span><span class="he">${esc(t[1])}</span></li>`;
-  }).join("") : `<li class="none" role="option" aria-disabled="true">No town found</li>`;
+  }).join("") : `<li class="none" role="option" aria-disabled="true">${tr("No town found", "לא נמצא יישוב")}</li>`;
   list.hidden = false;
   input.setAttribute("aria-expanded", "true");
   if (active >= 0) {
@@ -755,7 +794,8 @@ document.addEventListener("keydown", e => {
     $("town").focus();
   }
 });
-document.querySelector("#info .close").addEventListener("click", () => { $("info").classList.add("empty"); setPlace(null); });
+document.querySelector("#info .close").addEventListener("click", clearSelection);
 if (isPhone()) $("legend-box").open = false;
+if (HE) $("status").textContent = $("status").dataset.he;  // before the rest of the page switches language
 
 start().catch(e => { console.error(e); status(tr("Something went wrong loading the map.", "משהו השתבש בטעינת המפה.")); });

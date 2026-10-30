@@ -116,7 +116,9 @@
   "locality_outline": "#2b2b2b",
   "west_bank_line": "#5c5c5c",
   "arab_majority": "#16834f",
-  "built_empty": "#bdb9b0"
+  "built_empty": "#bdb9b0",
+  "park": "#cfe1b0",
+  "beach": "#f0e8d4"
  },
  "blocs": {
   "Bibi bloc": "#2c5aa0",
@@ -209,7 +211,7 @@
  },
  "bounds": [
   34.2674,
-  29.4969,
+  29.5321,
   35.8954,
   33.3351
  ],

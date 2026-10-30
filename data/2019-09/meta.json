@@ -1,0 +1,205 @@
+{
+ "year": "2019-09",
+ "subtitle": "22nd Knesset, 17 September 2019",
+ "subtitle_he": "הכנסת ה-22, 17 בספטמבר 2019",
+ "bloc_order": [
+  "Right-wing bloc",
+  "Anti-Netanyahu bloc",
+  "Uncommitted",
+  "Arab parties"
+ ],
+ "bloc_he": {
+  "Right-wing bloc": "גוש הימין",
+  "Anti-Netanyahu bloc": "גוש המתנגדים לנתניהו",
+  "Uncommitted": "לא התחייבו לגוש",
+  "Arab parties": "המפלגות הערביות"
+ },
+ "bloc_side": {
+  "Right-wing bloc": "right",
+  "Anti-Netanyahu bloc": "left",
+  "Uncommitted": "uncommitted",
+  "Arab parties": "arab"
+ },
+ "parties": [
+  {
+   "letters": "מחל",
+   "english": "Likud",
+   "transliteration": "haLikud",
+   "hebrew": "הליכוד",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "שס",
+   "english": "Shas",
+   "transliteration": "Shas",
+   "hebrew": "ש״ס",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "ג",
+   "english": "United Torah Judaism",
+   "transliteration": "Yahadut haTorah",
+   "hebrew": "יהדות התורה",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "טב",
+   "english": "Yamina",
+   "transliteration": "Yamina",
+   "hebrew": "ימינה",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "פה",
+   "english": "Blue and White",
+   "transliteration": "Kachol Lavan",
+   "hebrew": "כחול לבן",
+   "bloc": "Anti-Netanyahu bloc"
+  },
+  {
+   "letters": "ל",
+   "english": "Yisrael Beytenu",
+   "transliteration": "Yisrael Beytenu",
+   "hebrew": "ישראל ביתנו",
+   "bloc": "Uncommitted"
+  },
+  {
+   "letters": "אמת",
+   "english": "Labor-Gesher",
+   "transliteration": "haAvoda-Gesher",
+   "hebrew": "העבודה-גשר",
+   "bloc": "Anti-Netanyahu bloc"
+  },
+  {
+   "letters": "מרצ",
+   "english": "Democratic Union",
+   "transliteration": "haMachane haDemokrati",
+   "hebrew": "המחנה הדמוקרטי",
+   "bloc": "Anti-Netanyahu bloc"
+  },
+  {
+   "letters": "ודעם",
+   "english": "Joint List",
+   "transliteration": "haReshima haMeshutefet",
+   "hebrew": "הרשימה המשותפת",
+   "bloc": "Arab parties"
+  }
+ ],
+ "colors": {
+  "מחל": "#2f6fd1",
+  "שס": "#f08a24",
+  "ג": "#360113",
+  "טב": "#4f9298",
+  "פה": "#d6338f",
+  "ל": "#8e5bb5",
+  "אמת": "#d7262e",
+  "מרצ": "#b8005c",
+  "ודעם": "#5eb814"
+ },
+ "states": {
+  "none": "#f6eea0",
+  "no_station": "#fbf8ea",
+  "outline": "#8a8a8a",
+  "locality_outline": "#2b2b2b",
+  "west_bank_line": "#5c5c5c",
+  "arab_majority": "#16834f",
+  "built_empty": "#bdb9b0",
+  "park": "#cfe1b0",
+  "beach": "#f0e8d4"
+ },
+ "blocs": {
+  "Bibi bloc": "#2c5aa0",
+  "Change bloc": "#c2306f",
+  "Arab parties": "#16834f",
+  "Anti-Netanyahu bloc": "#c2306f",
+  "Right-wing bloc": "#2c5aa0",
+  "Uncommitted": "#8a6fb0",
+  "Centre-left bloc": "#c2306f",
+  "Right-religious bloc": "#2c5aa0"
+ },
+ "blocs_light": {
+  "Bibi bloc": "#9fbbe6",
+  "Change bloc": "#eda9c8",
+  "Anti-Netanyahu bloc": "#eda9c8",
+  "Right-wing bloc": "#9fbbe6",
+  "Uncommitted": "#d3c6e6",
+  "Centre-left bloc": "#eda9c8",
+  "Right-religious bloc": "#9fbbe6"
+ },
+ "notes": {
+  "total_valid": 4436806,
+  "mapped_valid": 3998782,
+  "dots_valid": 7441,
+  "double_envelope": {
+   "valid": 280216,
+   "by_party": {
+    "מחל": 77953,
+    "שס": 17598,
+    "ג": 11649,
+    "טב": 24810,
+    "פה": 84654,
+    "ל": 14019,
+    "אמת": 13211,
+    "מרצ": 13861,
+    "ודעם": 11974
+   }
+  },
+  "unplaced": {
+   "valid": 150367,
+   "by_town": {
+    "סח'נין": 14644,
+    "טירה": 12059,
+    "כפר כנא": 9013,
+    "מגאר": 8271,
+    "כפר קרע": 8180,
+    "ריינה": 6506,
+    "שפרעם": 6218,
+    "טורעאן": 5891,
+    "אכסאל": 5737,
+    "אעבלין": 5629,
+    "אבו סנאן": 5617,
+    "דייר חנא": 5530,
+    "עין מאהל": 5294,
+    "כפר יאסיף": 5238,
+    "ג'לג'וליה": 4675,
+    "בית ג'ן": 4499,
+    "דבוריה": 4466,
+    "מסעודין אל-עזאזמה": 4374,
+    "ג'ת": 4061,
+    "בועיינה-נוג'ידאת": 3926,
+    "ג'סר א-זרקא": 3657,
+    "לקיה": 3426,
+    "ביר אל-מכסור": 3047,
+    "כוכב יאיר": 2602,
+    "כסרא-סמיע": 1793,
+    "אבו רובייעה (שבט)": 1447,
+    "אבו קורינאת (שבט)": 1209,
+    "אום אל-פחם": 1037,
+    "קלנסווה": 492,
+    "חברון": 230,
+    "דימונה": 230,
+    "סייד (שבט)": 194,
+    "מג'דל שמס": 175,
+    "מחנה יפה": 146,
+    "עוקבי (בנו עוקבה)": 141,
+    "מחנה תל נוף": 110,
+    "אסד (שבט)": 105,
+    "מחנה יהודית": 90,
+    "מחנה הילה": 90,
+    "מחנה טלי": 85,
+    "מחנה יוכבד": 71,
+    "מחנה מרים": 67,
+    "עטאוונה (שבט)": 44,
+    "תראבין א-צאנע (שבט)": 33,
+    "ירושלים": 18
+   }
+  }
+ },
+ "bounds": [
+  34.2674,
+  29.5321,
+  35.8954,
+  33.3351
+ ],
+ "built": "2026-10-30"
+}

@@ -1,0 +1,245 @@
+{
+ "year": "2021",
+ "subtitle": "24th Knesset, 23 March 2021",
+ "subtitle_he": "הכנסת ה-24, 23 במרץ 2021",
+ "bloc_order": [
+  "Right-wing bloc",
+  "Change bloc",
+  "Arab parties"
+ ],
+ "bloc_he": {
+  "Right-wing bloc": "גוש הימין",
+  "Change bloc": "גוש השינוי",
+  "Arab parties": "המפלגות הערביות"
+ },
+ "bloc_side": {
+  "Right-wing bloc": "right",
+  "Change bloc": "left",
+  "Arab parties": "arab"
+ },
+ "parties": [
+  {
+   "letters": "מחל",
+   "english": "Likud",
+   "transliteration": "haLikud",
+   "hebrew": "הליכוד",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "שס",
+   "english": "Shas",
+   "transliteration": "Shas",
+   "hebrew": "ש״ס",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "ג",
+   "english": "United Torah Judaism",
+   "transliteration": "Yahadut haTorah",
+   "hebrew": "יהדות התורה",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "ט",
+   "english": "Religious Zionism",
+   "transliteration": "haTzionut haDatit",
+   "hebrew": "הציונות הדתית",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "פה",
+   "english": "Yesh Atid",
+   "transliteration": "Yesh Atid",
+   "hebrew": "יש עתיד",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "כן",
+   "english": "Blue and White",
+   "transliteration": "Kachol Lavan",
+   "hebrew": "כחול לבן",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "ב",
+   "english": "Yamina",
+   "transliteration": "Yamina",
+   "hebrew": "ימינה",
+   "bloc": "Right-wing bloc"
+  },
+  {
+   "letters": "אמת",
+   "english": "Labor",
+   "transliteration": "haAvoda",
+   "hebrew": "העבודה",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "ל",
+   "english": "Yisrael Beytenu",
+   "transliteration": "Yisrael Beytenu",
+   "hebrew": "ישראל ביתנו",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "ת",
+   "english": "New Hope",
+   "transliteration": "Tikva Chadasha",
+   "hebrew": "תקווה חדשה",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "מרצ",
+   "english": "Meretz",
+   "transliteration": "Meretz",
+   "hebrew": "מרצ",
+   "bloc": "Change bloc"
+  },
+  {
+   "letters": "ודעם",
+   "english": "Joint List",
+   "transliteration": "haReshima haMeshutefet",
+   "hebrew": "הרשימה המשותפת",
+   "bloc": "Arab parties"
+  },
+  {
+   "letters": "עם",
+   "english": "Ra'am",
+   "transliteration": "Ra'am",
+   "hebrew": "רע״ם",
+   "bloc": "Arab parties"
+  }
+ ],
+ "colors": {
+  "מחל": "#2f6fd1",
+  "שס": "#f08a24",
+  "ג": "#360113",
+  "ט": "#4f9298",
+  "פה": "#d6338f",
+  "כן": "#f2a7c9",
+  "ב": "#7ab8b0",
+  "אמת": "#d7262e",
+  "ל": "#8e5bb5",
+  "ת": "#4b2c8a",
+  "מרצ": "#b8005c",
+  "ודעם": "#5eb814",
+  "עם": "#03771a"
+ },
+ "states": {
+  "none": "#f6eea0",
+  "no_station": "#fbf8ea",
+  "outline": "#8a8a8a",
+  "locality_outline": "#2b2b2b",
+  "west_bank_line": "#5c5c5c",
+  "arab_majority": "#16834f",
+  "built_empty": "#bdb9b0",
+  "park": "#cfe1b0",
+  "beach": "#f0e8d4"
+ },
+ "blocs": {
+  "Bibi bloc": "#2c5aa0",
+  "Change bloc": "#c2306f",
+  "Arab parties": "#16834f",
+  "Anti-Netanyahu bloc": "#c2306f",
+  "Right-wing bloc": "#2c5aa0",
+  "Uncommitted": "#8a6fb0",
+  "Centre-left bloc": "#c2306f",
+  "Right-religious bloc": "#2c5aa0"
+ },
+ "blocs_light": {
+  "Bibi bloc": "#9fbbe6",
+  "Change bloc": "#eda9c8",
+  "Anti-Netanyahu bloc": "#eda9c8",
+  "Right-wing bloc": "#9fbbe6",
+  "Uncommitted": "#d3c6e6",
+  "Centre-left bloc": "#eda9c8",
+  "Right-religious bloc": "#9fbbe6"
+ },
+ "notes": {
+  "total_valid": 4410052,
+  "mapped_valid": 3841193,
+  "dots_valid": 5560,
+  "double_envelope": {
+   "valid": 421619,
+   "by_party": {
+    "מחל": 103036,
+    "שס": 23964,
+    "ג": 13767,
+    "ט": 27130,
+    "פה": 58002,
+    "כן": 26736,
+    "ב": 39693,
+    "אמת": 34269,
+    "ל": 27483,
+    "ת": 22077,
+    "מרצ": 20403,
+    "ודעם": 11186,
+    "עם": 6627
+   }
+  },
+  "unplaced": {
+   "valid": 141680,
+   "by_town": {
+    "סחנין": 15530,
+    "טייבה": 9468,
+    "טירה": 8690,
+    "שפרעם": 7270,
+    "כפר כנא": 7210,
+    "מגאר": 7054,
+    "כפר קרע": 5973,
+    "ריינה": 5208,
+    "אבו סנאן": 5070,
+    "דייר חנא": 5042,
+    "אעבלין": 4618,
+    "כפר יאסיף": 4499,
+    "אכסאל": 4219,
+    "גלגוליה": 3840,
+    "טורעאן": 3730,
+    "עין מאהל": 3706,
+    "מסעודין אלעזאזמה": 3702,
+    "כסראסמיע": 3595,
+    "בועיינהנוגידאת": 3459,
+    "דבוריה": 3452,
+    "בית גן": 3399,
+    "לקיה": 3174,
+    "ביר אלמכסור": 2601,
+    "כוכב יאיר": 2579,
+    "גסר אזרקא": 2212,
+    "טמרה": 1596,
+    "דאלית אלכרמל": 1488,
+    "עראבה": 1230,
+    "תל אביב  יפו": 1077,
+    "אבו קורינאת שבט": 1007,
+    "אבו רובייעה שבט": 966,
+    "עספיא": 955,
+    "יפיע": 886,
+    "אום אלפחם": 538,
+    "קלנסווה": 529,
+    "קודייראת אצאנעשבט": 290,
+    "דימונה": 244,
+    "סייד שבט": 231,
+    "חברון": 201,
+    "מגדל שמס": 168,
+    "מחנה יפה": 148,
+    "מחנה תל נוף": 131,
+    "עוקבי בנו עוקבה": 127,
+    "מחנה יהודית": 104,
+    "מחנה הילה": 102,
+    "אסד שבט": 82,
+    "מחנה מרים": 68,
+    "מחנה טלי": 64,
+    "מחנה יוכבד": 57,
+    "תראבין אצאנע שבט": 56,
+    "ירושלים": 21,
+    "עטאוונה שבט": 14
+   }
+  }
+ },
+ "bounds": [
+  34.2674,
+  29.5321,
+  35.8954,
+  33.3351
+ ],
+ "built": "2026-10-30"
+}

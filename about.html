@@ -40,6 +40,14 @@ housing; the second test catches neighbourhoods the census file leaves out. Area
 cream, as in the original map. Built-up land where nobody lives, such as ports, refineries, industrial zones and
 business parks, is grey: areas of at most 10 km² at least half covered by industrial, commercial or campus land in
 OpenStreetMap.</p>
+  <p>Big statistical areas, 1 km² or more, that are less than half settled are drawn only where people live: land
+    within reach of buildings in Microsoft's building footprints, keeping the main settlement and sizeable patches
+    within 1 km of it. The rest of the area stays blank (the original map colours such areas edge to edge). This
+    changes the drawing only; the area's votes and figures are unchanged.</p>
+  <p>Areas stop at the coastline and at lakes, harbours and marinas, all taken from OpenStreetMap; the Dead Sea
+    and the Sea of Galilee show as water. Parks of 30 hectares or more are cut out of coloured areas too. On blank
+    land, OpenStreetMap parks show green, beaches sand and industry, ports and civil airports grey. Drawing only;
+    votes and figures are unchanged.</p>
 
   <h2>The colour rule: more than two thirds</h2>
   <p>Parties are grouped into the two camps of Israeli politics, the Bibi bloc (Netanyahu's parties) and the
@@ -86,7 +94,7 @@ Yamina and New Hope in 2021) are counted where they stood at that election.</p>
     <li><b>One-area towns.</b> If the town is a single statistical area, the station belongs to it. This is exact
       and covers most of the country's localities.</li>
     <li><b>Address or venue.</b> The station's address and venue from the Central Elections Committee's official
-      2022 station list, located with our own OpenStreetMap lookup: the house number where it is mapped, else the
+      station list for that election, located with our own OpenStreetMap lookup: the house number where it is mapped, else the
       venue by name (usually a school), else the street. Where the address and the venue are both found but more
       than 500 m apart, neither is trusted.</li>
     <li><b>Nearest-numbered neighbour.</b> Stations are numbered roughly by neighbourhood, so a station with no usable
@@ -103,10 +111,13 @@ Yamina and New Hope in 2021) are counted where they stood at that election.</p>
   <p>In some towns, mostly Arab towns, the official list gives only the town name as the address and the venues are
     not in OpenStreetMap, so no station can be placed. There, every populated area shows the whole town's result,
     and the details panel says so.</p>
-  <p>Some places that vote have no CBS boundary at all: army bases and several Negev Bedouin tribes. They are drawn
-    as rough outlines taken from OpenStreetMap, or as circles where OpenStreetMap has nothing, with a dashed border. They hold 24,787 votes. CBS also publishes about 130 localities, mostly West Bank
-settlements, as a tiny placeholder instead of a boundary; they are drawn with their built-up area as mapped in
-OpenStreetMap.</p>
+  <p>Some places that vote have no CBS boundary at all, such as several Negev Bedouin tribes and, in some
+    elections, army bases. They are drawn with a dashed border, outlined round their own buildings from Microsoft's
+    building footprints or taken from OpenStreetMap, and as a small marker where no buildings are found. They hold
+    24,787 votes. CBS also publishes about 130 localities, mostly West Bank
+settlements, as a tiny placeholder instead of a boundary; they are drawn with the built-up area mapped in
+OpenStreetMap at that point (only the piece there and pieces within 200 m), or else round their own buildings,
+or as a small marker.</p>
 
   <h2>Double envelopes and other votes off the map</h2>
   <p>Soldiers, hospital patients, prisoners, diplomats and some others vote in "double envelopes". These are counted
@@ -117,7 +128,7 @@ OpenStreetMap.</p>
     <thead><tr><th>Valid votes, 2026</th><th class="n">Votes</th></tr></thead>
     <tbody>
       <tr><td>Drawn in statistical areas</td><td class="n">5,010,972</td></tr>
-      <tr><td>Drawn as rough outlines (bases, Bedouin tribes)</td><td class="n">24,787</td></tr>
+      <tr><td>Drawn as rough outlines (localities without a CBS boundary)</td><td class="n">24,787</td></tr>
       <tr><td>Double envelopes</td><td class="n">449,357</td></tr>
       <tr><td>Stations that could not be placed</td><td class="n">205,566</td></tr>
       <tr><td><b>Total</b></td><td class="n"><b>5,690,682</b></td></tr>
@@ -131,7 +142,8 @@ OpenStreetMap.</p>
 <li>Which land is lived in or built up: the census where it has a figure, OpenStreetMap land use otherwise. The
 OpenStreetMap data is current, so a neighbourhood built after the election can count as lived in.</li>
 <li>Settlement outlines from OpenStreetMap where CBS gives only a placeholder.</li>
-    <li>Outlines for army bases and Bedouin tribes, which come from OpenStreetMap or are plain circles.</li>
+    <li>Outlines for localities without a CBS boundary, drawn round their buildings or taken from OpenStreetMap.</li>
+    <li>The edges of big, thinly settled areas, drawn round their buildings.</li>
     <li>Area boundaries are simplified for the web: to about 3 metres when zoomed in, and more coarsely when zoomed
       out, where the difference is smaller than a screen pixel.</li>
     <li>Station locations come from OpenStreetMap, which maps house numbers in only some towns; elsewhere the
@@ -143,8 +155,9 @@ OpenStreetMap data is current, so a neighbourhood built after the election can c
 
   <h2>Differences from the original</h2>
   <p>The layout and the two-thirds rule follow Sergei Kondrashov's map of the 25th Knesset results. Two things
-    differ. This map groups parties into the two camps Israeli media used in 2022, the Bibi bloc (Netanyahu's
-    parties) and the Change bloc (the parties of the outgoing Bennett-Lapid government), plus the Arab parties.
+    differ. This map groups parties into the two camps Israeli media used at each election (in 2022 and 2026 the
+    Bibi bloc, Netanyahu's parties, and the Change bloc, the parties of the Bennett-Lapid government), plus the
+    Arab parties.
     The original used ideological trends instead: it counts Yisrael Beytenu with the right and National Unity with
     neither camp, which is why Ariel and parts of the Tel Aviv coast look different. This map also adds the
     double-envelope box. Nothing from the original image or its data is reused; every number here was rebuilt
@@ -153,7 +166,8 @@ OpenStreetMap data is current, so a neighbourhood built after the election can c
   <h2>Using the map</h2>
   <ul>
     <li>Hover over an area, or tap it on a phone, to see its results. The panel gives bloc shares, every party above
-      half a percent, and any placement caveats.</li>
+      half a percent, and any placement caveats. A click or tap keeps that place in the panel until you click another
+      place or empty land.</li>
     <li>Type a town in English or Hebrew in the search box to zoom to it and see the town's total.</li>
     <li>Keyboard: <kbd>/</kbd> jumps to search; arrow keys pick a town and <kbd>Enter</kbd> zooms to it. Click the
       map (or tab to it) and use the arrow keys to move, <kbd>+</kbd> and <kbd>-</kbd> to zoom, and
