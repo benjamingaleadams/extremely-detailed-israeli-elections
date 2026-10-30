@@ -130,15 +130,6 @@
       <button type="button" data-mode="bloc" aria-pressed="false" data-he="גוש">Bloc</button>
       <button type="button" data-mode="share" aria-pressed="false" data-he="מפלגה אחת">One party</button>
     </div>
-    <div class="pick" id="party-pick" hidden>
-      <label for="party" data-he="מפלגה">Party</label>
-      <select id="party"></select>
-    </div>
-    <div class="tools">
-      <label class="check"><input type="checkbox" id="names" checked> <span data-he="הצגת שמות יישובים">Show town names</span></label>
-      <span><button type="button" class="linkbtn" id="copy-link" data-he="העתקת קישור">Copy link</button>
-        <span class="sub" id="copy-done" role="status"></span></span>
-    </div>
 
     <div class="search" role="search">
       <label for="town" data-he="חיפוש יישוב (בעברית או באנגלית) <kbd>/</kbd>">Find a town (English or Hebrew) <kbd>/</kbd></label>
@@ -146,7 +137,16 @@
         role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="town-list">
       <ul id="town-list" role="listbox" aria-label="Matching towns" hidden></ul>
     </div>
+    <div class="tools">
+      <label class="check"><input type="checkbox" id="names" checked> <span data-he="הצגת שמות יישובים">Show town names</span></label>
+      <span><button type="button" class="linkbtn" id="copy-link" data-he="העתקת קישור">Copy link</button>
+        <span class="sub" id="copy-done" role="status"></span></span>
+    </div>
 
+    <div class="pick" id="party-pick" hidden>
+      <label for="party" data-he="מפלגה">Party</label>
+      <select id="party"></select>
+    </div>
     <details id="legend-box" open>
       <summary data-he="מקרא וקולות שאינם על המפה">Legend and votes off the map</summary>
       <div class="sub" id="intro" data-he="אזור נצבע בצבע הגוש כשהגוש זוכה ביותר משני שלישים מהקולות הכשרים; הצבע הוא של המפלגה המובילה בגוש באזור. פסים מסמנים מפלגה שנייה מאותו גוש שקיבלה לפחות מחצית מקולות המפלגה המובילה. <a href=&quot;about-he.html&quot;>איך זה עובד</a>.">An area takes a bloc colour when that bloc wins more than 2/3 of valid votes;
