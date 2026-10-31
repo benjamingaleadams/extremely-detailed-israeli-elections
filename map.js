@@ -150,8 +150,27 @@ const propGet = p => l => +(p["pct_" + l] || 0);
 let FROM = null, MEASURE = { side: "right" };
 const CHG_BREAKS = [1, 3, 6, 10, 20];
 const CHG_TINT = [0.2, 0.38, 0.58, 0.8, 1];
-const CHG_MID = "#ecebe6", NO_CMP = "#c5c8ce";  // under a point either way; no result in one of the two
+// under a point either way: plain white, clear of the grey of built-up land and the cream of empty land; no result
+// in one of the two elections: white with thin grey hatching (layer "nocmp"), so the three never look alike
+// (design audit B2)
+const CHG_MID = "#ffffff", NO_CMP = "#ffffff";
+const NOCMP_SW = "repeating-linear-gradient(135deg,#8f8f8f 0 1px,#fff 1px 4px)";  // the hatching, for legend swatches
+// losses in a neutral warm grey-brown, never the other bloc's colour: a fall for one camp is not a gain for the
+// other (design audit C3)
+const LOSS = ["#8f6b45", "#6f6f6f"];
 const measureKey = () => MEASURE.side ? "side:" + MEASURE.side : "party:" + MEASURE.party;
+// views across elections name the two sides by camp, not by one election's bloc name (CLAUDE.md, 31 Oct)
+const CAMP = { right: ["Netanyahu's camp", "מחנה נתניהו"], left: ["Opposing camp", "המחנה שמולו"],
+  arab: ["Arab parties", "המפלגות הערביות"] };
+function sideName(s) {
+  const same = !F || !F.sideBloc || F.sideBloc[s] === P.sideBloc[s];
+  return same && s !== "arab" ? blocName(P.sideBloc[s]) : tr(...CAMP[s]);
+}
+// "Change in Netanyahu's camp since 2013"; "Change bloc: change since 2022" (no "Change in Change bloc")
+function changeTitle(withSince = true) {
+  const n = measureName(), since = withSince && FROM ? tr(` since ${yearLabel(FROM)}`, ` מאז ${yearLabel(FROM)}`) : "";
+  return HE ? `שינוי ב${n}${since}` : /^Change\b/.test(n) ? `${n}: change${since}` : `Change in ${n}${since}`;
+}
 // the measure's share in one result of election E (null: the party did not run there)
 function measureIn(E, get) {
   if (MEASURE.side) return E.meta.parties.reduce((s, p) => s + (sideOfBloc(E, p.bloc) === MEASURE.side ? get(p.letters) || 0 : 0), 0);
@@ -159,20 +178,18 @@ function measureIn(E, get) {
   return p ? get(p.letters) || 0 : null;
 }
 function measureName() {
-  if (MEASURE.side) return blocName(P.sideBloc[MEASURE.side]);
+  if (MEASURE.side) return sideName(MEASURE.side);
   const p = findParty(MEASURE.party, P.meta);
   return p ? esc(HE ? p.hebrew : p.english) : MEASURE.party;
 }
 function measureColors() {
-  const right = P.blocColor[P.sideBloc.right], left = P.blocColor[P.sideBloc.left];
-  if (MEASURE.side === "right") return [right, left];
-  if (MEASURE.side === "left") return [left, right];
-  const gain = MEASURE.side === "arab" ? (P.meta.states.arab_majority || "#16834f")
+  const gain = MEASURE.side === "right" || MEASURE.side === "left" ? P.blocColor[P.sideBloc[MEASURE.side]]
+    : MEASURE.side === "arab" ? (P.meta.states.arab_majority || "#16834f")
     : P.colors[(findParty(MEASURE.party, P.meta) || {}).letters] || "#555555";
-  // losses in whichever of two plain colours is further from the gain colour
+  // losses in the warm grey-brown, or plain grey when the gain colour is itself brownish
   const rgb = h => { const n = parseInt(h.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; };
   const dist = (a, b) => rgb(a).reduce((s, v, i) => s + (v - rgb(b)[i]) ** 2, 0);
-  return [gain, ["#b35806", "#5e3c99"].sort((a, b) => dist(b, gain) - dist(a, gain))[0]];
+  return [gain, dist(gain, LOSS[0]) > 90 ** 2 ? LOSS[0] : LOSS[1]];
 }
 function changeColor(d) {
   if (d == null) return NO_CMP;
@@ -240,14 +257,14 @@ const yearLabel = y => {
   const [yr, mo] = String(y).split("-");
   return mo ? `${MONTHS[HE ? "he" : "en"][+mo - 1]} ${yr}` : yr;
 };
-// year buttons: "Apr '19", so the eight elections fit in two rows
-const yearShort = y => {
-  const [yr, mo] = String(y).split("-");
-  return mo ? `${MONTHS[HE ? "he" : "en"][+mo - 1]} '${yr.slice(2)}` : yr;
-};
+// year buttons use the same "Apr 2019" as the text (design audit B5)
+const yearShort = yearLabel;
 const TOWN_TOTAL = tr("Town total", "סה״כ ביישוב");
-// a name's other-language form on a second line or after it: Hebrew runs right to left, English left to right
-const otherName = (en, he) => HE ? `<span class="alt" dir="ltr">${esc(en)}</span>` : `<span class="he">${esc(he)}</span>`;
+// land outside every Israeli locality (Palestinian towns and land in the West Bank, and Gaza): its own neutral
+// tone, not the cream of "nobody lives here" (design audit A2)
+const OUTSIDE = "#dcdad3";
+// a name's Hebrew form after the English one; Hebrew mode shows Hebrew only (CLAUDE.md; design audit B11)
+const otherName = (en, he) => HE || !he ? "" : `<span class="he">${esc(he)}</span>`;
 
 function applyLanguage() {
   const sw = $("lang-switch");
@@ -264,10 +281,10 @@ function applyLanguage() {
   document.documentElement.dir = "rtl";
   for (const el of document.querySelectorAll("[data-he]")) el.innerHTML = el.dataset.he;
   for (const el of document.querySelectorAll("[data-he-label]")) el.setAttribute("aria-label", el.dataset.heLabel);
-  $("town").placeholder = "למשל חיפה או Haifa";
+  $("town").placeholder = "למשל חיפה או פלורנטין";
   for (const a of document.querySelectorAll("[data-he-href]")) a.href = a.dataset.heHref;
   for (const a of document.querySelectorAll(".site-footer a"))
-    a.href = a.getAttribute("href").replace("sources.html", "sources-he.html");
+    a.href = a.getAttribute("href").replace("sources.html", "sources/he/");
 }
 const FS = PREVIEW ? { source: "areas" } : { source: "areas", sourceLayer: "areas" };
 
@@ -338,7 +355,11 @@ function applyStates() {
   if (!A || !map || !map.getSource("areas")) return;
   const want = stateWant();
   if (cur.cFor === want) return;
-  A.areas.forEach((r, i) => { if (r[8]) map.setFeatureState({ ...FS, id: i }, { c: want ? stateColor(i) : null }); });
+  A.areas.forEach((r, i) => {
+    if (!r[8]) return;
+    const nc = mode === "change" && (changeOfArea(cur, i) || {}).d == null;  // no result in one of the two: hatched
+    map.setFeatureState({ ...FS, id: i }, { c: want ? stateColor(i) : null, nc });
+  });
   cur.cFor = want;
 }
 // rough shapes are GeoJSON: their own properties are rewritten (coding) and given a change colour
@@ -354,7 +375,11 @@ function paintDots() {
       const c = classify(cur, propGet(p));
       Object.assign(p, { bloc: c.bloc, leader: c.leader, second: c.second, bloc2: c.bloc2 });
     }
-    if (mode === "change") p._chg = changeColor(changeOfDot(p).d); else delete p._chg;
+    if (mode === "change") {
+      const d = changeOfDot(p).d;
+      p._chg = changeColor(d);
+      p._nc = d == null ? 1 : 0;
+    } else { delete p._chg; delete p._nc; }
   }
   map.getSource("dots").setData(DOTS);
   cur.dotsFor = want;
@@ -393,7 +418,7 @@ function setNames(on) {
   showNames = on;
   try { localStorage.setItem("town-names", on ? "on" : "off"); } catch (e) { /* private window */ }
   $("names").checked = on;
-  for (const id of ["labels", "feature-labels"])
+  for (const id of ["labels", "feature-labels", "area-labels"])
     if (map && map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
 }
 
@@ -409,17 +434,17 @@ function setMode(m) {
     ? tr(`How much a bloc's or a party's share of valid votes rose or fell in each area since an earlier election,
        in percentage points. The areas are the same in every election. <a href="about.html">How this works</a>.`,
        `בכמה עלה או ירד שיעור הקולות הכשרים של גוש או של מפלגה בכל אזור מאז בחירות קודמות, בנקודות אחוז.
-       האזורים זהים בכל הבחירות. <a href="about-he.html">איך זה עובד</a>.`)
+       האזורים זהים בכל הבחירות. <a href="about/he/">איך זה עובד</a>.`)
     : m === "bloc"
     ? tr(`Two camps only: dark when a bloc wins more than 2/3 of valid votes, light when it wins a majority.
        Arab parties belong to neither bloc. <a href="about.html">How this works</a>.`,
        `שני מחנות בלבד: כהה כשגוש זוכה ביותר משני שלישים מהקולות הכשרים, בהיר כשהוא זוכה ברוב.
-       המפלגות הערביות אינן שייכות לאף גוש. <a href="about-he.html">איך זה עובד</a>.`)
+       המפלגות הערביות אינן שייכות לאף גוש. <a href="about/he/">איך זה עובד</a>.`)
     : m === "share"
     ? tr(`One party's share of valid votes in each area, whichever party leads there.
        <a href="about.html">How this works</a>.`,
        `שיעור הקולות הכשרים של מפלגה אחת בכל אזור, בלי קשר למפלגה המובילה בו.
-       <a href="about-he.html">איך זה עובד</a>.`)
+       <a href="about/he/">איך זה עובד</a>.`)
     : $("intro").dataset.party;
   legend();
   syncURL();
@@ -453,6 +478,8 @@ function repaintMap() {
   map.setPaintProperty("fill", "fill-color", areaColor());
   map.setPaintProperty("dots-fill", "fill-color", colorExpr("bloc", "leader", "bloc2"));
   map.setPaintProperty("dots", "circle-color", colorExpr("bloc", "leader", "bloc2"));
+  for (const id of ["nocmp", "dots-nocmp"])
+    if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", mode === "change" ? "visible" : "none");
   applyHatch();
 }
 // both maps
@@ -480,13 +507,13 @@ function ensureFrom() {
   }).catch(e => console.error(e));
 }
 function fromOptions() {
-  $("from").innerHTML = [...YEARS].reverse().filter(y => y !== year)
+  $("from").innerHTML = YEARS.filter(y => y !== year)  // oldest first, as the year buttons
     .map(y => `<option value="${y}">${yearLabel(y)}</option>`).join("");
   if (FROM) $("from").value = FROM;
 }
 // blocs first, then the parties that ran in both elections
 function measureOptions() {
-  const sides = ["right", "left", "arab"].map(s => `<option value="side:${s}">${blocName(P.sideBloc[s])}</option>`).join("");
+  const sides = ["right", "left", "arab"].map(s => `<option value="side:${s}">${sideName(s)}</option>`).join("");
   const both = F ? meta.parties.filter(p => findParty(partySlug(p.letters), F.meta)) : [];
   if (MEASURE.party && F && !findParty(MEASURE.party, F.meta)) MEASURE = { side: "right" };
   $("measure").innerHTML = `<optgroup label="${tr("Blocs", "גושים")}">${sides}</optgroup>` + (both.length
@@ -516,7 +543,7 @@ function codingPanel() {
   const box = $("coding-box");
   if (!box || !P) return;
   const changed = Object.keys(CODING).length > 0;
-  const sideName = s => s === "none" ? tr("Neither bloc", "אף גוש") : blocName(P.sideBloc[s]);
+  const sideName = s => s === "none" ? tr("Uncommitted", "לא התחייבו לגוש") : blocName(P.sideBloc[s]);
   $("coding-sum").innerHTML = tr("Bloc coding", "שיוך הרשימות לגושים")
     + (changed ? ` <span class="muted">${tr("(changed)", "(שונה)")}</span>` : "");
   $("coding").innerHTML = codingRows().map(({ k, E, p, def, years }) => {
@@ -557,9 +584,12 @@ function clearSelection() {
   $("town").value = "";
 }
 
+// phones: the side panel's own button says what it does, "Hide" or "Options", so it is never a second "Menu"
+// beside the site menu (design audit B19)
 function foldSide(on) {
   document.body.classList.toggle("side-folded", on);
   $("side-toggle").setAttribute("aria-expanded", String(!on));
+  $("side-toggle").textContent = on ? tr("Options", "אפשרויות") : tr("Hide", "הסתרה");
 }
 
 // "Copy link": the address already holds the whole view
@@ -608,7 +638,7 @@ async function start() {
   $("measure").addEventListener("change", e => setMeasure(e.target.value));
   measureOptions();
   // second map
-  $("compare").innerHTML = `<option value="">${tr("None", "ללא")}</option>` + [...years].reverse().filter(y => y !== year)
+  $("compare").innerHTML = `<option value="">${tr("None", "ללא")}</option>` + years.filter(y => y !== year)
     .map(y => `<option value="${y}">${yearLabel(y)}</option>`).join("");
   $("compare").addEventListener("change", e => setCompare(e.target.value || null));
   // bloc coding
@@ -754,9 +784,10 @@ function yearButtons(years, year) {
 const fillOpacity = () => ["case", ["==", ["coalesce", ["get", "g"], 0], 1], 1,
   ["==", ["get", "b"], "no_station"], 0, 1];
 
-function legend() {
-  const lg = $("legend-body");
+// the colour key of the election bound now (bind): the main map's, or with inCtx the second map's
+function legendKey() {
   let html = "";
+  const pname = l => esc(label(l));
   if (mode === "share") {
     const c = shareColors(), edges = [0, ...SHARE_BREAKS];
     // ranges in their own left-to-right span, so Hebrew mode shows "5–10%", not "10%–5"
@@ -767,17 +798,17 @@ function legend() {
         : i === 0 ? tr(`Under ${edges[1]}%`, `פחות מ-${range(edges[1] + "%")}`) : range(`${edges[i]}–${edges[i + 1]}%`)}</div>`).join("");
   } else if (mode === "bloc") {
     const light = meta.blocs_light || {};
-    const pname = l => esc(label(l));
     html += TWO_BLOCS.map(b => `<h2>${blocName(b)}</h2><div class="sub">${
       meta.parties.filter(p => p.bloc === b).map(p => pname(p.letters)).join(", ")}</div>
       <div class="row">${swatch(blocColor[b])}${tr("Over 2/3 of valid votes", "יותר משני שלישים מהקולות הכשרים")}</div>
       <div class="row">${swatch(light[b] || blocColor[b])}${tr("Majority (over half)", "רוב (יותר ממחצית)")}</div>`).join("")
-      + `<h2>${tr("Neither bloc", "אף גוש")}</h2>
+      // the Arab parties are their own group, as in the party legend; uncommitted lists count for no bloc (B4)
+      + `<h2>${tr("Arab parties", "המפלגות הערביות")}</h2>
       <div class="row">${swatch(meta.states.arab_majority || "#22b573")}${tr("Arab parties hold a majority", "רוב למפלגות הערביות")} (${
         meta.parties.filter(p => ARAB_BLOCS.includes(p.bloc)).map(p => pname(p.letters)).join(", ")})</div>`
-      + (() => {  // parties that committed to neither camp before the vote
+      + (() => {
         const unc = meta.parties.filter(p => !TWO_BLOCS.includes(p.bloc) && !ARAB_BLOCS.includes(p.bloc));
-        return unc.length ? `<div class="sub">${tr("Uncommitted, counted in neither bloc", "לא התחייבו לגוש, לא נספרים באף גוש")}: ${
+        return unc.length ? `<h2>${tr("Uncommitted", "לא התחייבו לגוש")}</h2><div class="sub">${tr("Counted in no bloc", "לא נספרים באף גוש")}: ${
           unc.map(p => pname(p.letters)).join(", ")}</div>` : "";
       })();
   } else if (mode === "change") {
@@ -789,32 +820,38 @@ function legend() {
       [CHG_MID, tr("Less than 1 point either way", "פחות מנקודה לכל כיוון")],
       ...CHG_BREAKS.map((b, k) => [changeColor(-b), k === CHG_BREAKS.length - 1 ? tr(`−${b} or more`, `${range("−" + b)} ומעלה`)
         : tr(`−${b} to −${CHG_BREAKS[k + 1]}`, `${range("−" + b)} עד ${range("−" + CHG_BREAKS[k + 1])}`)]),
-      [NO_CMP, tr("No result in one of the two elections", "אין תוצאה באחת משתי הבחירות")]];
-    html += `<div class="ptitle">${tr(`Change in ${measureName()}`, `שינוי ב${measureName()}`)}</div>
-      <div class="sub">${FROM ? tr(`Since ${yearLabel(FROM)}, in points of valid votes`, `מאז ${yearLabel(FROM)}, בנקודות אחוז מהקולות הכשרים`) : ""}</div>`
+      [NOCMP_SW, tr("No result in one of the two elections", "אין תוצאה באחת משתי הבחירות")]];
+    html += `<div class="ptitle">${changeTitle()}</div>
+      <div class="sub">${tr("In points of valid votes", "בנקודות אחוז מהקולות הכשרים")}</div>`
       + rows.map(([c, t]) => `<div class="row">${swatch(c)}${t}</div>`).join("");
   } else {
     for (const b of BLOCS) {
       const ps = meta.parties.filter(p => p.bloc === b);
-      html += `<h2>${blocName(b)}</h2>` + ps.map(p => `<div class="row">${swatch(colors[p.letters])}<span>${esc(label(p.letters))}${belowNote(p.letters)}</span></div>`).join("");
-    }
-    // the second map's lists that are not on this one (another name or colour)
-    if (C) {
-      const here = new Set(meta.parties.map(p => codingKey(p) + colors[p.letters]));
-      const more = C.meta.parties.filter(p => !here.has(codingKey(p) + C.colors[p.letters]));
-      if (more.length) html += `<h2>${tr(`Also in ${yearLabel(C.year)}`, `גם ב-${yearLabel(C.year)}`)}</h2>` + more.map(p =>
-        `<div class="row">${swatch(C.colors[p.letters])}<span>${esc(HE ? p.hebrew : p.english)}</span></div>`).join("");
+      html += `<h2>${blocName(b)}</h2>` + ps.map(p => `<div class="row">${swatch(colors[p.letters])}<span>${pname(p.letters)}${belowNote(p.letters)}</span></div>`).join("");
     }
   }
-  html += `<h2>${tr("Other", "אחר")}</h2>
-    ${mode === "share" || mode === "change" ? "" : `<div class="row">${swatch(meta.states.none)}${mode === "bloc" ? tr("No bloc with a majority", "אין גוש עם רוב")
-      : tr("No bloc above 2/3", "אין גוש מעל שני שלישים")}</div>`}
+  if (mode !== "share" && mode !== "change")
+    html += `<h2>${tr("Other", "אחר")}</h2><div class="row">${swatch(meta.states.none)}${mode === "bloc" ? tr("No bloc with a majority", "אין גוש עם רוב")
+      : tr("No bloc above 2/3", "אין גוש מעל שני שלישים")}</div>`;
+  return html;
+}
+// the land that has no result: the same in every view and on both maps
+function legendLand() {
+  return `<h2>${tr("No result", "אין תוצאה")}</h2>
     <div class="row">${swatch(meta.states.no_station)}${tr("Nobody lives here (no polling station)", "אין כאן תושבים (אין קלפי)")}</div>
-    <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Industry, port or campus, no residents",
-      "תעשייה, נמל או קמפוס, ללא תושבים")}</div>
+    <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Built up, nobody lives here (industry, port, airport or campus)",
+      "שטח בנוי שאין בו תושבים (תעשייה, נמל, שדה תעופה או קמפוס)")}</div>
+    <div class="row">${swatch(OUTSIDE)}${tr("Palestinian towns and land: no Israeli polling stations",
+      "יישובים ושטחים פלסטיניים: אין קלפיות לכנסת")}</div>
     <div class="row">${swatch(meta.states.park || "#cfe1b0")}${tr("Park", "פארק")}</div>
     <div class="row">${swatch(meta.states.beach || "#f0e8d4")}${tr("Beach", "חוף")}</div>`;
-  lg.innerHTML = html;
+}
+function legend() {
+  let html = legendKey();
+  // the second map's own key, in its own election's colours (design audit B18)
+  if (C && mode !== "change") html += `<details class="key2" open><summary>${tr(`Second map: ${yearLabel(C.year)}`,
+    `המפה השנייה: ${yearLabel(C.year)}`)}</summary>${inCtx(C, legendKey)}</details>`;
+  $("legend-body").innerHTML = html + legendLand();
   topPlaces();
 }
 
@@ -836,7 +873,7 @@ function placeShares(k) {
   A.towns.forEach((t, ti) => {
     let valid = 0, share = 0;
     if (t[5] === "area") {
-      if (t[6]) { valid = t[6][0]; share = k < 0 ? 0 : t[6][2][k]; }
+      if (t[6]) { valid = t[6][0]; share = k < 0 || !valid ? 0 : 100 * t[6][2][k] / valid; }
       else if (sums.has(ti)) { const [v, n] = sums.get(ti); valid = v; share = v ? 100 * n / v : 0; }
     } else if (t[5] === "dot" && dots.has(t[0])) {
       const p = dots.get(t[0]);
@@ -970,7 +1007,7 @@ function resultsHtml(rec, verdict, compact = false) {
 
 // link to the town's own page, when it has one
 const pageLink = code => PAGES[code]
-  ? ` · <a href="town/${PAGES[code]}/${HE ? "he/" : ""}">${tr("Town page", "דף היישוב")}</a>` : "";
+  ? `${HE ? "" : " · "}<a href="town/${PAGES[code]}/${HE ? "he/" : ""}">${tr("Town page", "דף היישוב")}</a>` : "";  // Hebrew: no name before it
 
 // votes of a town that could not be placed in any of its areas: official town total minus placed votes
 function townSplit(ti) {
@@ -990,7 +1027,7 @@ function recordMain(rec) {
   if (rec.bloc === "no_station") return html + `<div class="sub">${rec.grey
     ? tr("Built up, but nobody lives here (campus, industry or offices), so no polling station.",
          "שטח בנוי, אך אין כאן תושבים (קמפוס, תעשייה או משרדים), ולכן אין קלפי.")
-    : tr("No polling station in this area.", "אין קלפי באזור זה.")}</div>`;
+    : tr("Nobody lives here, so there is no polling station.", "אין כאן תושבים, ולכן אין קלפי.")}</div>`;
   if (mode === "change" && cur === P) html += changeBox(isDot ? changeOfDot(rec.props) : changeOfArea(P, rec.i));
   html += resultsHtml(rec, rec.bloc === "none" ? tr("No bloc above 2/3", "אין גוש מעל שני שלישים") : blocName(rec.bloc));
   const flag = (en, he) => { html += `<div class="flag">${tr(en, he)}</div>`; };
@@ -1048,9 +1085,11 @@ function recordMain(rec) {
 function townRec(ti) {
   const sp = townSplit(ti);
   let rec;
-  if (sp.official) {  // the official whole-town result, placed in areas or not
-    const [valid, boxes, pct, other] = sp.official;
-    rec = { valid, stations: boxes, other, shares: A.parties.map((l, k) => [l, pct[k]]) };
+  if (sp.official) {  // the official whole-town result, placed in areas or not (scripts/town_totals.py: the same
+    // votes as the town pages and Compare, rounded once, at display, so the figures match exactly; design audit A1)
+    const [valid, boxes, votes, other] = sp.official;
+    if (!valid) return null;
+    rec = { valid, stations: boxes, other: 100 * other / valid, shares: A.parties.map((l, k) => [l, 100 * votes[k] / valid]) };
   } else {  // no official total in this build: the areas with stations of their own
     let valid = 0, other = 0;
     const votes = Object.fromEntries(A.parties.map(l => [l, 0]));
@@ -1100,7 +1139,7 @@ function townHtml(ti) {
 function changeBox(c) {
   if (!c) return "";
   const pts = d => `${d > 0 ? "+" : d < 0 ? "−" : "±"}${(Math.round(Math.abs(d) * 10) / 10).toFixed(1)}`;
-  return `<div class="chg"><div class="row">${swatch(changeColor(c.d))}<b>${tr(`Change in ${measureName()}`, `שינוי ב${measureName()}`)}</b></div>
+  return `<div class="chg"><div class="row">${swatch(changeColor(c.d))}<b>${changeTitle(false)}</b></div>
     <table><tr><td>${yearLabel(FROM)}</td><td class="n">${c.then == null ? tr("no result", "אין תוצאה") : pctFmt(c.then)}</td></tr>
     <tr><td>${yearLabel(year)}</td><td class="n">${c.now == null ? tr("no result", "אין תוצאה") : pctFmt(c.now)}</td></tr>
     <tr><td>${tr("Change, in points", "שינוי, בנקודות אחוז")}</td><td class="n"><b>${c.d == null ? "–" : `<bdi dir="ltr">${pts(c.d)}</bdi>`}</b></td></tr></table></div>`;
@@ -1146,6 +1185,16 @@ function hatch(a, b) {
   x.fillStyle = a; x.fillRect(0, 0, s, s);
   x.strokeStyle = b; x.lineWidth = 3;
   for (const o of [-s, 0, s]) { x.beginPath(); x.moveTo(o, s); x.lineTo(o + s, 0); x.stroke(); }
+  return x.getImageData(0, 0, s, s);
+}
+
+// white with thin grey diagonals: "no result in one of the two elections" in the change view
+function nocmpPattern() {
+  const s = 8, c = document.createElement("canvas"); c.width = c.height = s;
+  const x = c.getContext("2d");
+  x.fillStyle = "#fff"; x.fillRect(0, 0, s, s);
+  x.strokeStyle = "#8f8f8f"; x.lineWidth = 1;
+  for (const o of [-s, 0, s]) { x.beginPath(); x.moveTo(o, 0); x.lineTo(o + s, s); x.stroke(); }
   return x.getImageData(0, 0, s, s);
 }
 
@@ -1221,7 +1270,7 @@ function makeMap(E, container) {
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), corner);
   map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution:
     tr('<a href="sources.html">CEC, CBS and others</a> · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      '<a href="sources-he.html">ועדת הבחירות, הלמ״ס ואחרים</a> · © <a href="https://www.openstreetmap.org/copyright">תורמי OpenStreetMap</a>') }), corner);
+      '<a href="sources/he/">ועדת הבחירות, הלמ״ס ואחרים</a> · © <a href="https://www.openstreetmap.org/copyright">תורמי OpenStreetMap</a>') }), corner);
   // start the credits folded on phones; one tap opens them
   if (isPhone()) map.once("load", () => document.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show"));
 
@@ -1271,10 +1320,12 @@ function addLayers(E) {
     }
     // one land base under everything: CBS areas plus the West Bank, gaps closed, so nothing is unclaimed
     map.addSource("land", { type: "geojson", data: "data/land.geojson" });
-    map.addLayer({ id: "land", type: "fill", source: "land", paint: { "fill-color": meta.states.no_station } });
-    // parks, beaches and industry (OpenStreetMap, scripts/land_features.py): seen only where blank land leaves them clear
-    map.addSource("landfeat", { type: "geojson", data: "data/land_features.geojson" });
-    map.addLayer({ id: "landfeat", type: "fill", source: "landfeat", minzoom: 9, paint: { "fill-color": ["match", ["get", "t"],
+    map.addLayer({ id: "land", type: "fill", source: "land", paint: { "fill-color":
+      ["match", ["coalesce", ["get", "k"], "in"], "out", OUTSIDE, meta.states.no_station] } });
+    // parks, beaches and industry (OpenStreetMap, scripts/land_features.py): seen only where blank land leaves them
+    // clear. Shown at every zoom, like the CBS grey areas, so nothing pops in (design audit B1); grey ones hover
+    map.addSource("landfeat", { type: "geojson", data: "data/land_features.geojson", generateId: true });
+    map.addLayer({ id: "landfeat", type: "fill", source: "landfeat", paint: { "fill-color": ["match", ["get", "t"],
       "park", meta.states.park || "#cfe1b0", "beach", meta.states.beach || "#f0e8d4", meta.states.built_empty || "#bdb9b0"] } });
     // dotted lines round the West Bank and Gaza and along the Golan's pre-1967 line (build_site.write_borders)
     map.addSource("west-bank", { type: "geojson", data: "data/borders.geojson" });
@@ -1286,6 +1337,10 @@ function addLayers(E) {
     const src = PREVIEW ? { source: "areas" } : { source: "areas", "source-layer": "areas" };
     const locSrc = PREVIEW ? { source: "loc" } : { source: "areas", "source-layer": "loc" };
     map.addLayer({ id: "fill", type: "fill", ...src, paint: { "fill-color": areaColor(), "fill-opacity": fillOpacity() } });
+    // change view: no result in one of the two elections, hatched (feature state nc, set in applyStates)
+    if (!map.hasImage("nocmp")) map.addImage("nocmp", nocmpPattern());
+    map.addLayer({ id: "nocmp", type: "fill", ...src, layout: { visibility: mode === "change" ? "visible" : "none" },
+      paint: { "fill-pattern": "nocmp", "fill-opacity": ["case", ["boolean", ["feature-state", "nc"], false], 1, 0] } });
     map.addLayer({ id: "hatch", type: "fill", ...src, filter: ["has", "s"],
       layout: { visibility: mode === "party" ? "visible" : "none" },
       paint: { "fill-pattern": ["concat", "h-", ["get", "l"], "-", ["get", "s"]] } });
@@ -1299,11 +1354,16 @@ function addLayers(E) {
       paint: { "line-color": "#000", "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0] } });
     map.addLayer({ id: "town-hl", type: "line", ...locSrc, filter: ["==", ["get", "c"], -1],
       paint: { "line-color": "#000", "line-width": 3 } });
+    // the outline of a hovered OpenStreetMap grey shape, as the CBS grey areas get
+    map.addLayer({ id: "landfeat-hl", type: "line", source: "landfeat",
+      paint: { "line-color": "#000", "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0] } });
 
     map.addSource("dots", { type: "geojson", data: DOTS });
     const poly = ["==", ["geometry-type"], "Polygon"];
     map.addLayer({ id: "dots-fill", type: "fill", source: "dots", filter: poly,
       paint: { "fill-color": colorExpr("bloc", "leader", "bloc2") } });
+    map.addLayer({ id: "dots-nocmp", type: "fill", source: "dots", filter: ["all", poly, ["==", ["get", "_nc"], 1]],
+      layout: { visibility: mode === "change" ? "visible" : "none" }, paint: { "fill-pattern": "nocmp" } });
     map.addLayer({ id: "dots-line", type: "line", source: "dots", filter: poly,
       paint: { "line-color": "#333", "line-width": 1 } });  // plain outline; the hover panel gives the caveat
     map.addLayer({ id: "dots", type: "circle", source: "dots", filter: ["==", ["geometry-type"], "Point"], paint: {
@@ -1318,25 +1378,8 @@ function addLayers(E) {
       map.addLayer({ id: "dead-sea", type: "fill", source: "dead-sea", paint: { "fill-color": meta.states.water || "#c6dcea" } });
     }
 
-    // the frame: everything outside the sea's rectangle in the page colour, with a thin border (build_site --frame)
-    if (meta.frame) {
-      const [w, s, e, n] = meta.frame, ring = [[w, s], [e, s], [e, n], [w, n], [w, s]];
-      // four plain strips round the box: a world polygon with the box as a hole is cut wrongly into tiles at
-      // higher zooms and covered parts of the map inside the frame
-      const rect = (x0, y0, x1, y1) => ({ type: "Feature", properties: {}, geometry: { type: "Polygon",
-        coordinates: [[[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]]] } });
-      map.addSource("frame", { type: "geojson", data: { type: "FeatureCollection", features: [
-        rect(-179, n, 179, 85), rect(-179, -85, 179, s), rect(-179, s, w, n), rect(e, s, 179, n)] } });
-      map.addSource("frame-line", { type: "geojson", data: { type: "Feature", properties: {},
-        geometry: { type: "LineString", coordinates: ring } } });
-      const pageBg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || "#f7f7f5";
-      const ink = getComputedStyle(document.documentElement).getPropertyValue("--muted").trim() || "#5f6368";
-      const fm = map;  // this election's map: the handler runs outside inCtx
-      fm.once("idle", () => {  // above the labels, so nothing spills past the border
-        fm.addLayer({ id: "frame", type: "fill", source: "frame", paint: { "fill-color": pageBg } });
-        fm.addLayer({ id: "frame-line", type: "line", source: "frame-line", paint: { "line-color": ink, "line-width": 1.2 } });
-      });
-    }
+    // no frame line or page-coloured strips past the frame any more: the sea runs on past it (build_site.sea_beyond)
+    // and the neighbours are the background colour, so the map never seems to stop loading (design audit A9)
 
     if (SURROUND) {
       const name = HE ? ["coalesce", ["get", "nh"], ["get", "n"]] : ["get", "n"];
@@ -1362,22 +1405,34 @@ function addLayers(E) {
         "text-size": 10.5, "text-max-width": 9, "text-padding": 4, "text-letter-spacing": 0.02,
         "symbol-sort-key": ["-", ["get", "a"]] },
       paint: { "text-color": "#6b6b6b", "text-halo-color": "rgba(255,255,255,0.8)", "text-halo-width": 1.2 } });
+    // neighbourhood names (data/area_labels.geojson, from tables/area_names.csv) at street zooms, small and grey
+    // like the park names, under the town names (design audit A5)
+    map.addSource("arealabels", { type: "geojson", data: "data/area_labels.geojson" });
+    map.addLayer({ id: "area-labels", type: "symbol", source: "arealabels", minzoom: 13,
+      filter: ["any", [">=", ["zoom"], 14], [">=", ["get", "a"], 0.25]],  // the bigger ones from 13, the rest from 14
+      layout: { visibility: showNames ? "visible" : "none",
+        "text-field": HE ? ["coalesce", ["get", "nh"], ["get", "n"]] : ["get", "n"], "text-font": ["Noto Sans Medium"],
+        "text-size": 11, "text-max-width": 8, "text-padding": 6, "symbol-sort-key": ["-", ["get", "a"]] },
+      paint: { "text-color": "#555", "text-halo-color": "rgba(255,255,255,0.85)", "text-halo-width": 1.4 } });
     // town names in capitals, as on the reference; bigger places win when labels collide
     map.addSource("labels", { type: "geojson", data: base + "labels.geojson" });
     map.addLayer({ id: "labels", type: "symbol", source: "labels", minzoom: 6,
       filter: ["<=", ["coalesce", ["get", "z"], 9], ["zoom"]],  // each name has its own zoom (build_site.label_minzoom)
       layout: { visibility: showNames ? "visible" : "none",
       "text-field": HE ? ["coalesce", ["get", "nh"], ["get", "n"]] : ["get", "n"], "text-font": ["Noto Sans Medium"],
+      // by residents (2022 census), the same in every election, as build_site.label_size assumes
       "text-size": ["interpolate", ["linear"], ["zoom"],
-        7, ["interpolate", ["linear"], ["get", "v"], 0, 9, 50000, 11],
-        12, ["interpolate", ["linear"], ["get", "v"], 0, 11, 50000, 16]],
-      "symbol-sort-key": ["-", ["get", "v"]], "text-padding": 3, "text-max-width": 12 },
+        7, ["interpolate", ["linear"], ["coalesce", ["get", "p"], 0], 0, 9, 200000, 10.5],
+        12, ["interpolate", ["linear"], ["coalesce", ["get", "p"], 0], 0, 10.5, 200000, 14]],
+      // centred, else beside, below or above the place: the same tries build_site.label_minzoom makes
+      "text-variable-anchor": ["center", "left", "right", "top", "bottom"],
+      "symbol-sort-key": ["-", ["coalesce", ["get", "p"], ["get", "v"]]], "text-padding": 3, "text-max-width": 12 },
       paint: { "text-color": "#2b2b2b", "text-halo-color": "rgba(255,255,255,0.85)", "text-halo-width": 1.4 } });
 
     const m = map;  // handlers run outside inCtx: they name their own election
     m.on("mousemove", e => pick(e.point, false, E));
     m.on("click", e => pick(e.point, true, E));
-    m.on("mouseout", () => { if (!pinned()) setHover(null); });
+    m.on("mouseout", () => { landHover(null); if (!pinned()) { setHover(null); resetInfo(); } });
     // a place already chosen on the main map shows on the second as well
     if (!main && P.hovered != null) hoverSecond(P.hovered);
     if (!main) townHL(P.townCode ?? -1);
@@ -1413,12 +1468,27 @@ const pinned = () => place != null && A != null;
 function pick(point, sticky, E = P) {
   const m = E.map;
   if (!m || !m.getLayer("fill")) return;
-  const f = m.queryRenderedFeatures(point, { layers: ["dots", "dots-fill", "fill"] })
-    .find(x => x.properties.b !== "no_station" || x.properties.g === 1);  // empty land: no highlight
-  m.getCanvas().style.cursor = f ? "pointer" : "";
+  const under = m.queryRenderedFeatures(point, { layers: ["dots", "dots-fill", "fill"] });
+  const f = under.find(x => x.properties.b !== "no_station" || x.properties.g === 1);
+  // one rule for every grey shape (design audit B1): OpenStreetMap industry, ports and airports hover and name
+  // themselves like the CBS grey areas; then cream land with no residents, then land outside Israeli localities
+  const osm = f ? null : m.queryRenderedFeatures(point, { layers: ["landfeat"] }).find(x => x.properties.t === "industry");
+  const empty = f ? null : under.find(x => x.layer.id === "fill");
+  const outside = f || osm || empty ? null : m.queryRenderedFeatures(point, { layers: ["land"] }).find(x => x.properties.k === "out");
+  m.getCanvas().style.cursor = f || osm ? "pointer" : "";
   // a pinned place (click, tap, search or link) keeps the panel and highlight; hover leaves it alone
   if (!sticky && pinned()) return;
-  if (!f) { if (sticky) clearSelection(); else setHover(null); return; }
+  landHover(osm && E === P ? osm.id : null);
+  if (!f) {
+    if (sticky) clearSelection(); else setHover(null);
+    if (osm) showInfo(greyHtml(osm.properties, empty));
+    else if (empty && A && E === P) { setHover(empty.id); showInfo(() => recordHtml(areaRecord(empty.id))); }
+    else if (outside) showInfo(`<h3>${tr("Palestinian towns and land", "יישובים ושטחים פלסטיניים")}</h3>
+      <div class="sub">${tr("Outside every Israeli locality, so there are no Knesset polling stations here.",
+        "מחוץ לכל יישוב ישראלי, ולכן אין כאן קלפיות לכנסת.")}</div>`);
+    else if (!sticky) resetInfo();  // over the sea or past the map: the panel goes back to its hint (B22)
+    return;
+  }
   if (sticky) townHL(-1);
   if (f.layer.id === "fill") {
     if (!A || (E !== P && !E.A)) { showInfo(`<div class="sub">${tr("Loading area details...", "טוען את פרטי האזור...")}</div>`); return; }
@@ -1438,6 +1508,32 @@ function pick(point, sticky, E = P) {
     showInfo(() => recordHtml(dotRecord(props)));
     if (sticky) setPlace(String(props.SEMEL_YISHUV));
   }
+}
+
+// an OpenStreetMap grey shape: its name, the town round it, and why it has no result
+function greyHtml(props, area) {
+  const name = HE ? props.nh : props.n;  // each language its own name only, else the plain description
+  const town = area && A ? A.towns[A.areas[area.id] ? A.areas[area.id][0] : -1] : null;
+  const where = town ? esc(HE ? town[1] : town[2] || town[1]) : "";
+  return `<h3>${name ? esc(name) : tr("Industry, port or airport", "תעשייה, נמל או שדה תעופה")}</h3>
+    ${where ? `<div class="sub">${where}</div>` : ""}
+    <div class="sub">${tr("Built up, but nobody lives here (industry, port or airport), so no polling station.",
+      "שטח בנוי, אך אין כאן תושבים (תעשייה, נמל או שדה תעופה), ולכן אין קלפי.")}</div>`;
+}
+let landHovered = null;
+function landHover(id) {
+  if (landHovered === id || !P.map || !P.map.getSource("landfeat")) return;
+  if (landHovered != null) P.map.setFeatureState({ source: "landfeat", id: landHovered }, { hover: false });
+  landHovered = id;
+  if (id != null) P.map.setFeatureState({ source: "landfeat", id }, { hover: true });
+}
+// the panel back to its starting hint, without touching the address (hover left every place)
+function resetInfo() {
+  if ($("info").classList.contains("empty")) return;
+  $("info-body").innerHTML = tr(INFO_HINT_EN, $("info-body").dataset.he);
+  $("info-body").classList.add("sub");
+  $("info").classList.add("empty");
+  infoFn = null;
 }
 
 // ---------- town search ----------
@@ -1617,6 +1713,9 @@ $("top").addEventListener("click", e => {
 // phones: the side panel folds to its title row, and folds itself while a place's details are open
 $("side-toggle").addEventListener("click", () => foldSide(!document.body.classList.contains("side-folded")));
 if (isPhone()) $("legend-box").open = false;
+// phones: the zoom buttons and credits sit above the details sheet, never under it (design audit C7)
+if (window.ResizeObserver) new ResizeObserver(() => document.body.style.setProperty("--sheet-h",
+  `${$("info").classList.contains("empty") ? 0 : $("info").offsetHeight + 8}px`)).observe($("info"));
 if (HE) $("status").textContent = $("status").dataset.he;  // before the rest of the page switches language
 
 start().catch(e => { console.error(e); status(tr("Something went wrong loading the map.", "משהו השתבש בטעינת המפה.")); });

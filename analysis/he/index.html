@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הצבעה לפי עשירוני מפקד ומעברי קולות · בחירות ישראל ברזולוציה מלאה</title>
+<meta name="description" content="איך הצביעו האזורים הסטטיסטיים בישראל ב-2022 וב-2026 לפי שכר חציוני, שיעור בעלי תואר ושיעור הצעירים, ומעברי קולות משוערים בין 2021, 2022 ו-2026.">
+<meta property="og:site_name" content="Extremely Detailed Israeli Elections">
+<meta property="og:title" content="הצבעה לפי עשירוני מפקד ומעברי קולות">
+<link rel="canonical" href="https://israelielections.org/analysis/he/">
+<link rel="alternate" hreflang="en" href="https://israelielections.org/analysis/">
+<link rel="alternate" hreflang="he" href="https://israelielections.org/analysis/he/">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../site.css">
+<link rel="stylesheet" href="../analysis.css">
+<script src="../analysis.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">דילוג לתוכן</a>
+<header class="site-header">
+  <a class="brand" href="../../index.html?lang=he"><span class="long">בחירות ישראל ברזולוציה מלאה</span><span class="short">בחירות ישראל</span></a>
+  <nav id="site-nav" aria-label="ניווט באתר">
+    <a href="../../index.html?lang=he">מפות</a>
+    <a href="../../town/he/">יישובים</a>
+    <a href="../../sectors/he/">מגזרים</a>
+    <a href="../../rank/he/">דירוגים</a>
+    <a href="../../compare/he/">השוואה</a>
+    <a href="./" aria-current="page">ניתוח</a>
+    <a href="../../about/he/"><span class="long">על השיטה</span><span class="short">שיטה</span></a>
+    <a href="../../sources/he/"><span class="long">מקורות וקרדיטים</span><span class="short">מקורות</span></a>
+  </nav>
+  <a href="../" class="lang" lang="en" hreflang="en">English</a>
+  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">תפריט</button>
+</header>
+<main class="page wide analysis" id="content">
+  <h1>הצבעה לפי עשירוני מפקד ומעברי קולות</h1>
+  <p class="toc"><a href="#deciles">הצבעה לפי עשירוני מפקד</a> · <a href="#transfers">מעברי קולות</a> · <a href="#method">שיטה</a></p>
+
+  <h2 id="deciles">הצבעה לפי עשירוני מפקד</h2>
+  <p>האזורים הסטטיסטיים מדורגים לפי נתון ממפקד 2022 ומחולקים לעשר קבוצות, שבכל אחת כעשירית מבעלי זכות הבחירה.
+    האחוזים מסוכמים מקולות הקלפיות, מתוך הקולות הכשרים.</p>
+  <div class="controls">
+    <div class="ctl"><span class="lbl">בחירות</span><div class="years" id="d-year">
+      <button type="button" data-v="2022" aria-pressed="false">2022</button>
+      <button type="button" data-v="2026" aria-pressed="true">2026</button></div></div>
+    <div class="ctl"><span class="lbl">אזורים</span><div class="years" id="d-set">
+      <button type="button" data-v="jewish" aria-pressed="true">יהודיים</button>
+      <button type="button" data-v="arab" aria-pressed="false">ערביים</button></div></div>
+    <div class="ctl"><span class="lbl">דירוג לפי</span><div class="years" id="d-measure">
+      <button type="button" data-v="wage" aria-pressed="true">שכר חציוני</button>
+      <button type="button" data-v="degree" aria-pressed="false">השכלה אקדמית</button>
+      <button type="button" data-v="young" aria-pressed="false">בני 0 עד 19</button></div></div>
+  </div>
+  <p class="cap">אחוז מהקולות הכשרים בכל עשירון</p>
+  <div class="scroll"><table class="data" id="d-sides"></table></div>
+  <p class="cap">רשימות עם 1% או יותר בעשירון כלשהו, % מהקולות הכשרים</p>
+  <div class="scroll"><table class="data" id="d-lists"></table></div>
+  <p class="note">ההשוואה היא בין אזורים, לא בין אנשים: עשירון השכר העליון הוא קבוצת אזורים שהשכר החציוני בהם גבוה,
+    וההצבעה בו כוללת את כל מי שמצביע שם. קלפיות משובצות לפי מבנה הקלפי, שלא תמיד נמצא במקום מגורי המצביעים.
+    האזורים היהודיים מכסים 97.7% (2022) ו-97.5% (2026) מבעלי זכות הבחירה ביישובים יהודיים, בירושלים ובערים
+    מעורבות; האזורים הערביים (דת עיקרית מוסלמית או נוצרית) רק 68.3% ו-75.1% מאלה שביישובים ערביים ובדואיים, כי
+    כחמישית עד רבע מהקלפיות שם לא שובצו באזור, ול-25 מתוך 44 יישובים בדואיים בדרום (רובם שבטים) אין נתוני מפקד.
+    באזורים היהודיים עשירוני השכר וההשכלה הנמוכים הם ברובם אזורים חרדיים. אזורים דרוזיים אינם באף קבוצה. אחוז
+    ההצבעה סופר את מצביעי המעטפות הכפולות (בעיקר חיילים) כמי שלא הצביעו.</p>
+
+  <h2 id="transfers">מעברי קולות</h2>
+  <p>הערכה של חלוקת המצביעים של כל רשימה בבחירות המוקדמות (שורות) בין הרשימות, או ההימנעות, בבחירות המאוחרות
+    (עמודות). כל שורה מסתכמת ל-100%.</p>
+  <div class="controls">
+    <div class="ctl"><span class="lbl">בחירות</span><div class="years" id="t-pair">
+      <button type="button" data-v="2021_2022" aria-pressed="false">2021 עד 2022</button>
+      <button type="button" data-v="2022_2026" aria-pressed="true">2022 עד 2026</button></div></div>
+    <label class="check"><input type="checkbox" id="t-ci"> הצגת טווחים של 95%</label>
+  </div>
+  <p class="meta" id="t-meta"></p>
+  <p class="cap">% מהמצביעים של כל שורה</p>
+  <div class="scroll"><table class="data matrix" id="t-matrix"></table></div>
+  <p class="note">הערכה אקולוגית מסיכומי קלפיות, לא סקר: היא מניחה שמצביעי כל רשימה מתחלקים באותו אופן בכל קלפי,
+    וזה לא נכון (מצביעי הליכוד בשכונות חרדיות ובשכונות חילוניות לא זזים באותו אופן), והיא רואה רק תנועה נטו. היא
+    משתמשת רק בקלפיות ברות השוואה (אותו מספר ואותו מבנה, גודל יציב): 43% מבעלי זכות הבחירה ב-2021 עד 2022, 31%
+    ב-2022 עד 2026, ולכן שכונות חדשות חסרות. הטווחים משקפים רק את הדגימה בין יישובים, לא את הטעות שבהנחה, ולכן אי
+    הוודאות האמיתית גדולה יותר. שורות קטנות (רשימות אחרות, הבית היהודי) אינן יציבות. המעברים אל "לא הצביעו" וממנו
+    כוללים גם מי שעבר דירה, נפטר, הגיע לגיל הצבעה או הצביע במעטפה כפולה.</p>
+
+  <h2 id="method">שיטה</h2>
+  <ul>
+    <li>עשירונים: אזורים סטטיסטיים של מפקד 2022 (אזורים מאוחדים כפי שהמפקד מפרסם אותם; יישובים קטנים כיחידה אחת);
+      שכר שנתי חציוני של שכירים, שיעור בעלי תואר אקדמי מבני 15 ומעלה, שיעור בני 0 עד 19. היחידות ממוינות, וכל יחידה
+      נכנסת לעשירון שבו נמצאת נקודת האמצע של בעלי זכות הבחירה שלה, מחדש בכל בחירות. הדת העיקרית מהמפקד. בעקבות
+      numbersguys.com.</li>
+    <li>מעברים: קלפיות ברות השוואה כמו ב-numbersguys.com: אותו יישוב ומספר קלפי, אותו מבנה (אותו מקום וכתובת, או
+      עד 150 מטר), בעלי זכות בחירה בטווח של 10% מהגידול של היישוב עצמו, ומחוץ ליישובים ערביים, בדואיים ודרוזיים,
+      שינוי של פחות מ-25 נקודות בחלק המפלגות הערביות. ריבועים פחותים מוגבלים, משוקללים לפי בעלי זכות הבחירה, שורות
+      לא שליליות שמסתכמות ל-1; רשימות מתחת ל-1% בארץ וקולות פסולים מקובצים. 200 הרצות bootstrap שדוגמות יישובים
+      שלמים.</li>
+    <li>גושים: גוש ביבי וגוש השינוי כמו במפה (tables/parties.csv); "אחר" כולל את מי שלא התחייבו לגוש ורשימות קטנות.
+      קוד: scripts/analysis_deciles.py, scripts/analysis_transfers.py. נתונים:
+      <a href="../data/deciles_2022.csv">עשירונים 2022</a>, <a href="../data/deciles_2026.csv">עשירונים 2026</a>,
+      <a href="../data/transfers_2021_2022.csv">מעברים 2021 עד 2022</a>,
+      <a href="../data/transfers_2022_2026.csv">מעברים 2022 עד 2026</a>.</li>
+  </ul>
+</main>
+<footer class="site-footer">
+  מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. הנתונים נבנו ב-31 באוקטובר 2026.
+  <a href="../../sources/he/">מקורות וקרדיטים</a>.
+</footer>
+</body>
+</html>

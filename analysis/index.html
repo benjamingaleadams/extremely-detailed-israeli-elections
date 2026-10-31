@@ -8,6 +8,8 @@
 <meta property="og:site_name" content="Extremely Detailed Israeli Elections">
 <meta property="og:title" content="Vote by census decile and vote transfers">
 <link rel="canonical" href="https://israelielections.org/analysis/">
+<link rel="alternate" hreflang="en" href="https://israelielections.org/analysis/">
+<link rel="alternate" hreflang="he" href="https://israelielections.org/analysis/he/">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="analysis.css">
@@ -19,16 +21,18 @@
   <a class="brand" href="../index.html"><span class="long">Extremely Detailed Israeli Elections</span><span class="short">Israeli Elections</span></a>
   <nav id="site-nav" aria-label="Site">
     <a href="../index.html">Maps</a>
-    <a href="../town/index.html">Places</a>
-    <a href="../sectors/index.html">Sectors</a>
-    <a href="../rank/index.html">Rankings</a>
-    <a href="../compare/index.html">Compare</a>
+    <a href="../town/">Places</a>
+    <a href="../sectors/">Sectors</a>
+    <a href="../rank/">Rankings</a>
+    <a href="../compare/">Compare</a>
+    <a href="./" aria-current="page">Analysis</a>
     <a href="../about.html"><span class="long">About the method</span><span class="short">Method</span></a>
     <a href="../sources.html"><span class="long">Sources and credits</span><span class="short">Sources</span></a>
   </nav>
+  <a href="he/" class="lang" lang="he" hreflang="he">עברית</a>
   <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
 </header>
-<main class="page wide" id="content">
+<main class="page wide analysis" id="content">
   <h1>Vote by census decile and vote transfers</h1>
   <p class="toc"><a href="#deciles">Vote by census decile</a> · <a href="#transfers">Vote transfers</a> · <a href="#method">Method</a></p>
 
@@ -47,7 +51,9 @@
       <button type="button" data-v="degree" aria-pressed="false">Academic degree</button>
       <button type="button" data-v="young" aria-pressed="false">Aged 0 to 19</button></div></div>
   </div>
+  <p class="cap">Share of valid votes in each decile</p>
   <div class="scroll"><table class="data" id="d-sides"></table></div>
+  <p class="cap">Lists with 1% or more in any decile, % of valid votes</p>
   <div class="scroll"><table class="data" id="d-lists"></table></div>
   <p class="note">These compare areas, not people: the top wage decile is a set of areas whose median
     wage is high, and its vote includes everyone who votes there. Boxes are placed by their polling
@@ -68,6 +74,7 @@
     <label class="check"><input type="checkbox" id="t-ci"> Show 95% intervals</label>
   </div>
   <p class="meta" id="t-meta"></p>
+  <p class="cap">% of each row's voters</p>
   <div class="scroll"><table class="data matrix" id="t-matrix"></table></div>
   <p class="note">An ecological estimate from box totals, not a survey: it assumes that a list's voters
     split the same way in every box, which is not true (Likud voters in Haredi and in secular

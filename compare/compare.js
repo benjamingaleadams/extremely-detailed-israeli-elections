@@ -1,7 +1,8 @@
 // Compare page: any towns, neighbourhoods, statistical areas and groups side by side for one election.
 // Data from scripts/build_compare.py (data/units.json, data/census.json, data/votes_<year>.json).
 // Every column is a sum of votes over its members; percentages are computed from the sums.
-// The address is the state: ?ids=town:6100,nb:3000:<slug>,area:30000112,group:<id>&year=2026&lang=he.
+// The address is the state: compare/?ids=town:6100,nb:3000:<slug>,area:30000112,group:<id>&year=2026, and the same
+// under compare/he/ in Hebrew (Decided 31 Oct: Hebrew pages live in <page>/he/; old ?lang=he links redirect there).
 // Shared links depend on these names: never rename or reuse one.
 "use strict";
 
@@ -9,12 +10,17 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const getJSON = u => fetch(u).then(r => { if (!r.ok) throw new Error(u + " " + r.status); return r.json(); });
 
-// ---------- language: as on the map (?lang=he, remembered per browser) ----------
-const HE = (() => {
-  const q = new URLSearchParams(location.search).get("lang");
-  if (q) { try { localStorage.setItem("lang", q); } catch (e) { /* private window */ } return q === "he"; }
-  try { return localStorage.getItem("lang") === "he"; } catch (e) { return false; }
+// ---------- language: the address decides (compare/ English, compare/he/ Hebrew; scripts/build_compare.py) ----------
+const HE = document.documentElement.lang === "he";
+(() => {  // old links: compare/?lang=he goes to compare/he/, compare/he/?lang=en back to compare/
+  const q = new URLSearchParams(location.search), l = q.get("lang");
+  if (!l || (l === "he") === HE) return;
+  q.delete("lang");
+  const s = q.toString().replace(/%2C/g, ",").replace(/%3A/g, ":");
+  location.replace((l === "he" ? "he/" : "../") + (s ? "?" + s : "") + location.hash);
 })();
+const ROOT = HE ? "../../" : "../";   // from this page to the site root
+const DATA = HE ? "../data/" : "data/";
 const tr = (en, he) => HE ? he : en;
 const LOC = HE ? "he-IL" : "en-GB";
 const fmtN = v => v == null || isNaN(v) ? "–" : Math.round(v).toLocaleString(LOC);
@@ -22,11 +28,14 @@ const fmtP = v => v == null || isNaN(v) ? "–" : v.toFixed(1) + "%";
 const MONTHS = { en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   he: ["ינו׳", "פבר׳", "מרץ", "אפר׳", "מאי", "יוני", "יולי", "אוג׳", "ספט׳", "אוק׳", "נוב׳", "דצמ׳"] };
 const yearLabel = y => { const [yr, mo] = String(y).split("-"); return mo ? `${MONTHS[HE ? "he" : "en"][+mo - 1]} ${yr}` : yr; };
-const yearShort = y => { const [yr, mo] = String(y).split("-"); return mo ? `${MONTHS[HE ? "he" : "en"][+mo - 1]} ${yr.slice(2)}` : `’${yr.slice(2)}`; };
+// chart axes: "Apr '19" (Hebrew "אפר׳ 19"), whole years in full (design audit B5)
+const yearShort = y => { const [yr, mo] = String(y).split("-"); return mo ? `${MONTHS[HE ? "he" : "en"][+mo - 1]} ${HE ? "" : "'"}${yr.slice(2)}` : yr; };
 
 const SIDES = ["right", "left", "arab", "uncommitted"];
-const SIDE_COLOUR = { right: "#2f6fd1", left: "#d0386b", arab: "#16834f", uncommitted: "#8a6bbf" };
-const SIDE_NAME = { right: ["Right side", "צד הימין"], left: ["Left side", "צד השמאל"], arab: ["Arab parties", "מפלגות ערביות"],
+let SIDE_COLOUR = { right: "#2c5aa0", left: "#c2306f", arab: "#16834f", uncommitted: "#8a6fb0" };  // replaced by units.json side_colours (palette.json)
+// across elections (the trend) the camps are "Netanyahu's camp" and "Opposing camp" (CLAUDE.md, Decided 31 Oct);
+// within one election each bloc keeps that election's own name (units.json blocs)
+const SIDE_NAME = { right: ["Netanyahu's camp", "מחנה נתניהו"], left: ["Opposing camp", "המחנה שמולו"], arab: ["Arab parties", "מפלגות ערביות"],
   uncommitted: ["Uncommitted", "לא התחייבו לגוש"] };
 const WAY = { secular: ["Secular", "חילוני"], traditional: ["Traditional", "מסורתי"], religious: ["Religious", "דתי"],
   haredi: ["Haredi", "חרדי"], other: ["Other", "אחר"] };
@@ -48,7 +57,6 @@ function params() {
   const q = new URLSearchParams();
   if (ids.length) q.set("ids", ids.join(","));
   q.set("year", year);
-  if (HE) q.set("lang", "he");
   return q;
 }
 function syncURL() {
@@ -56,36 +64,20 @@ function syncURL() {
   $("clear").hidden = !ids.length;
 }
 
-function applyLanguage() {
+function applyLanguage() {  // the page itself is already in its language; the switch keeps the selection
   const sw = $("lang-switch");
-  const target = () => { const q = params(); q.set("lang", HE ? "en" : "he"); return "?" + q.toString().replace(/%2C/g, ",").replace(/%3A/g, ":"); };
-  sw.href = target();
-  sw.addEventListener("click", () => { sw.href = target(); });
-  sw.textContent = HE ? "English" : "עברית";
-  sw.lang = HE ? "en" : "he";
-  if (!HE) return;
-  document.documentElement.lang = "he";
-  document.documentElement.dir = "rtl";
-  document.title = "השוואה · בחירות ישראל ברזולוציה מלאה";
-  for (const el of document.querySelectorAll("[data-he]")) el.innerHTML = el.dataset.he;
-  for (const el of document.querySelectorAll("[data-he-label]")) el.setAttribute("aria-label", el.dataset.heLabel);
-  $("add").placeholder = "למשל חיפה, פלורנטין, קיבוצים";
-  for (const a of document.querySelectorAll(".site-header a:not(#lang-switch), .site-footer a")) {
-    const h = a.getAttribute("href");
-    if (h === "index.html") { a.href = "?lang=he"; continue; }
-    a.href = h.replace("about.html", "about-he.html").replace("sources.html", "sources-he.html")
-      .replace(/(town|sectors|rank)\/index\.html$/, "$1/he/index.html").replace(/^\.\.\/index\.html$/, "../index.html?lang=he");
-  }
+  const target = () => (HE ? "../" : "he/") + "?" + params().toString().replace(/%2C/g, ",").replace(/%3A/g, ":");
+  sw.addEventListener("click", () => { if (year) sw.href = target(); });
 }
 
 // ---------- units ----------
 function townName(c) { const t = TOWN.get(c); return t ? (HE ? t[2] : t[1]) : String(c); }
 function townLink(c) {
   const t = TOWN.get(c);
-  if (t && t[3]) return `../town/${t[3]}/${HE ? "he/" : ""}`;
-  return `../index.html?year=${year}&place=${c}${HE ? "&lang=he" : ""}`;
+  if (t && t[3]) return `${ROOT}town/${t[3]}/${HE ? "he/" : ""}`;
+  return `${ROOT}index.html?year=${year}&place=${c}${HE ? "&lang=he" : ""}`;
 }
-const areaLink = a => `../index.html?year=${year}&place=${Math.floor(a / 10000)}-${a % 10000}${HE ? "&lang=he" : ""}`;
+const areaLink = a => `${ROOT}index.html?year=${year}&place=${Math.floor(a / 10000)}-${a % 10000}${HE ? "&lang=he" : ""}`;
 function areaName(a) {
   const nb = AREA.get(a), c = Math.floor(a / 10000);
   const g = nb ? NB.get(`${c}:${nb}`) : null;
@@ -135,8 +127,8 @@ function describe(id) {
   }
   if (kind === "group" && GROUP.has(id)) {
     const g = GROUP.get(id), m = GM[year] && GM[year][a];
-    const head = { id, kind, slug: a, name: HE ? g.he : g.en, other: HE ? g.en : g.he, href: `../sector/${a}/${HE ? "he/" : ""}`,
-      sub: tr("Group", "קבוצה") };
+    const head = { id, kind, slug: a, name: HE ? g.he : g.en, other: HE ? g.en : g.he, href: `${ROOT}sector/${a}/${HE ? "he/" : ""}`,
+      sub: tr("Sector", "מגזר") };
     if (!m) return { ...head, inc: `<p>${tr("Loading...", "טוען...")}</p>` };
     const byName = (x, y) => townName(x).localeCompare(townName(y), LOC);
     const items = [...m[0].slice().sort(byName).map(c => `<li><a href="${townLink(c)}">${esc(townName(c))}</a>${addBtn("town:" + c)}</li>`),
@@ -257,7 +249,7 @@ function render() {
   if (ids.some(i => i.startsWith("group:")) && !GM[year] && U.groups.length) {
     const y = year;
     GM[y] = null;
-    getJSON(`data/groups_${y}.json`).then(m => { GM[y] = m; if (y === year) render(); }).catch(e => console.error(e));
+    getJSON(`${DATA}groups_${y}.json`).then(m => { GM[y] = m; if (y === year) render(); }).catch(e => console.error(e));
   }
   const cols = ids.map(id => {
     const desc = describe(id);
@@ -269,7 +261,7 @@ function render() {
     status.hidden = false;
     status.className = "muted empty-msg";
     status.innerHTML = tr(`Nothing chosen yet. Search above, or start from an example: <a href="?ids=town:5000,town:3000,town:6100,town:4000&year=${year}">Tel Aviv-Yafo, Jerusalem, Bnei Brak and Haifa</a>.`,
-      `עדיין לא נבחר דבר. אפשר לחפש למעלה, או להתחיל מדוגמה: <a href="?ids=town:5000,town:3000,town:6100,town:4000&year=${year}&lang=he">תל אביב-יפו, ירושלים, בני ברק וחיפה</a>.`);
+      `עדיין לא נבחר דבר. אפשר לחפש למעלה, או להתחיל מדוגמה: <a href="?ids=town:5000,town:3000,town:6100,town:4000&year=${year}">תל אביב-יפו, ירושלים, בני ברק וחיפה</a>.`);
     $("wrap").hidden = true;
     return;
   }
@@ -318,16 +310,17 @@ function render() {
   }
 
   h += sec(tr("Lists", "רשימות"));
-  const order = [...plist].sort((a, b) => SIDES.indexOf(a[3]) - SIDES.indexOf(b[3]));
+  const order = [...plist].sort((a, b) => SIDES.indexOf(a[3]) - SIDES.indexOf(b[3]) || (a[5] || 0) - (b[5] || 0));
+  const below = `<span class="below">${tr("below threshold", "מתחת לאחוז החסימה")}</span>`;  // as on the map (B9)
   for (const p of order) {
     const lead = c => c.sh && plist.every(q => c.sh.party[p[0]] >= c.sh.party[q[0]]);
-    h += row(`<span class="sw" style="background:${p[4]}"></span>${esc(HE ? p[2] : p[1])}`,
+    h += row(`<span class="sw" style="background:${p[4]}"></span>${esc(HE ? p[2] : p[1])}${p[5] ? " " + below : ""}`,
       c => c.sh ? `<td class="${lead(c) ? "lead" : ""}${c.kind === "nat" ? " nat" : ""}" title="${fmtN(c.sh.party[p[0]])} ${tr("votes", "קולות")}">${fmtP(c.sh.pct(c.sh.party[p[0]]))}</td>` : na(c));
   }
   h += row(tr("Other lists", "רשימות אחרות"), c => c.sh ? cell(c, fmtP(c.sh.pct(c.sh.other))) : na(c),
-    tr("Lists that won no seats", "רשימות שלא נכנסו לכנסת"));
+    tr("Smaller lists that won no seats", "רשימות קטנות שלא נכנסו לכנסת"));
 
-  h += sec(tr(`Trend, ${yearShort(YEARS[0]).replace("’", "20")} to ${YEARS[YEARS.length - 1]}`, `מגמה, ${YEARS[0]} עד ${YEARS[YEARS.length - 1]}`));
+  h += sec(tr(`Trend, ${YEARS[0]} to ${YEARS[YEARS.length - 1]}`, `מגמה, ${YEARS[0]} עד ${YEARS[YEARS.length - 1]}`));
   const ready = YEARS.every(y => V[y]);
   h += row(`<span class="key">${["right", "left", "arab"].map(s => `<span style="color:${SIDE_COLOUR[s]}">${tr(...SIDE_NAME[s])}</span>`).join("<br>")}</span>`,
     c => cell(c, ready ? trendSVG(c.trend) : `<span class="muted">${tr("Loading...", "טוען...")}</span>`));
@@ -374,7 +367,7 @@ function buildIndex() {
   for (const g of U.groups) index.push(entry(g.id, g.en, g.he, "group", "", "", 1e9));
 }
 const KIND = { town: ["town", "יישוב"], nb: ["neighbourhood", "שכונה"], area: ["statistical area", "אזור סטטיסטי"],
-  group: ["group", "קבוצה"] };
+  group: ["sector", "מגזר"] };
 function search(q) {
   q = q.trim();
   if (!q) return [];
@@ -457,14 +450,15 @@ function setYear(y) {
 }
 function load(y) {
   if (V[y]) return Promise.resolve(V[y]);
-  return getJSON(`data/votes_${y}.json`).then(d => (V[y] = d));
+  return getJSON(`${DATA}votes_${y}.json`).then(d => (V[y] = d));
 }
 
 // ---------- start ----------
 applyLanguage();
 readURL();
-Promise.all([getJSON("data/units.json"), getJSON("data/census.json")]).then(([u, c]) => {
+Promise.all([getJSON(DATA + "units.json"), getJSON(DATA + "census.json")]).then(([u, c]) => {
   U = u; C = c; YEARS = u.years;
+  if (u.side_colours) SIDE_COLOUR = u.side_colours;
   if (!YEARS.includes(year)) year = YEARS[YEARS.length - 1];
   for (const t of U.towns) TOWN.set(t[0], t);
   for (const g of U.nbs) NB.set(`${g[0]}:${g[1]}`, g);

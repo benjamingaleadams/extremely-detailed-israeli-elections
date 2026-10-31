@@ -1,5 +1,7 @@
 /* Compare page (scripts/build_compare.py). Loaded after site.css. */
-.cmp { max-width: 1280px; margin: 0 auto; padding: 16px 16px 40px; }
+/* the site's table width, centred, with the footer as wide as the page (design audit B15, D8) */
+.cmp { max-width: 1040px; margin: 0 auto; padding: 24px 16px 40px; }
+.cmp ~ .site-footer { max-width: 1040px; }
 .cmp h1 { font-size: 26px; line-height: 1.2; margin: 8px 0 10px; }
 .muted { color: var(--muted); font-size: 13px; }
 .controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 20px; margin-bottom: 12px; }
@@ -29,9 +31,10 @@
 .scroll { overflow-x: auto; border: 1px solid var(--border); background: var(--surface); }
 #cmp { border-collapse: collapse; font-size: 14px; min-width: 100%; }
 #cmp th, #cmp td { border-bottom: 1px solid var(--border); padding: 5px 10px; vertical-align: top; text-align: right;
-  font-variant-numeric: tabular-nums; min-width: 132px; max-width: 220px; }
+  font-variant-numeric: tabular-nums; min-width: 120px; max-width: 220px; }
 #cmp th.m, #cmp td.m { text-align: left; position: sticky; left: 0; z-index: 1; background: var(--surface);
-  min-width: 150px; max-width: 190px; font-weight: 400; border-right: 1px solid var(--border); }
+  min-width: 215px; max-width: 250px; font-weight: 400; border-right: 1px solid var(--border); }
+#cmp th.m .below { display: block; font-size: 11px; color: var(--muted); margin-inline-start: 16px; line-height: 1.2; }
 #cmp tr.sec th { background: var(--bg); font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
   color: var(--muted); font-weight: 600; text-align: left; padding-top: 10px; }
 #cmp tr.sec th.m { background: var(--bg); }

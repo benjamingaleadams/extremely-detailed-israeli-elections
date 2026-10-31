@@ -7,7 +7,7 @@
 <meta property="og:site_name" content="Extremely Detailed Israeli Elections">
 <meta name="description" content="Data sources, credits and software behind the election map.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="site.css?v=8c41cf7ec6">
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -15,14 +15,15 @@
   <a class="brand" href="index.html" data-he-href="index.html?lang=he"><span class="long" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</span><span class="short" data-he="בחירות ישראל">Israeli Elections</span></a>
   <nav id="site-nav" aria-label="Site" data-he-label="ניווט באתר">
     <a href="index.html" data-he-href="index.html?lang=he" data-he="מפות">Maps</a>
-    <a href="town/index.html" data-he-href="town/he/index.html" data-he="יישובים">Places</a>
-    <a href="sectors/index.html" data-he-href="sectors/he/index.html" data-he="מגזרים">Sectors</a>
-    <a href="rank/index.html" data-he-href="rank/he/index.html" data-he="דירוגים">Rankings</a>
-    <a href="compare/index.html" data-he-href="compare/index.html?lang=he" data-he="השוואה">Compare</a>
-    <a href="about.html" data-he-href="about-he.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
-    <a href="sources.html" data-he-href="sources-he.html" aria-current="page"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
+    <a href="town/" data-he-href="town/he/" data-he="יישובים">Places</a>
+    <a href="sectors/" data-he-href="sectors/he/" data-he="מגזרים">Sectors</a>
+    <a href="rank/" data-he-href="rank/he/" data-he="דירוגים">Rankings</a>
+    <a href="compare/" data-he-href="compare/he/" data-he="השוואה">Compare</a>
+    <a href="analysis/" data-he-href="analysis/he/" data-he="ניתוח">Analysis</a>
+    <a href="about.html" data-he-href="about/he/"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
+    <a href="sources.html" data-he-href="sources/he/" aria-current="page"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
   </nav>
-  <a href="sources-he.html" id="lang-switch" class="lang" lang="he">עברית</a>
+  <a href="sources/he/" id="lang-switch" class="lang" lang="he">עברית</a>
   <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" data-he="תפריט" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
 </header>
 
@@ -47,6 +48,15 @@
           April 2019, September 2019, March 2020, March 2021), as published on
           <a href="https://data.gov.il/dataset/votes-knesset">data.gov.il</a> (dataset votes-knesset). National list
           totals checked against the official results.</td></tr>
+      <tr><td>2006 and 2009 election results by polling station</td>
+        <td>Central Elections Committee per-station results for the 17th Knesset (28 March 2006) and the 18th Knesset
+          (10 February 2009), as published on <a href="https://data.gov.il/dataset/votes-knesset">data.gov.il</a>
+          (dataset votes-knesset). For 2006, the committee's own file with locality codes and a street address per box,
+          kept in Jacob Weinbren's <a href="https://github.com/JacobWeinbren/Israel-Data">Israel-Data</a> repository
+          (only the committee's file is used), matches the data.gov.il copy cell for cell.</td></tr>
+      <tr><td>2006 and 2009 polling station addresses</td>
+        <td>2006: the street address of each box in the committee's 2006 results file. 2009: there is no list of
+          addresses; each box takes the place of the same-numbered box in 2013, or failing that in 2006.</td></tr>
       <tr><td>Statistical area boundaries</td>
         <td>Israel Central Bureau of Statistics (CBS), statistical areas 2022
           (<a href="https://www.cbs.gov.il/">cbs.gov.il</a>). Obtained as an unmodified copy of the CBS file from
@@ -85,6 +95,9 @@
           round their buildings.</td></tr>
       <tr><td>West Bank and Gaza outlines</td>
         <td><a href="https://www.geoboundaries.org/">geoBoundaries</a> (gbOpen, State of Palestine, level 1), CC BY 4.0.</td></tr>
+      <tr><td>Sea beyond the map's edge</td>
+        <td><a href="https://www.naturalearthdata.com/">Natural Earth</a> 1:10m land (public domain), for the sea round
+          the neighbouring countries when the map is zoomed out.</td></tr>
       <tr><td>Golan Heights line</td>
         <td>The pre-1967 line between the Golan and the rest of Israel, taken from the edge of the Golan sub-district in
           the CBS statistical areas 2022 and its list of localities (same CBS terms as above).</td></tr>
@@ -112,13 +125,13 @@
   <p>An independent, unofficial project. It is not affiliated with the Central Elections Committee, the Central
     Bureau of Statistics or any party. Mistakes are the site's own, not the sources'.</p>
 </main>
-<footer class="site-footer" data-he="מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. הנתונים נבנו ב-2026-10-31. <a href=&quot;sources-he.html&quot;>מקורות וקרדיטים</a>.">
+<footer class="site-footer" data-he="מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. הנתונים נבנו ב-2026-10-31. <a href=&quot;sources/he/&quot;>מקורות וקרדיטים</a>.">
   An independent, unofficial map. Not affiliated with the Central Elections Committee or the
   Central Bureau of Statistics. Data built 2026-10-31. <a href="sources.html">Sources and credits</a>.
 </footer>
 <script>
   const sw = document.getElementById("lang-switch");
-  if (sw) sw.href = "sources-he.html";  // the same page in Hebrew
+  if (sw) sw.href = "sources/he/";  // the same page in Hebrew
 </script>
 </body>
 </html>

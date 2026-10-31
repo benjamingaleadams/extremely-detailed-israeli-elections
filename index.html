@@ -18,10 +18,10 @@
 <link rel="preconnect" href="https://unpkg.com">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="site.css?v=8c41cf7ec6">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" defer></script>
 <script src="https://unpkg.com/pmtiles@3.2.1/dist/pmtiles.js" defer></script>
-<script src="map.js" defer></script>
+<script src="map.js?v=8c41cf7ec6" defer></script>
 <style>
   html, body { height: 100%; overflow: hidden; }
   #map { position: absolute; top: var(--header-h); left: 0; right: 0; bottom: 0; background: var(--map-bg); }
@@ -53,8 +53,9 @@
   .years { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
   #years { display: grid; grid-template-columns: repeat(4, 1fr); }  /* eight elections in two rows */
   #modes { display: grid; grid-template-columns: 1fr 1fr; }  /* four colour modes in two rows */
-  .years button { font: inherit; font-size: 13px; padding: 3px 8px; border-radius: 6px; white-space: nowrap;
-    border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; }
+  .years button { font: inherit; font-size: 13px; padding: 3px 6px; border-radius: 6px; white-space: nowrap;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
+  #years button { font-size: 12px; padding: 3px 2px; }
   .years button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
   .years button:disabled { opacity: .5; cursor: not-allowed; }
   .flag { color: var(--flag); font-size: 12px; margin-top: 6px; }
@@ -136,8 +137,20 @@
   #info.empty .close { display: none; }
   .side-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
   #side-toggle { display: none; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sw { border-color: rgba(255,255,255,.45); } }
-  :root[data-theme="dark"] .sw { border-color: rgba(255,255,255,.45); }
+  /* the second map's own key, folded under the first */
+  .key2 { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 4px; }
+  .key2 > summary { font-size: 13px; color: var(--text); font-weight: 600; }
+  /* dark mode: the map's own buttons and credits follow the page */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .maplibregl-ctrl-group { background: var(--surface); }
+    :root:not([data-theme="light"]) .maplibregl-ctrl-group button + button { border-top-color: var(--border); }
+    :root:not([data-theme="light"]) .maplibregl-ctrl button .maplibregl-ctrl-icon { filter: invert(1); }
+    :root:not([data-theme="light"]) .maplibregl-ctrl-attrib { background: rgba(31,31,34,.8); color: var(--muted); }
+    :root:not([data-theme="light"]) .maplibregl-ctrl-attrib a { color: var(--muted); }
+    :root:not([data-theme="light"]) .maplibregl-ctrl-attrib-button { filter: invert(1); }
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sw { border-color: rgba(255,255,255,.7); } }
+  :root[data-theme="dark"] .sw { border-color: rgba(255,255,255,.7); }
 
   /* phones and portrait tablets: the side panel along the top, the details as a sheet at the bottom */
   @media (max-width: 900px) {
@@ -153,6 +166,7 @@
     html[dir="rtl"] #side, html[dir="rtl"] #info { left: 8px; right: 8px; }  /* phone: full width in Hebrew too */
     .close { padding: 2px 4px; }
     .maplibregl-ctrl-bottom-right, .maplibregl-ctrl-bottom-left { bottom: 0; }
+    body.info-open .maplibregl-ctrl-bottom-right, body.info-open .maplibregl-ctrl-bottom-left { bottom: var(--sheet-h, 0px); }
     body.compare #map, html[dir="rtl"] body.compare #map { left: 0; right: 0; bottom: calc(50% - var(--header-h) / 2); }
     body.compare #map2, html[dir="rtl"] body.compare #map2 { left: 0; right: 0; top: calc(50% + var(--header-h) / 2);
       border: 0; border-top: 1px solid var(--border); }
@@ -167,12 +181,13 @@
   <a class="brand" href="index.html" data-he-href="index.html?lang=he"><span class="long" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</span><span class="short" data-he="בחירות ישראל">Israeli Elections</span></a>
   <nav id="site-nav" aria-label="Site" data-he-label="ניווט באתר">
     <a href="index.html" data-he-href="index.html?lang=he" aria-current="page" data-he="מפות">Maps</a>
-    <a href="town/index.html" data-he-href="town/he/index.html" data-he="יישובים">Places</a>
-    <a href="sectors/index.html" data-he-href="sectors/he/index.html" data-he="מגזרים">Sectors</a>
-    <a href="rank/index.html" data-he-href="rank/he/index.html" data-he="דירוגים">Rankings</a>
-    <a href="compare/index.html" data-he-href="compare/index.html?lang=he" data-he="השוואה">Compare</a>
-    <a href="about.html" data-he-href="about-he.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
-    <a href="sources.html" data-he-href="sources-he.html"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
+    <a href="town/" data-he-href="town/he/" data-he="יישובים">Places</a>
+    <a href="sectors/" data-he-href="sectors/he/" data-he="מגזרים">Sectors</a>
+    <a href="rank/" data-he-href="rank/he/" data-he="דירוגים">Rankings</a>
+    <a href="compare/" data-he-href="compare/he/" data-he="השוואה">Compare</a>
+    <a href="analysis/" data-he-href="analysis/he/" data-he="ניתוח">Analysis</a>
+    <a href="about.html" data-he-href="about/he/"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
+    <a href="sources.html" data-he-href="sources/he/"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
   </nav>
   <a href="index.html?lang=he" id="lang-switch" class="lang" lang="he">עברית</a>
   <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" data-he="תפריט" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
@@ -190,7 +205,7 @@
     <div class="side-head">
       <div><h1 id="title" data-he="תוצאות הבחירות לפי אזור סטטיסטי">Election results by statistical area</h1>
       <div class="sub" id="subtitle"></div></div>
-      <button type="button" id="side-toggle" aria-expanded="true" aria-controls="side" data-he="תפריט">Menu</button>
+      <button type="button" id="side-toggle" aria-expanded="true" aria-controls="side" data-he="הסתרה">Hide</button>
     </div>
     <div class="years" role="group" aria-label="Election year" data-he-label="שנת הבחירות" id="years"></div>
     <div class="years" role="group" aria-label="Colour areas by" data-he-label="צביעת האזורים לפי" id="modes">
@@ -226,7 +241,7 @@
     </div>
     <details id="legend-box" open>
       <summary data-he="מקרא וקולות שאינם על המפה">Legend and votes off the map</summary>
-      <div class="sub" id="intro" data-he="אזור נצבע בצבע הגוש כשהגוש זוכה ביותר משני שלישים מהקולות הכשרים; הצבע הוא של המפלגה המובילה בגוש באזור. פסים מסמנים מפלגה שנייה מאותו גוש שקיבלה לפחות מחצית מקולות המפלגה המובילה. <a href=&quot;about-he.html&quot;>איך זה עובד</a>.">An area takes a bloc colour when that bloc wins more than 2/3 of valid votes;
+      <div class="sub" id="intro" data-he="אזור נצבע בצבע הגוש כשהגוש זוכה ביותר משני שלישים מהקולות הכשרים; הצבע הוא של המפלגה המובילה בגוש באזור. פסים מסמנים מפלגה שנייה מאותו גוש שקיבלה לפחות מחצית מקולות המפלגה המובילה. <a href=&quot;about/he/&quot;>איך זה עובד</a>.">An area takes a bloc colour when that bloc wins more than 2/3 of valid votes;
         the colour is the bloc's leading party. Stripes show a second party from the same bloc with at least half
         the leader's votes. <a href="about.html">How this works</a>.</div>
       <div id="legend-body"></div>

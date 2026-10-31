@@ -7,7 +7,7 @@
 <meta property="og:site_name" content="Extremely Detailed Israeli Elections">
 <meta name="description" content="How the election map colours each statistical area, places polling stations and handles double-envelope votes.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="site.css?v=8c41cf7ec6">
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -15,14 +15,15 @@
   <a class="brand" href="index.html" data-he-href="index.html?lang=he"><span class="long" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</span><span class="short" data-he="בחירות ישראל">Israeli Elections</span></a>
   <nav id="site-nav" aria-label="Site" data-he-label="ניווט באתר">
     <a href="index.html" data-he-href="index.html?lang=he" data-he="מפות">Maps</a>
-    <a href="town/index.html" data-he-href="town/he/index.html" data-he="יישובים">Places</a>
-    <a href="sectors/index.html" data-he-href="sectors/he/index.html" data-he="מגזרים">Sectors</a>
-    <a href="rank/index.html" data-he-href="rank/he/index.html" data-he="דירוגים">Rankings</a>
-    <a href="compare/index.html" data-he-href="compare/index.html?lang=he" data-he="השוואה">Compare</a>
-    <a href="about.html" data-he-href="about-he.html" aria-current="page"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
-    <a href="sources.html" data-he-href="sources-he.html"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
+    <a href="town/" data-he-href="town/he/" data-he="יישובים">Places</a>
+    <a href="sectors/" data-he-href="sectors/he/" data-he="מגזרים">Sectors</a>
+    <a href="rank/" data-he-href="rank/he/" data-he="דירוגים">Rankings</a>
+    <a href="compare/" data-he-href="compare/he/" data-he="השוואה">Compare</a>
+    <a href="analysis/" data-he-href="analysis/he/" data-he="ניתוח">Analysis</a>
+    <a href="about.html" data-he-href="about/he/" aria-current="page"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
+    <a href="sources.html" data-he-href="sources/he/"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
   </nav>
-  <a href="about-he.html" id="lang-switch" class="lang" lang="he">עברית</a>
+  <a href="about/he/" id="lang-switch" class="lang" lang="he">עברית</a>
   <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" data-he="תפריט" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
 </header>
 
@@ -104,7 +105,7 @@
       address takes the area of the nearest-numbered placed station in the same town. 688
       stations were placed this way; the details panel says so.</li>
   </ol>
-  <p><b>2026.</b> Step 2 uses the committee's official 2026 station list ("Polling Station.xlsx" on gov.il, 25 Oct 2026). Where its address and venue are not found in OpenStreetMap, the same venue's location in the 2022 list is used.</p>
+  <p><b>2026.</b> Step 2 uses the committee's official 2026 station list ("Polling Station.xlsx" on gov.il, 25 Oct 2026). Where its address and venue are not found in OpenStreetMap, the same venue's location in the 2022 list is used.</p><p>Turnout in 2026 (78%) was the highest since 1999, and Arab turnout rose from about 53% to about 80%; the count of eligible voters is defined as in earlier elections and matches the Central Elections Committee's 7,331,981. Town figures leave out double-envelope votes (soldiers, diplomats and others), which have no eligible voters of their own, so national turnout is slightly higher than the sum of the towns.</p>
   <p>A point only counts if it falls inside its own town's boundary. That check catches most bad coordinates.</p>
   <p>Placement is much less complete in Arab, Druze and Bedouin localities than elsewhere: there the official list
     often gives only the town name as the address, and the venues are often not in OpenStreetMap. Where no station
@@ -122,7 +123,7 @@
   <p>Polling stations sit in a few buildings, mostly schools, so many neighbourhoods have residents but no station
     inside their own boundary; their residents vote in the school next door. Such an area shows the result of the
     nearest area with a station in the same town, in the same colour as everywhere else, and its details say it is an
-    estimate. In 2026 that is 950 of the 3,527 areas with voters (27%).
+    estimate. In 2026 that is 906 of the 3,483 areas with voters (26%).
     The estimate is only as good as the guess that residents vote at the nearest station.</p>
   <p>An area counts as lived in when the 2022 census gives it residents, or when OpenStreetMap maps at least 15% of
     it (and at least 3 hectares) as housing; the second test catches neighbourhoods the census file leaves out. CBS
@@ -221,13 +222,13 @@
       the bloc coding and the map position, so a link (or <b>Copy link</b>) opens exactly what you see.</li>
   </ul>
 </main>
-<footer class="site-footer" data-he="מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. הנתונים נבנו ב-2026-10-31. <a href=&quot;sources-he.html&quot;>מקורות וקרדיטים</a>.">
+<footer class="site-footer" data-he="מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. הנתונים נבנו ב-2026-10-31. <a href=&quot;sources/he/&quot;>מקורות וקרדיטים</a>.">
   An independent, unofficial map. Not affiliated with the Central Elections Committee or the
   Central Bureau of Statistics. Data built 2026-10-31. <a href="sources.html">Sources and credits</a>.
 </footer>
 <script>
   const sw = document.getElementById("lang-switch");
-  if (sw) sw.href = "about-he.html";  // the same page in Hebrew
+  if (sw) sw.href = "about/he/";  // the same page in Hebrew
 </script>
 </body>
 </html>

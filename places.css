@@ -1,6 +1,8 @@
 /* Place and sector pages (scripts/build_places.py). Loaded after site.css. */
-.page.place { max-width: 860px; }
-.page.place.wide { max-width: 1040px; }
+/* two page widths on the site: 720 px for text (About, Sources), 1040 px for tables (these pages, Compare,
+   Analysis), both centred, the footer as wide as the page above it (design audit B15) */
+.page.place, .page.place.wide { max-width: 1040px; }
+main.place ~ .site-footer { max-width: 1040px; }
 .page.place h1 { margin-bottom: 4px; }
 .page.place h1 .alt { font-size: 18px; font-weight: 400; color: var(--muted); margin-inline-start: 8px; }
 .page.place h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
@@ -9,7 +11,16 @@
 .summary { margin: 8px 0; }
 .fn, .muted { font-size: 13px; color: var(--muted); }
 .page.place p.fn { max-width: none; }
-.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch;
+  /* a soft shadow at an edge that has more table behind it, so a phone reader sees it scrolls (audit C7) */
+  background: linear-gradient(to right, var(--bg) 30%, transparent) left / 24px 100% no-repeat local,
+    linear-gradient(to left, var(--bg) 30%, transparent) right / 24px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.18), transparent) left / 10px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.18), transparent) right / 10px 100% no-repeat scroll; }
+p.cap { color: var(--muted); font-size: 13px; margin: 0 0 6px; }
+.below { font-size: 12px; color: var(--muted); white-space: nowrap; }
+@media (max-width: 600px) { .page .scroll > table { display: table; } }  /* the wrapper scrolls, not the table */
+.page table.data td.est { color: var(--muted); font-style: italic; }
 .page table.data { font-size: 14px; margin: 4px 0; }
 .page table.data th, .page table.data td { padding: 4px 8px 4px 0; white-space: nowrap; }
 .page table.data th[scope="row"] { font-weight: 400; white-space: normal; min-width: 120px; }
@@ -34,18 +45,20 @@ a.csv { font-size: 12px; }
 svg.trend { width: 100%; height: auto; display: block; }
 svg.trend .grid { stroke: var(--border); stroke-width: 1; }
 svg.trend .ax { fill: var(--muted); font-size: 10px; font-family: inherit; }
+@media (max-width: 600px) { svg.trend .ax { font-size: 14px; } }  /* about 9 px on a phone otherwise (D9) */
 svg.trend polyline { fill: none; }
 svg.trend polyline.loc { stroke-width: 2; }
 svg.trend polyline.nat { stroke: var(--muted) !important; stroke-width: 1; stroke-dasharray: 3 3; opacity: .7; }
-.s-right { stroke: #2f6fd1; fill: #2f6fd1; color: #2f6fd1; }
-.s-left { stroke: #d0386b; fill: #d0386b; color: #d0386b; }
+/* bloc colours: tables/palette.json "blocs", as on the map (audit B10) */
+.s-right { stroke: #2c5aa0; fill: #2c5aa0; color: #2c5aa0; }
+.s-left { stroke: #c2306f; fill: #c2306f; color: #c2306f; }
 .s-arab { stroke: #16834f; fill: #16834f; color: #16834f; }
-.s-unc { stroke: #8a6bbf; fill: #8a6bbf; color: #8a6bbf; }
+.s-unc { stroke: #8a6fb0; fill: #8a6fb0; color: #8a6fb0; }
 .trendfig figcaption { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 12px; }
 .key::before { content: ""; display: inline-block; width: 14px; height: 0; border-top: 2px solid currentColor;
   vertical-align: middle; margin-inline-end: 4px; }
 .key { color: var(--muted); }
-.key.s-right::before { border-color: #2f6fd1; } .key.s-left::before { border-color: #d0386b; }
+.key.s-right::before { border-color: #2c5aa0; } .key.s-left::before { border-color: #c2306f; }
 .key.s-arab::before { border-color: #16834f; } .key.nat::before { border-top: 1px dashed var(--muted); }
 dl.links { font-size: 14px; margin: 0; }
 dl.links dt { font-weight: 600; margin-top: 10px; }
@@ -53,6 +66,7 @@ dl.links dd { margin: 2px 0 0; }
 ul.areas { list-style: none; padding: 0; margin: 0; columns: 3 220px; column-gap: 16px; font-size: 13px; }
 ul.areas li { break-inside: avoid; }
 .search { margin: 8px 0; }
+.search label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 2px; }  /* label above the box (D10) */
 .search input { font: inherit; padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px;
   background: var(--surface); color: var(--text); width: min(320px, 100%); }
 /* comparison page (from the prototype) */

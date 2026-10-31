@@ -1,56 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Compare places · Extremely Detailed Israeli Elections</title>
-<meta name="description" content="Compare any towns, neighbourhoods, statistical areas and groups side by side: blocs, lists, turnout, census figures and the trend from 2013 to 2026.">
+<meta name="description" content="Compare any towns, neighbourhoods, statistical areas and sectors side by side: blocs, lists, turnout, census figures and the trend from 2006 to 2026.">
 <meta property="og:site_name" content="Extremely Detailed Israeli Elections">
 <meta property="og:title" content="Compare places">
-<meta property="og:description" content="Compare any towns, neighbourhoods, statistical areas and groups side by side, 2013 to 2026.">
+<meta property="og:description" content="Compare any towns, neighbourhoods, statistical areas and sectors side by side: blocs, lists, turnout, census figures and the trend from 2006 to 2026.">
 <link rel="canonical" href="https://israelielections.org/compare/">
+<link rel="alternate" hreflang="en" href="https://israelielections.org/compare/">
+<link rel="alternate" hreflang="he" href="https://israelielections.org/compare/he/">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="compare.css">
 <script src="compare.js" defer></script>
 </head>
 <body>
-<a class="skip" href="#add" data-he="דילוג לחיפוש">Skip to search</a>
+<a class="skip" href="#add">Skip to search</a>
 <header class="site-header">
-  <a class="brand" href="../index.html"><span class="long" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</span><span class="short" data-he="בחירות ישראל">Israeli Elections</span></a>
-  <nav id="site-nav" aria-label="Site" data-he-label="ניווט באתר">
-    <a href="../index.html" data-he="מפות">Maps</a>
-    <a href="../town/index.html" data-he="יישובים">Places</a>
-    <a href="../sectors/index.html" data-he="מגזרים">Sectors</a>
-    <a href="../rank/index.html" data-he="דירוגים">Rankings</a>
-    <a href="index.html" aria-current="page" data-he="השוואה">Compare</a>
-    <a href="../about.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
-    <a href="../sources.html"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
+  <a class="brand" href="../index.html"><span class="long">Extremely Detailed Israeli Elections</span><span class="short">Israeli Elections</span></a>
+  <nav id="site-nav" aria-label="Site">
+    <a href="../index.html">Maps</a>
+    <a href="../town/">Places</a>
+    <a href="../sectors/">Sectors</a>
+    <a href="../rank/">Rankings</a>
+    <a href="../compare/" aria-current="page">Compare</a>
+    <a href="../analysis/">Analysis</a>
+    <a href="../about.html"><span class="long">About the method</span><span class="short">Method</span></a>
+    <a href="../sources.html"><span class="long">Sources and credits</span><span class="short">Sources</span></a>
   </nav>
-  <a href="?lang=he" id="lang-switch" class="lang" lang="he">עברית</a>
-  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" data-he="תפריט" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
+  <a href="he/" id="lang-switch" class="lang" lang="he" hreflang="he">עברית</a>
+  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
 </header>
 <main class="cmp" id="content">
-  <h1 data-he="השוואה">Compare</h1>
+  <h1>Compare places</h1>
   <div class="controls">
     <div class="search" role="search">
-      <label for="add" data-he="הוספת יישוב, שכונה, אזור סטטיסטי או קבוצה (בעברית או באנגלית)">Add a town, neighbourhood, statistical area or group (English or Hebrew)</label>
+      <label for="add">Add a town, neighbourhood, statistical area or sector (English or Hebrew)</label>
       <input id="add" type="search" autocomplete="off" spellcheck="false" placeholder="e.g. Haifa, Florentin, Kibbutzim"
         role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="add-list">
-      <ul id="add-list" role="listbox" aria-label="Matches" data-he-label="תוצאות" hidden></ul>
+      <ul id="add-list" role="listbox" aria-label="Matches" hidden></ul>
     </div>
-    <div class="years" role="group" aria-label="Election" data-he-label="בחירות" id="years"></div>
+    <div class="years" role="group" aria-label="Election" id="years"></div>
     <div class="tools">
-      <button type="button" class="linkbtn" id="copy-link" data-he="העתקת קישור">Copy link</button>
+      <button type="button" class="linkbtn" id="copy-link">Copy link</button>
       <span class="muted" id="copy-done" role="status"></span>
-      <button type="button" class="linkbtn" id="clear" data-he="ניקוי" hidden>Clear</button>
+      <button type="button" class="linkbtn" id="clear" hidden>Clear</button>
     </div>
   </div>
-  <p id="status" class="muted" data-he="טוען...">Loading...</p>
+  <p id="status" class="muted">Loading...</p>
   <div class="scroll" id="wrap" hidden><table id="cmp"></table></div>
 </main>
-<footer class="site-footer" data-he="מפה עצמאית ולא רשמית. אין לה קשר לוועדת הבחירות המרכזית או ללשכה המרכזית לסטטיסטיקה. כל עמודה היא סכום הקולות של מה שהיא כוללת. <a href=&quot;../sources-he.html&quot;>מקורות וקרדיטים</a>.">
-  An independent, unofficial map. Not affiliated with the Central Elections Committee or the
-  Central Bureau of Statistics. Each column sums the votes of what it includes. <a href="../sources.html">Sources and credits</a>.
-</footer>
+<footer class="site-footer">An independent, unofficial map. Not affiliated with the Central Elections Committee or the Central Bureau of Statistics. Each column sums the votes of what it includes. <a href="../sources.html">Sources and credits</a>.</footer>
 </body>
 </html>
