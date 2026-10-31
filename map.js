@@ -14,22 +14,189 @@ const getJSON = url => fetch(url).then(r => { if (!r.ok) throw new Error(url + "
 
 let PAGES = {};  // locality code -> town page slug (data/places.json)
 let NAMES = {};  // "<locality code x 10000 + area>": [English, Hebrew, [w, s, e, n], other CBS names in Hebrew]
+// the election being drawn: these names always point at one loaded election (see bind below); outside
+// inCtx they are the main map's election
 let meta, A = null, DOTS = { type: "FeatureCollection", features: [] }, map, parties, colors, blocColor = {};
 let hovered = null, mode = "party";
 const PREVIEW = window.PREVIEW_DATA === true;
 
 // ---------- the address is the state: ?year=&view=&party=&place=&lang= plus #zoom/lat/lng ----------
 // Shared links depend on these names (CLAUDE.md, "Shareable links"): never rename or reuse one.
+// Added 31 Oct: view=change with from=<election> and side=right|left|arab (or party=<slug>);
+// compare=<election> (a second map beside the first); blocs=<list>.<side>_... (bloc coding changed by the reader)
 const Q = new URLSearchParams(location.search);
 // a shared link (one with a year) shows exactly what the sender saw: this browser's last view is ignored,
 // and a link that already had a map position keeps it (MapLibre writes a hash of its own on load)
 const SHARED = Q.has("year");
 const linkHadHash = !!location.hash;
-const MODES = ["party", "bloc", "share"];
-let year = null, shareParty = null, place = null;
+const MODES = ["party", "bloc", "share", "change"];
+let year = null, shareParty = null, place = null, YEARS = [];
 const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
   .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const partySlug = l => slug(parties[l].english);
+
+// ---------- loaded elections: the main one (P), the "since" election of the change view (F) and the
+// second map's (C). Each holds its own meta, parties, blocs, areas and map ----------
+let P = null, F = null, C = null, cur = null;
+function bind(E) {
+  cur = E; meta = E.meta; colors = E.colors; parties = E.parties; A = E.A; DOTS = E.DOTS;
+  BLOCS = E.BLOCS; TWO_BLOCS = E.TWO_BLOCS; ARAB_BLOCS = E.ARAB_BLOCS; BLOC_HE = E.BLOC_HE;
+  blocColor = E.blocColor; map = E.map; shareParty = E.shareParty;
+}
+// run f with another election's data in the shared names; synchronous, so nothing else sees the switch
+function inCtx(E, f) { const prev = cur; bind(E); try { return f(); } finally { bind(prev); } }
+
+// ---------- bloc coding: which side each list counts for (tables/blocs.csv by default; the reader can change it) ----------
+const SIDES = ["right", "left", "arab", "none"];
+const SIDE_ORDER = ["right", "left", "none", "arab"];  // legends and tables, as build_site.SIDE_ORDER
+const SIDE_FALLBACK = { right: "Right-wing bloc", left: "Centre-left bloc", arab: "Arab parties", none: "Uncommitted" };
+const BLOC_HE_FALLBACK = { "Right-wing bloc": "גוש הימין", "Centre-left bloc": "גוש המרכז-שמאל",
+  "Arab parties": "המפלגות הערביות", "Uncommitted": "לא התחייבו לגוש" };
+const codeSide = s => s === "uncommitted" ? "none" : s;  // blocs.csv says "uncommitted"
+const codingKey = p => slug(p.english).replace(/^the-/, "");  // "the-joint-list" and "joint-list" are one list
+// blocs=<list>.<side>_<list>.<side>: only the lists the reader moved
+const CODING = {};
+for (const part of (Q.get("blocs") || "").split("_")) {
+  const k = part.lastIndexOf("."), s = part.slice(k + 1);
+  if (k > 0 && SIDES.includes(s)) CODING[part.slice(0, k)] = s;
+}
+const codingParam = () => Object.keys(CODING).sort().map(k => `${k}.${CODING[k]}`).join("_");
+
+function sideOfBloc(E, b) {
+  const s = (E.meta.bloc_side || {})[b];
+  if (s) return codeSide(s);
+  return SIDES.find(k => E.sideBloc[k] === b) || (b === "Arab parties" ? "arab" : "right");
+}
+function newCtx(y, m) {
+  const E = { year: y, base: `data/${y}/`, meta: m, colors: m.colors, A: null,
+    DOTS: { type: "FeatureCollection", features: [] }, map: null, hovered: null, shareParty: null, blocColor: {} };
+  for (const p of m.parties) p.bloc0 = p.bloc;
+  E.parties = Object.fromEntries(m.parties.map(p => [p.letters, p]));
+  E.sideBloc = {};  // the bloc that stands for each side in this election
+  for (const b of m.bloc_order || [...new Set(m.parties.map(p => p.bloc))]) {
+    const s = codeSide((m.bloc_side || {})[b] || (b === "Arab parties" ? "arab" : "right"));
+    if (!E.sideBloc[s]) E.sideBloc[s] = b;
+  }
+  for (const s of SIDES) if (!E.sideBloc[s]) E.sideBloc[s] = SIDE_FALLBACK[s];
+  recode(E);
+  return E;
+}
+// apply the reader's coding to one election: each list's bloc, the bloc order and colours
+function recode(E) {
+  const m = E.meta;
+  for (const p of m.parties) { const o = CODING[codingKey(p)]; p.bloc = o ? E.sideBloc[o] : p.bloc0; }
+  E.custom = m.parties.some(p => p.bloc !== p.bloc0);
+  const order = m.bloc_order || [];
+  E.BLOCS = [...new Set(m.parties.map(p => p.bloc))].sort((a, b) =>
+    SIDE_ORDER.indexOf(sideOfBloc(E, a)) - SIDE_ORDER.indexOf(sideOfBloc(E, b)) || order.indexOf(a) - order.indexOf(b));
+  E.TWO_BLOCS = E.BLOCS.filter(b => ["right", "left"].includes(sideOfBloc(E, b)));
+  E.ARAB_BLOCS = E.BLOCS.filter(b => sideOfBloc(E, b) === "arab");
+  E.BLOC_HE = { ...BLOC_HE_FALLBACK, ...(m.bloc_he || {}) };
+  E.blocColor = {};
+  for (const b of E.BLOCS) {
+    const first = m.parties.find(p => p.bloc === b);
+    E.blocColor[b] = (m.blocs && m.blocs[b]) || (first ? E.colors[first.letters] : "#999");
+  }
+  for (const s of SIDES) if (!E.blocColor[E.sideBloc[s]])
+    E.blocColor[E.sideBloc[s]] = (m.blocs && m.blocs[E.sideBloc[s]]) || "#999";
+  E.cFor = E.hatchFor = E.dotsFor = null;  // colours to redo
+}
+function setAreas(E, a) {
+  E.A = a;
+  E.pidx = Object.fromEntries(a.parties.map((l, k) => [l, k]));
+  E.keyIdx = new Map(a.areas.map((r, i) => [keyOf(a, r), i]));
+}
+const keyOf = (a, r) => a.towns[r[0]][0] * 10000 + (r[1] || 0);  // the same 2022 area in every election
+// another election, loaded once (meta, areas, rough shapes)
+const CACHE = {};
+function loadCtx(y) {
+  return CACHE[y] ||= (async () => {
+    const b = `data/${y}/`;
+    const [m, a, d] = await Promise.all([getJSON(b + "meta.json"), getJSON(b + "areas.json"),
+      getJSON(b + "dots.geojson").catch(() => ({ type: "FeatureCollection", features: [] }))]);
+    const E = newCtx(y, m);
+    setAreas(E, a);
+    E.DOTS = d;
+    DONE[y] = E;
+    return E;
+  })();
+}
+const allCtx = () => [P, F, C].filter((E, i, all) => E && all.indexOf(E) === i);
+
+// a list's results under the current coding: party view (bloc over 2/3, its leader and second) and
+// two-bloc view class, as scripts/areas.py does; get(letters) is the list's share
+function classify(E, get) {
+  const bs = {};
+  for (const p of E.meta.parties) bs[p.bloc] = (bs[p.bloc] || 0) + (get(p.letters) || 0);
+  let top = null;
+  for (const b of E.BLOCS) if (top === null || bs[b] > bs[top]) top = b;
+  let bloc = "none", leader = null, second = null;
+  if (top !== null && bs[top] > 200 / 3) {
+    const ranked = E.meta.parties.filter(p => p.bloc === top).map(p => [p.letters, get(p.letters) || 0])
+      .sort((a, b) => b[1] - a[1]);
+    bloc = top; leader = ranked[0][0];
+    if (ranked.length > 1 && ranked[1][1] > 0 && ranked[1][1] >= ranked[0][1] / 2) second = ranked[1][0];
+  }
+  let bloc2 = "none";
+  for (const b of E.TWO_BLOCS) if (bs[b] > 50) bloc2 = `${b}|majority`;
+  for (const b of E.TWO_BLOCS) if (bs[b] > 200 / 3) bloc2 = `${b}|strong`;
+  if (E.ARAB_BLOCS.reduce((s, b) => s + (bs[b] || 0), 0) > 50) bloc2 = "arab";
+  return { bloc, leader, second, bloc2 };
+}
+const rowGet = (E, r) => l => (r[8] && E.pidx[l] != null ? r[8][E.pidx[l]] : 0);
+const propGet = p => l => +(p["pct_" + l] || 0);
+
+// ---------- change view: one side's (or one party's) share now minus in an earlier election ----------
+let FROM = null, MEASURE = { side: "right" };
+const CHG_BREAKS = [1, 3, 6, 10, 20];
+const CHG_TINT = [0.2, 0.38, 0.58, 0.8, 1];
+const CHG_MID = "#ecebe6", NO_CMP = "#c5c8ce";  // under a point either way; no result in one of the two
+const measureKey = () => MEASURE.side ? "side:" + MEASURE.side : "party:" + MEASURE.party;
+// the measure's share in one result of election E (null: the party did not run there)
+function measureIn(E, get) {
+  if (MEASURE.side) return E.meta.parties.reduce((s, p) => s + (sideOfBloc(E, p.bloc) === MEASURE.side ? get(p.letters) || 0 : 0), 0);
+  const p = findParty(MEASURE.party, E.meta);
+  return p ? get(p.letters) || 0 : null;
+}
+function measureName() {
+  if (MEASURE.side) return blocName(P.sideBloc[MEASURE.side]);
+  const p = findParty(MEASURE.party, P.meta);
+  return p ? esc(HE ? p.hebrew : p.english) : MEASURE.party;
+}
+function measureColors() {
+  const right = P.blocColor[P.sideBloc.right], left = P.blocColor[P.sideBloc.left];
+  if (MEASURE.side === "right") return [right, left];
+  if (MEASURE.side === "left") return [left, right];
+  const gain = MEASURE.side === "arab" ? (P.meta.states.arab_majority || "#16834f")
+    : P.colors[(findParty(MEASURE.party, P.meta) || {}).letters] || "#555555";
+  // losses in whichever of two plain colours is further from the gain colour
+  const rgb = h => { const n = parseInt(h.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; };
+  const dist = (a, b) => rgb(a).reduce((s, v, i) => s + (v - rgb(b)[i]) ** 2, 0);
+  return [gain, ["#b35806", "#5e3c99"].sort((a, b) => dist(b, gain) - dist(a, gain))[0]];
+}
+function changeColor(d) {
+  if (d == null) return NO_CMP;
+  if (Math.abs(d) < CHG_BREAKS[0]) return CHG_MID;
+  const [gain, loss] = measureColors();
+  const k = CHG_BREAKS.filter(b => Math.abs(d) >= b).length - 1;
+  return mix(d > 0 ? gain : loss, CHG_TINT[k]);
+}
+// an area of election E against the same area in F: { now, then, d } (then and d null when not comparable)
+function changeOfArea(E, i) {
+  const r = E.A.areas[i];
+  if (!r[8]) return null;
+  const now = measureIn(E, rowGet(E, r));
+  const j = F && F.A ? F.keyIdx.get(keyOf(E.A, r)) : null;
+  const rf = j != null ? F.A.areas[j] : null;
+  const then = rf && rf[8] ? measureIn(F, rowGet(F, rf)) : null;
+  return { now, then, d: now != null && then != null ? now - then : null };
+}
+function changeOfDot(props) {
+  const now = measureIn(cur, propGet(props));
+  const f = F && F.DOTS.features.find(x => +x.properties.SEMEL_YISHUV === +props.SEMEL_YISHUV);
+  const then = f ? measureIn(F, propGet(f.properties)) : null;
+  return { now, then, d: now != null && then != null ? now - then : null };
+}
 
 function stateParams() {
   const q = new URLSearchParams();
@@ -38,6 +205,12 @@ function stateParams() {
   if (mode === "share" && shareParty) q.set("party", partySlug(shareParty));
   if (place) q.set("place", place);
   if (HE) q.set("lang", "he");
+  if (mode === "change" && FROM) {
+    q.set("from", FROM);
+    if (MEASURE.side) q.set("side", MEASURE.side); else q.set("party", MEASURE.party);
+  }
+  if (C) q.set("compare", C.year);
+  if (codingParam()) q.set("blocs", codingParam());
   return q;
 }
 function syncURL() {
@@ -114,26 +287,102 @@ function mix(hex, t) {  // hex colour blended towards white; t = 1 keeps the col
   const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255];
   return "#" + c.map(v => Math.round(255 - (255 - v) * t).toString(16).padStart(2, "0")).join("");
 }
-const shareColors = () => SHARE_TINT.map(t => mix(colors[shareParty], t));
+// on the second map the party may be missing (it did not run): its tints come from the main map's party
+const shareColors = () => SHARE_TINT.map(t => mix(colors[shareParty] || P.colors[P.shareParty] || "#777777", t));
 function shareSteps(value, f = c => c) {
   const c = shareColors().map(f);
   return ["step", value, c[0], ...SHARE_BREAKS.flatMap((b, i) => [b, c[i + 1]])];
 }
 
+// colours worked out here rather than from the tiles (reader's bloc coding, change view) go to the areas
+// as feature state "c"
+const ST = ["feature-state", "c"];
+const byState = fallback => ["case", ["==", ["typeof", ST], "string"], ["to-color", ST], fallback];
 
 function colorExpr(b, l, k, f = c => c) {
   const grey = meta.states.built_empty || "#bdb9b0";
+  const isArea = b === "b";
+  if (mode === "change") return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
+    ["==", ["get", b], "no_station"], meta.states.no_station,
+    isArea ? byState("#e4e4e1") : ["to-color", ["coalesce", ["get", "_chg"], NO_CMP]]];
   if (mode === "share") return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
     ["==", ["get", b], "no_station"], meta.states.no_station,
     // areas take their share from areas.json (feature state); dots carry it as pct_<letters>
-    b === "b" ? ["case", ["==", ["typeof", ["feature-state", "v"]], "number"], shareSteps(["feature-state", "v"], f), "#e4e4e1"]
+    isArea ? ["case", ["==", ["typeof", ["feature-state", "v"]], "number"], shareSteps(["feature-state", "v"], f), "#e4e4e1"]
       : shareSteps(["coalesce", ["get", "pct_" + shareParty], 0], f)];
+  const own = isArea ? byState : x => x;
   if (mode === "bloc") return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
-    ["match", ["coalesce", ["get", k], ""], ...twoBlocStops(f), "#999999"]];
+    own(["match", ["coalesce", ["get", k], ""], ...twoBlocStops(f), "#999999"])];
   return ["case", ["==", ["coalesce", ["get", "g"], 0], 1], grey,
     ["==", ["get", b], "no_station"], meta.states.no_station,
-    ["==", ["get", b], "none"], f(meta.states.none),
-    ["match", ["coalesce", ["get", l], ""], ...Object.entries(colors).flatMap(([x, c]) => [x, f(c)]), "#999999"]];
+    own(["case", ["==", ["get", b], "none"], f(meta.states.none),
+      ["match", ["coalesce", ["get", l], ""], ...Object.entries(colors).flatMap(([x, c]) => [x, f(c)]), "#999999"]])];
+}
+// one area's colour worked out here, in the current election (bind): reader's coding or change view
+function stateColor(i) {
+  const r = A.areas[i];
+  if (mode === "change") { const c = changeOfArea(cur, i); return changeColor(c && c.d); }
+  const c = classify(cur, rowGet(cur, r));
+  if (mode === "bloc") {
+    if (c.bloc2 === "arab") return meta.states.arab_majority || "#22b573";
+    if (c.bloc2 === "none") return meta.states.none;
+    const [b, lv] = c.bloc2.split("|");
+    return lv === "strong" ? blocColor[b] : (meta.blocs_light || {})[b] || blocColor[b];
+  }
+  return c.bloc === "none" ? meta.states.none : colors[c.leader] || "#999999";
+}
+// which colours the areas need from here: null when the tiles' own classes are right
+const stateWant = () => mode === "change" ? `change|${FROM}|${measureKey()}|${codingParam()}|${F && F.A ? 1 : 0}`
+  : cur.custom && mode !== "share" ? `${mode}|${codingParam()}` : null;
+function applyStates() {
+  if (!A || !map || !map.getSource("areas")) return;
+  const want = stateWant();
+  if (cur.cFor === want) return;
+  A.areas.forEach((r, i) => { if (r[8]) map.setFeatureState({ ...FS, id: i }, { c: want ? stateColor(i) : null }); });
+  cur.cFor = want;
+}
+// rough shapes are GeoJSON: their own properties are rewritten (coding) and given a change colour
+function paintDots() {
+  if (!map || !map.getSource("dots")) return;
+  const want = `${codingParam()}|${mode === "change" ? `${FROM}|${measureKey()}|${F && F.A ? 1 : 0}` : ""}`;
+  if (cur.dotsFor === want) return;
+  for (const f of DOTS.features) {
+    const p = f.properties;
+    p._orig ||= { bloc: p.bloc, leader: p.leader, second: p.second, bloc2: p.bloc2 };
+    Object.assign(p, p._orig);
+    if (cur.custom) {
+      const c = classify(cur, propGet(p));
+      Object.assign(p, { bloc: c.bloc, leader: c.leader, second: c.second, bloc2: c.bloc2 });
+    }
+    if (mode === "change") p._chg = changeColor(changeOfDot(p).d); else delete p._chg;
+  }
+  map.getSource("dots").setData(DOTS);
+  cur.dotsFor = want;
+}
+// stripes: from the tiles, or under the reader's coding by area id
+function applyHatch() {
+  if (!map || !map.getLayer("hatch")) return;
+  map.setLayoutProperty("hatch", "visibility", mode === "party" ? "visible" : "none");
+  if (mode !== "party") return;
+  const want = cur.custom ? codingParam() + (A ? "|a" : "") : "";
+  if (cur.hatchFor === want) return;
+  cur.hatchFor = want;
+  if (!cur.custom) {
+    map.setFilter("hatch", ["has", "s"]);
+    map.setPaintProperty("hatch", "fill-pattern", ["concat", "h-", ["get", "l"], "-", ["get", "s"]]);
+    return;
+  }
+  const groups = {};
+  if (A) A.areas.forEach((r, i) => {
+    if (!r[8]) return;
+    const c = classify(cur, rowGet(cur, r));
+    if (c.second) (groups[`h-${c.leader}-${c.second}`] ||= []).push(i);
+  });
+  const ids = Object.values(groups).flat();
+  if (!ids.length) { map.setFilter("hatch", ["==", ["get", "c"], -1]); return; }
+  map.setFilter("hatch", ["in", ["id"], ["literal", ids]]);
+  map.setPaintProperty("hatch", "fill-pattern",
+    ["match", ["id"], ...Object.entries(groups).flatMap(([img, list]) => [list, img]), Object.keys(groups)[0]]);
 }
 // areas with no station of their own show their nearest area's result in the same plain colour (Ben,
 // 30 Oct: no marking, keep the map clean); the hover panel says so
@@ -153,8 +402,15 @@ function setMode(m) {
   try { localStorage.setItem("colour-mode", m); } catch (e) { /* private window */ }
   for (const btn of $("modes").querySelectorAll("button")) btn.setAttribute("aria-pressed", btn.dataset.mode === m);
   $("party-pick").hidden = m !== "share";
+  $("change-pick").hidden = m !== "change";
+  if (m === "change") ensureFrom();
   if (!$("intro").dataset.party) $("intro").dataset.party = $("intro").innerHTML;
-  $("intro").innerHTML = m === "bloc"
+  $("intro").innerHTML = m === "change"
+    ? tr(`How much a bloc's or a party's share of valid votes rose or fell in each area since an earlier election,
+       in percentage points. The areas are the same in every election. <a href="about.html">How this works</a>.`,
+       `בכמה עלה או ירד שיעור הקולות הכשרים של גוש או של מפלגה בכל אזור מאז בחירות קודמות, בנקודות אחוז.
+       האזורים זהים בכל הבחירות. <a href="about-he.html">איך זה עובד</a>.`)
+    : m === "bloc"
     ? tr(`Two camps only: dark when a bloc wins more than 2/3 of valid votes, light when it wins a majority.
        Arab parties belong to neither bloc. <a href="about.html">How this works</a>.`,
        `שני מחנות בלבד: כהה כשגוש זוכה ביותר משני שלישים מהקולות הכשרים, בהיר כשהוא זוכה ברוב.
@@ -172,7 +428,8 @@ function setMode(m) {
 }
 
 function setShareParty(l) {
-  shareParty = l;
+  shareParty = P.shareParty = l;
+  if (C) C.shareParty = (findParty(partySlug(l), C.meta) || {}).letters || null;
   $("party").value = l;
   legend();
   syncURL();
@@ -181,22 +438,106 @@ function setShareParty(l) {
 }
 
 // the selected party's share in every area, as feature state (the tiles carry only the leader)
-let statesFor = null;
 function applyShares() {
-  if (mode !== "share" || !A || !map || !map.getSource("areas") || statesFor === shareParty) return;
+  if (mode !== "share" || !A || !map || !map.getSource("areas") || cur.statesFor === shareParty) return;
   const k = A.parties.indexOf(shareParty);
   A.areas.forEach((r, i) => { if (r[8]) map.setFeatureState({ ...FS, id: i }, { v: k < 0 ? 0 : r[8][k] }); });
-  statesFor = shareParty;
+  cur.statesFor = shareParty;
 }
 
-function repaint() {
+function repaintMap() {
   if (!map || !map.getLayer("fill")) return;
   applyShares();
+  applyStates();
+  paintDots();
   map.setPaintProperty("fill", "fill-color", areaColor());
   map.setPaintProperty("dots-fill", "fill-color", colorExpr("bloc", "leader", "bloc2"));
   map.setPaintProperty("dots", "circle-color", colorExpr("bloc", "leader", "bloc2"));
-  map.setLayoutProperty("hatch", "visibility", mode === "party" ? "visible" : "none");
+  applyHatch();
 }
+// both maps
+function repaint() {
+  for (const E of [P, C]) if (E && E.map) inCtx(E, repaintMap);
+}
+
+// ---------- change view controls ----------
+// the earlier election: from the address, else the one before this (or after, for the first)
+function defaultFrom() {
+  const k = YEARS.indexOf(year);
+  return YEARS[k - 1] || YEARS[k + 1] || null;
+}
+function ensureFrom() {
+  if (!FROM || FROM === year || !YEARS.includes(FROM)) FROM = defaultFrom();
+  if ($("from") && FROM) $("from").value = FROM;
+  if (!FROM || (F && F.year === FROM)) return;
+  const want = FROM;
+  loadCtx(want).then(E => {
+    if (FROM !== want) return;
+    F = E; recode(F);
+    measureOptions();
+    codingPanel();
+    legend(); repaint(); refreshInfo(); syncURL();
+  }).catch(e => console.error(e));
+}
+function fromOptions() {
+  $("from").innerHTML = [...YEARS].reverse().filter(y => y !== year)
+    .map(y => `<option value="${y}">${yearLabel(y)}</option>`).join("");
+  if (FROM) $("from").value = FROM;
+}
+// blocs first, then the parties that ran in both elections
+function measureOptions() {
+  const sides = ["right", "left", "arab"].map(s => `<option value="side:${s}">${blocName(P.sideBloc[s])}</option>`).join("");
+  const both = F ? meta.parties.filter(p => findParty(partySlug(p.letters), F.meta)) : [];
+  if (MEASURE.party && F && !findParty(MEASURE.party, F.meta)) MEASURE = { side: "right" };
+  $("measure").innerHTML = `<optgroup label="${tr("Blocs", "גושים")}">${sides}</optgroup>` + (both.length
+    ? `<optgroup label="${tr("Parties", "מפלגות")}">${both.map(p =>
+      `<option value="party:${partySlug(p.letters)}">${esc(label(p.letters))}</option>`).join("")}</optgroup>` : "");
+  $("measure").value = measureKey();
+}
+function setFrom(y) { FROM = y; ensureFrom(); syncURL(); }
+function setMeasure(v) {
+  const [k, x] = v.split(":");
+  MEASURE = k === "side" ? { side: x } : { party: x };
+  legend(); repaint(); refreshInfo(); syncURL();
+}
+
+// ---------- bloc coding panel ----------
+// every list in the elections on screen, once each; a select moves it to another side
+function codingRows() {
+  const rows = new Map();
+  for (const E of [P, ...(mode === "change" && F ? [F] : []), ...(C ? [C] : [])]) for (const p of E.meta.parties) {
+    const k = codingKey(p);
+    if (!rows.has(k)) rows.set(k, { k, E, p, def: sideOfBloc(E, p.bloc0), years: [] });
+    rows.get(k).years.push(E.year);
+  }
+  return [...rows.values()];
+}
+function codingPanel() {
+  const box = $("coding-box");
+  if (!box || !P) return;
+  const changed = Object.keys(CODING).length > 0;
+  const sideName = s => s === "none" ? tr("Neither bloc", "אף גוש") : blocName(P.sideBloc[s]);
+  $("coding-sum").innerHTML = tr("Bloc coding", "שיוך הרשימות לגושים")
+    + (changed ? ` <span class="muted">${tr("(changed)", "(שונה)")}</span>` : "");
+  $("coding").innerHTML = codingRows().map(({ k, E, p, def, years }) => {
+    const v = CODING[k] || def;
+    const yrs = years.includes(P.year) ? "" : ` <span class="muted">${years.map(yearLabel).join(", ")}</span>`;
+    return `<tr><td>${esc(HE ? p.hebrew : p.english)}${yrs}</td><td class="n"><select data-k="${esc(k)}" data-def="${def}"
+      aria-label="${esc(HE ? p.hebrew : p.english)}">${SIDES.map(s =>
+      `<option value="${s}"${s === v ? " selected" : ""}>${sideName(s)}${s === def ? " *" : ""}</option>`).join("")}</select></td></tr>`;
+  }).join("");
+  $("coding-reset").hidden = !changed;
+}
+function setCoding(k, side, def) {
+  if (k == null) for (const x of Object.keys(CODING)) delete CODING[x];
+  else if (side === def) delete CODING[k]; else CODING[k] = side;
+  for (const E of new Set([P, F, C, ...Object.values(DONE)])) if (E) recode(E);
+  bind(P);
+  codingPanel();
+  if (mode === "change") measureOptions();
+  legend(); envelopes(); repaint(); refreshInfo(); syncURL();
+}
+const DONE = {};  // elections loaded so far, to recode when the coding changes
 
 function setPlace(p) { place = p; syncURL(); }
 
@@ -206,7 +547,7 @@ const INFO_HINT_EN = $("info-body").innerHTML;
 function clearSelection() {
   setPlace(null);
   if (map) setHover(null);
-  if (map && map.getLayer("town-hl")) map.setFilter("town-hl", ["==", ["get", "c"], -1]);
+  if (map) townHL(-1);
   $("info-body").innerHTML = tr(INFO_HINT_EN, $("info-body").dataset.he);
   $("info-body").classList.add("sub");
   $("info").classList.add("empty");
@@ -244,28 +585,39 @@ async function start() {
   try { years = await getJSON("data/years.json"); }
   catch (e) { status(tr("Could not load the map data.", "לא ניתן לטעון את נתוני המפה.")); throw e; }
   const asked = Q.get("year");
+  YEARS = years;
   year = years.includes(asked) ? asked : years[years.length - 1];
   const base = `data/${year}/`;
 
-  meta = await getJSON(base + "meta.json");
-  colors = meta.colors;
-  parties = Object.fromEntries(meta.parties.map(p => [p.letters, p]));
-  BLOCS = meta.bloc_order || [...new Set(meta.parties.map(p => p.bloc))];
-  // the two camps; the Arab parties and uncommitted parties belong to neither
-  const side = b => (meta.bloc_side || {})[b] || (b === "Arab parties" ? "arab" : "right");
-  TWO_BLOCS = BLOCS.filter(b => side(b) === "right" || side(b) === "left");
-  ARAB_BLOCS = BLOCS.filter(b => side(b) === "arab");
-  BLOC_HE = meta.bloc_he || {};
-  for (const b of BLOCS) {
-    const first = meta.parties.find(p => p.bloc === b);
-    blocColor[b] = (meta.blocs && meta.blocs[b]) || (first ? colors[first.letters] : "#999");
-  }
+  // this election's blocs, its two camps (the Arab parties and uncommitted parties belong to neither)
+  // and the reader's coding: all in P (newCtx), the shared names point at it
+  P = newCtx(year, await getJSON(base + "meta.json"));
+  bind(P);
   // a link's own view wins over this browser's last one
   let saved = null;
   try { saved = localStorage.getItem("colour-mode"); } catch (e) { /* private window */ }
   mode = MODES.includes(Q.get("view")) ? Q.get("view") : !SHARED && MODES.includes(saved) ? saved : "party";
   const askedParty = findParty(Q.get("party"));
-  shareParty = askedParty ? askedParty.letters : meta.parties[0].letters;
+  shareParty = P.shareParty = askedParty ? askedParty.letters : meta.parties[0].letters;
+  // change view: since which election, and of what (a side, or with party= one list)
+  FROM = Q.get("from");
+  MEASURE = ["right", "left", "arab"].includes(Q.get("side")) ? { side: Q.get("side") }
+    : mode === "change" && askedParty ? { party: partySlug(askedParty.letters) } : { side: "right" };
+  fromOptions();
+  $("from").addEventListener("change", e => setFrom(e.target.value));
+  $("measure").addEventListener("change", e => setMeasure(e.target.value));
+  measureOptions();
+  // second map
+  $("compare").innerHTML = `<option value="">${tr("None", "ללא")}</option>` + [...years].reverse().filter(y => y !== year)
+    .map(y => `<option value="${y}">${yearLabel(y)}</option>`).join("");
+  $("compare").addEventListener("change", e => setCompare(e.target.value || null));
+  // bloc coding
+  codingPanel();
+  $("coding").addEventListener("change", e => {
+    const s = e.target.closest("select[data-k]");
+    if (s) setCoding(s.dataset.k, s.value, s.dataset.def);
+  });
+  $("coding-reset").addEventListener("click", () => setCoding(null));
   $("party").innerHTML = meta.parties.map(p => `<option value="${esc(p.letters)}">${esc(label(p.letters))}</option>`).join("");
   $("party").value = shareParty;
   $("party").addEventListener("change", e => setShareParty(e.target.value));
@@ -281,8 +633,8 @@ async function start() {
   const namesReady = getJSON("data/area_names.json").then(d => { NAMES = d; }).catch(e => console.error(e));
   getJSON("data/places.json").then(d => { PAGES = d; }).catch(e => console.error(e));
   const areasReady = Promise.all([getJSON(base + "areas.json"), namesReady])
-    .then(([d]) => { A = d; buildSearch(); applyShares(); topPlaces(); });
-  const dotsReady = getJSON(base + "dots.geojson").then(d => { DOTS = d; });
+    .then(([d]) => { setAreas(P, d); bind(P); buildSearch(); repaint(); topPlaces(); refreshInfo(); });
+  const dotsReady = getJSON(base + "dots.geojson").then(d => { P.DOTS = d; bind(P); });
 
   applyLanguage();
   heading();
@@ -292,9 +644,42 @@ async function start() {
   setMode(mode);
   envelopes();
   try { await dotsReady; } catch (e) { console.error(e); }
-  initMap(base);
+  initMap(P, "map");
+  const askedCompare = Q.get("compare");
+  if (askedCompare && askedCompare !== year && years.includes(askedCompare)) setCompare(askedCompare);
   try { await areasReady; } catch (e) { console.error(e); }
   restorePlace();
+}
+
+// ---------- two maps side by side: the second election's tiles in #map2, moving with the first ----------
+let syncing = false;
+function follow(from, to) {
+  from.on("move", () => {
+    if (syncing || (to !== P.map && (!C || C.map !== to))) return;  // a closed second map stays out
+    syncing = true;
+    to.jumpTo({ center: from.getCenter(), zoom: from.getZoom() });
+    syncing = false;
+  });
+}
+async function setCompare(y) {
+  if (C && C.map) { C.map.remove(); C.map = null; }
+  C = null;
+  document.body.classList.toggle("compare", !!y);
+  $("compare").value = y || "";
+  $("map-tag1").textContent = y ? yearLabel(year) : "";
+  $("map-tag2").textContent = y ? yearLabel(y) : "";
+  P.map.resize();
+  if (y && isPhone()) foldSide(true);  // phones: the maps are stacked, the first under the menu
+  syncURL();
+  if (!y) { codingPanel(); legend(); refreshInfo(); return; }
+  let E;
+  try { E = await loadCtx(y); } catch (e) { console.error(e); return; }
+  if ($("compare").value !== y) return;  // changed again while loading
+  C = E; recode(C);
+  C.shareParty = (findParty(partySlug(P.shareParty), C.meta) || {}).letters || null;
+  C.cFor = C.hatchFor = C.dotsFor = C.statesFor = null;
+  initMap(C, "map2");
+  codingPanel(); legend(); refreshInfo(); syncURL();
 }
 
 // the panel heading names the election ("Knesset election, 27 October 2026"); the Knesset and any
@@ -327,13 +712,13 @@ function restorePlace() {
 
 // a party by its slug; after a change of year, the same list under its name in that election
 // ("joint-list" 2021 is "The Joint List" in 2026, "labor" is "Labor-Gesher" in Sept 2019)
-function findParty(asked) {
+function findParty(asked, m = meta) {
   if (!asked) return null;
   const bare = s => s.replace(/^the-/, "");
   const a = bare(asked);
-  return meta.parties.find(p => slug(p.english) === asked)
-    || meta.parties.find(p => bare(slug(p.english)) === a)
-    || meta.parties.find(p => { const b = bare(slug(p.english)); return b.startsWith(a + "-") || a.startsWith(b + "-"); })
+  return m.parties.find(p => slug(p.english) === asked)
+    || m.parties.find(p => bare(slug(p.english)) === a)
+    || m.parties.find(p => { const b = bare(slug(p.english)); return b.startsWith(a + "-") || a.startsWith(b + "-"); })
     || null;
 }
 
@@ -395,12 +780,34 @@ function legend() {
         return unc.length ? `<div class="sub">${tr("Uncommitted, counted in neither bloc", "לא התחייבו לגוש, לא נספרים באף גוש")}: ${
           unc.map(p => pname(p.letters)).join(", ")}</div>` : "";
       })();
-  } else for (const b of BLOCS) {
-    const ps = meta.parties.filter(p => p.bloc === b);
-    html += `<h2>${blocName(b)}</h2>` + ps.map(p => `<div class="row">${swatch(colors[p.letters])}<span>${esc(label(p.letters))}${belowNote(p.letters)}</span></div>`).join("");
+  } else if (mode === "change") {
+    const range = t => `<bdi dir="ltr">${t}</bdi>`;
+    const steps = [...CHG_BREAKS].reverse();  // 20, 10, 6, 3, 1
+    const rows = [
+      ...steps.map((b, k) => [changeColor(b), k === 0 ? tr(`+${b} or more`, `${range("+" + b)} ומעלה`)
+        : tr(`+${b} to +${steps[k - 1]}`, `${range("+" + b)} עד ${range("+" + steps[k - 1])}`)]),
+      [CHG_MID, tr("Less than 1 point either way", "פחות מנקודה לכל כיוון")],
+      ...CHG_BREAKS.map((b, k) => [changeColor(-b), k === CHG_BREAKS.length - 1 ? tr(`−${b} or more`, `${range("−" + b)} ומעלה`)
+        : tr(`−${b} to −${CHG_BREAKS[k + 1]}`, `${range("−" + b)} עד ${range("−" + CHG_BREAKS[k + 1])}`)]),
+      [NO_CMP, tr("No result in one of the two elections", "אין תוצאה באחת משתי הבחירות")]];
+    html += `<div class="ptitle">${tr(`Change in ${measureName()}`, `שינוי ב${measureName()}`)}</div>
+      <div class="sub">${FROM ? tr(`Since ${yearLabel(FROM)}, in points of valid votes`, `מאז ${yearLabel(FROM)}, בנקודות אחוז מהקולות הכשרים`) : ""}</div>`
+      + rows.map(([c, t]) => `<div class="row">${swatch(c)}${t}</div>`).join("");
+  } else {
+    for (const b of BLOCS) {
+      const ps = meta.parties.filter(p => p.bloc === b);
+      html += `<h2>${blocName(b)}</h2>` + ps.map(p => `<div class="row">${swatch(colors[p.letters])}<span>${esc(label(p.letters))}${belowNote(p.letters)}</span></div>`).join("");
+    }
+    // the second map's lists that are not on this one (another name or colour)
+    if (C) {
+      const here = new Set(meta.parties.map(p => codingKey(p) + colors[p.letters]));
+      const more = C.meta.parties.filter(p => !here.has(codingKey(p) + C.colors[p.letters]));
+      if (more.length) html += `<h2>${tr(`Also in ${yearLabel(C.year)}`, `גם ב-${yearLabel(C.year)}`)}</h2>` + more.map(p =>
+        `<div class="row">${swatch(C.colors[p.letters])}<span>${esc(HE ? p.hebrew : p.english)}</span></div>`).join("");
+    }
   }
   html += `<h2>${tr("Other", "אחר")}</h2>
-    ${mode === "share" ? "" : `<div class="row">${swatch(meta.states.none)}${mode === "bloc" ? tr("No bloc with a majority", "אין גוש עם רוב")
+    ${mode === "share" || mode === "change" ? "" : `<div class="row">${swatch(meta.states.none)}${mode === "bloc" ? tr("No bloc with a majority", "אין גוש עם רוב")
       : tr("No bloc above 2/3", "אין גוש מעל שני שלישים")}</div>`}
     <div class="row">${swatch(meta.states.no_station)}${tr("Nobody lives here (no polling station)", "אין כאן תושבים (אין קלפי)")}</div>
     <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Industry, port or campus, no residents",
@@ -499,13 +906,16 @@ function areaRecord(i) {
   return { ti: r[0], code: t[0], name: t[2] || t[1], he: t[1], stat: r[1], nb: nb ? nb[HE ? 1 : 0] : "", valid: r[2], stations: r[3], approx: r[4],
     bloc: r[5], leader: r[6], shares: sharesFromArray(r[8]), other: r[9] || 0, kind: t[5],
     estFrom: r[10], estVotes: r[11], population: r[12], placeholder: r[13], grey: r[14] === 1, bloc2: r[15],
-    popGroup: r[16], nbrStations: r[17] || 0, streetStations: r[18] || 0 };
+    popGroup: r[16], nbrStations: r[17] || 0, streetStations: r[18] || 0, i,
+    // under the reader's coding the classes are worked out again from the shares
+    ...(cur.custom && r[8] ? classify(cur, rowGet(cur, r)) : {}) };
 }
 
 function dotRecord(p) {
   const shares = Object.keys(p).filter(k => k.startsWith("pct_") && k !== "pct_other").map(k => [k.slice(4), +p[k]]);
   return { code: +p.SEMEL_YISHUV, name: p.SHEM_YISHUV_ENGLISH || p.SHEM_YISHUV, he: p.SHEM_YISHUV, valid: +p.valid, stations: +p.stations,
-    approx: +p.approx_stations, bloc: p.bloc, leader: p.leader, shares, other: +(p.pct_other || 0), kind: "dot", shape: p.shape_source, bloc2: p.bloc2 };
+    approx: +p.approx_stations, bloc: p.bloc, leader: p.leader, shares, other: +(p.pct_other || 0), kind: "dot", shape: p.shape_source, bloc2: p.bloc2,
+    props: p };
 }
 
 function dotKind(he) {
@@ -519,7 +929,7 @@ function blocBar(blocShare) {
     `<span style="width:${blocShare[b]}%;background:${blocColor[b]}"></span>`).join("")}</div>`;
 }
 
-function resultsHtml(rec, verdict) {
+function resultsHtml(rec, verdict, compact = false) {
   const shares = rec.shares.slice().sort((a, b) => b[1] - a[1]);
   const blocShare = Object.fromEntries(BLOCS.map(b => [b, shares
     .filter(([l]) => parties[l] && parties[l].bloc === b).reduce((s, [, v]) => s + v, 0)]));
@@ -544,8 +954,9 @@ function resultsHtml(rec, verdict) {
          `${fmt(rec.valid)} קולות כשרים · ${rec.stations === 1 ? "קלפי אחת" : `${rec.stations} קלפיות`}`);
   let html = `<div class="sub">${verdict} · ${counts}</div>
     ${blocBar(blocShare)}
-    <table>${BLOCS.map(b => `<tr><td><div class="row">${swatch(blocColor[b])}${blocName(b)}</div></td><td class="n">${pctFmt(blocShare[b])}</td></tr>`).join("")}</table>
-    <h2>${tr("Parties", "מפלגות")}</h2><table>`;
+    <table>${BLOCS.map(b => `<tr><td><div class="row">${swatch(blocColor[b])}${blocName(b)}</div></td><td class="n">${pctFmt(blocShare[b])}</td></tr>`).join("")}</table>`;
+  if (compact) return html;  // the second map's year under the first: blocs only
+  html += `<h2>${tr("Parties", "מפלגות")}</h2><table>`;
   // one line per party: its name, the other language's name in muted text, its share
   for (const [l, v] of shares.filter(([l, v]) => v >= 0.5 || (mode === "share" && l === shareParty))) {
     const p = parties[l];
@@ -569,7 +980,9 @@ function townSplit(ti) {
   return { placed, stations, official: off, unplaced: off ? Math.max(0, off[0] - placed) : 0 };
 }
 
-function recordHtml(rec) {
+// the details of one area or rough shape, then the same place in the second map's election
+function recordHtml(rec) { return recordMain(rec) + (C && cur === P ? compareArea(rec) : ""); }
+function recordMain(rec) {
   const isDot = rec.kind === "dot";
   let html = `<h3>${esc(HE ? rec.he : rec.name)}${rec.stat ? ` <span class="sub">${rec.nb ? esc(rec.nb) + ", " : ""}${tr("area", "אזור")} ${rec.stat}</span>` : ""}</h3>
     <div class="sub">${otherName(rec.name, rec.he)}${pageLink(rec.code)}</div>`;
@@ -578,6 +991,7 @@ function recordHtml(rec) {
     ? tr("Built up, but nobody lives here (campus, industry or offices), so no polling station.",
          "שטח בנוי, אך אין כאן תושבים (קמפוס, תעשייה או משרדים), ולכן אין קלפי.")
     : tr("No polling station in this area.", "אין קלפי באזור זה.")}</div>`;
+  if (mode === "change" && cur === P) html += changeBox(isDot ? changeOfDot(rec.props) : changeOfArea(P, rec.i));
   html += resultsHtml(rec, rec.bloc === "none" ? tr("No bloc above 2/3", "אין גוש מעל שני שלישים") : blocName(rec.bloc));
   const flag = (en, he) => { html += `<div class="flag">${tr(en, he)}</div>`; };
   if (rec.placeholder) rec.placeholder === "osm"
@@ -630,13 +1044,9 @@ function recordHtml(rec) {
   return html;
 }
 
-function townHtml(ti) {
-  const t = A.towns[ti];
-  const nAreas = A.areas.reduce((n, r) => n + (r[0] === ti), 0);
+// a town's whole result in the current election (bind): the official total, else its areas; null without votes
+function townRec(ti) {
   const sp = townSplit(ti);
-  let html = `<h3>${esc(HE ? t[1] : (t[2] || t[1]))}</h3><div class="sub">${otherName(t[2] || "", t[1])}${pageLink(t[0])}</div>
-    <div class="sub">${tr(`Whole town: ${nAreas} statistical area${nAreas === 1 ? "" : "s"}. Hover an area for its own result.`,
-      `כל היישוב: ${nAreas === 1 ? "אזור סטטיסטי אחד" : `${nAreas} אזורים סטטיסטיים`}. ריחוף מעל אזור מציג את התוצאה שלו.`)}</div>`;
   let rec;
   if (sp.official) {  // the official whole-town result, placed in areas or not
     const [valid, boxes, pct, other] = sp.official;
@@ -650,8 +1060,26 @@ function townHtml(ti) {
       A.parties.forEach((l, k) => { votes[l] += r[8][k] * r[2] / 100; });
       other += (r[9] || 0) * r[2] / 100;
     }
-    if (!valid) return html;
+    if (!valid) return null;
     rec = { valid, stations: sp.stations, other: 100 * other / valid, shares: A.parties.map(l => [l, 100 * votes[l] / valid]) };
+  }
+  return rec;
+}
+function townHtml(ti) {
+  const t = A.towns[ti];
+  const nAreas = A.areas.reduce((n, r) => n + (r[0] === ti), 0);
+  const sp = townSplit(ti);
+  let html = `<h3>${esc(HE ? t[1] : (t[2] || t[1]))}</h3><div class="sub">${otherName(t[2] || "", t[1])}${pageLink(t[0])}</div>
+    <div class="sub">${tr(`Whole town: ${nAreas} statistical area${nAreas === 1 ? "" : "s"}. Hover an area for its own result.`,
+      `כל היישוב: ${nAreas === 1 ? "אזור סטטיסטי אחד" : `${nAreas} אזורים סטטיסטיים`}. ריחוף מעל אזור מציג את התוצאה שלו.`)}</div>`;
+  const rec = townRec(ti);
+  if (!rec) return html;
+  if (mode === "change") {
+    const now = measureIn(P, l => (rec.shares.find(x => x[0] === l) || [0, 0])[1]);
+    const fi = F && F.A ? F.A.towns.findIndex(x => x[0] === t[0]) : -1;
+    const fr = fi >= 0 ? inCtx(F, () => townRec(fi)) : null;
+    const then = fr ? measureIn(F, l => (fr.shares.find(x => x[0] === l) || [0, 0])[1]) : null;
+    html += changeBox({ now, then, d: now != null && then != null ? now - then : null });
   }
   html += resultsHtml(rec, TOWN_TOTAL);
   if (sp.official && sp.unplaced > 0) html += `<div class="flag">${sp.placed === 0
@@ -660,7 +1088,40 @@ function townHtml(ti) {
       מציג את תוצאת היישוב כולו.`)
     : tr(`${fmt(sp.unplaced)} votes could not be placed in an area: they are in this total but in no area's result.`,
       `${fmt(sp.unplaced)} קולות לא שויכו לאזור: הם כלולים בסה״כ זה אך לא בתוצאה של אף אזור.`)}</div>`;
+  if (C && C.A) {  // the same town in the second map's election
+    const ci = C.A.towns.findIndex(x => x[0] === t[0]);
+    html += `<h2 class="cmp-h">${yearLabel(C.year)}</h2>` + (ci < 0 ? `<div class="sub">${tr("No result.", "אין תוצאה.")}</div>`
+      : inCtx(C, () => { const r = townRec(ci); return r ? resultsHtml(r, TOWN_TOTAL, true) : `<div class="sub">${tr("No result.", "אין תוצאה.")}</div>`; }));
+  }
   return html;
+}
+
+// change view: the measure in both elections and the difference
+function changeBox(c) {
+  if (!c) return "";
+  const pts = d => `${d > 0 ? "+" : d < 0 ? "−" : "±"}${(Math.round(Math.abs(d) * 10) / 10).toFixed(1)}`;
+  return `<div class="chg"><div class="row">${swatch(changeColor(c.d))}<b>${tr(`Change in ${measureName()}`, `שינוי ב${measureName()}`)}</b></div>
+    <table><tr><td>${yearLabel(FROM)}</td><td class="n">${c.then == null ? tr("no result", "אין תוצאה") : pctFmt(c.then)}</td></tr>
+    <tr><td>${yearLabel(year)}</td><td class="n">${c.now == null ? tr("no result", "אין תוצאה") : pctFmt(c.now)}</td></tr>
+    <tr><td>${tr("Change, in points", "שינוי, בנקודות אחוז")}</td><td class="n"><b>${c.d == null ? "–" : `<bdi dir="ltr">${pts(c.d)}</bdi>`}</b></td></tr></table></div>`;
+}
+// the second map's election for the place under the pointer: blocs only
+function compareArea(rec) {
+  if (!C.A) return "";
+  let body;
+  if (rec.kind === "dot") {
+    const f = C.DOTS.features.find(x => +x.properties.SEMEL_YISHUV === rec.code);
+    body = f ? inCtx(C, () => { const r = dotRecord(f.properties); return resultsHtml(r, r.bloc === "none"
+      ? tr("No bloc above 2/3", "אין גוש מעל שני שלישים") : blocName(r.bloc), true); }) : null;
+  } else {
+    const j = C.keyIdx.get(keyOf(A, A.areas[rec.i]));
+    body = j == null ? null : inCtx(C, () => {
+      const r = areaRecord(j);
+      return r.bloc === "no_station" ? null : resultsHtml(r, r.bloc === "none"
+        ? tr("No bloc above 2/3", "אין גוש מעל שני שלישים") : blocName(r.bloc), true);
+    });
+  }
+  return `<h2 class="cmp-h">${yearLabel(C.year)}</h2>` + (body || `<div class="sub">${tr("No polling station in this area.", "אין קלפי באזור זה.")}</div>`);
 }
 
 // the panel remembers how it was made, so a change of view or party redraws it (technical review M1)
@@ -689,15 +1150,28 @@ function hatch(a, b) {
 }
 
 function padding() {
-  if (isPhone()) return { top: $("side").offsetHeight + 16, bottom: 16, left: 16, right: 16 };
+  const two = document.body.classList.contains("compare");
+  if (isPhone()) {
+    // side by side on a phone: the maps are stacked, the first one is half the height
+    const h = (P && P.map ? P.map.getCanvas().clientHeight : innerHeight) || innerHeight;
+    return { top: Math.min($("side").offsetHeight + 16, two ? h * 0.4 : h), bottom: 16, left: 16, right: 16 };
+  }
+  // side by side: the side panel covers the first map only (on the right in Hebrew), the details the second
+  if (two) return HE ? { top: 24, bottom: 24, left: 24, right: $("side").offsetWidth + 40 }
+    : { top: 24, bottom: 24, left: $("side").offsetWidth + 40, right: 24 };
   return { top: 24, bottom: 24, left: $("side").offsetWidth + 40, right: $("info").offsetWidth + 40 };
 }
 
 const FIRST_VIEW = [[34.35, 31.15], [35.75, 33.1]];
 
-function initMap(base) {
+// one map per election on screen: the main one in #map (it keeps the address's #zoom/lat/lng), the second
+// in #map2, which follows it
+let protocolAdded = false;
+function initMap(E, container) { inCtx(E, () => makeMap(E, container)); }
+function makeMap(E, container) {
+  const base = E.base, main = E === P;
   // PREVIEW (scripts/build_preview.py, for hosts that can't serve tiles): plain GeoJSON instead
-  if (!PREVIEW) maplibregl.addProtocol("pmtiles", new pmtiles.Protocol().tile);
+  if (!PREVIEW && !protocolAdded) { maplibregl.addProtocol("pmtiles", new pmtiles.Protocol().tile); protocolAdded = true; }
   // Hebrew labels need right-to-left shaping; the plugin ships with the site
   if (maplibregl.getRTLTextPluginStatus() === "unavailable")
     maplibregl.setRTLTextPlugin(new URL("vendor/mapbox-gl-rtl-text-0.2.3.js", location.href).href, true);
@@ -708,19 +1182,20 @@ function initMap(base) {
   const bgColor = () => SURROUND ? (meta.states.water || "#c6dcea") : (css("--map-bg") || "#e6e6e3");
   const mapBg = bgColor();
 
-  map = new maplibregl.Map({
-    container: "map",
+  map = E.map = new maplibregl.Map({
+    container,
     style: { version: 8, sources: {}, glyphs: new URL("fonts/", location.href).href + `{fontstack}/{range}.${PREVIEW ? "woff" : "pbf"}`,
       layers: [{ id: "bg", type: "background", paint: { "background-color": mapBg } }] },
     // first view: the populated band from Nahariya to Beersheba; Eilat is a scroll away (style review, item 6)
-    bounds: FIRST_VIEW, fitBoundsOptions: { padding: padding() },
+    ...(main ? { bounds: FIRST_VIEW, fitBoundsOptions: { padding: padding() } }
+      : { center: P.map.getCenter(), zoom: P.map.getZoom() }),
     // with a frame, panning stops a little past it (more to the sides, where the panels sit)
     maxBounds: meta.frame ? [[meta.frame[0] - 2.5, meta.frame[1] - 0.6], [meta.frame[2] + 2.5, meta.frame[3] + 0.6]] : undefined,
-    hash: true, attributionControl: false, dragRotate: false, pitchWithRotate: false, maxZoom: 16, minZoom: 4,
+    hash: main, attributionControl: false, dragRotate: false, pitchWithRotate: false, maxZoom: 16, minZoom: 4,
   });
   // sea and large water follow the page theme, also when it changes after load
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    if (!map.getLayer("bg")) return;  // the style may still be loading
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => inCtx(E, () => {
+    if (!map || !map.getLayer("bg")) return;  // the style may still be loading (or the map was closed)
     map.setPaintProperty("bg", "background-color", bgColor());
     if (map.getLayer("nb-land")) {
       map.setPaintProperty("nb-land", "fill-color", css(SURROUND === "quiet" ? "--map-bg" : "--nb-land"));
@@ -731,9 +1206,16 @@ function initMap(base) {
       }
       if (map.getLayer("nb-road")) map.setPaintProperty("nb-road", "line-color", css("--nb-road"));
     }
-  });
+  }));
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();
+  // the two maps move together
+  if (!main) { follow(P.map, map); follow(map, P.map); }
+  map.on("error", e => console.error(e.error || e));
+  if (!main) {
+    map.on("load", () => inCtx(E, () => { addLayers(E); repaintMap(); }));
+    return;
+  }
   // controls in the corner the panels leave free: bottom-left in Hebrew, where the side panel is on the right
   const corner = HE ? "bottom-left" : "bottom-right";
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), corner);
@@ -755,19 +1237,18 @@ function initMap(base) {
     pick(pt, true);
   });
 
-  map.on("error", e => console.error(e.error || e));
   map.once("idle", () => status(""));
+  map.on("load", () => inCtx(E, () => { addLayers(E); repaintMap(); }));
+}
 
-  map.on("load", () => {
-    const pairs = new Set();
-    for (const b of BLOCS) {
-      const ls = meta.parties.filter(p => p.bloc === b).map(p => p.letters);
-      for (const a of ls) for (const c of ls) if (a !== c) pairs.add(`${a}|${c}`);
-    }
-    for (const pr of pairs) {
-      const [a, c] = pr.split("|");
-      map.addImage(`h-${a}-${c}`, hatch(colors[a], colors[c]));
-    }
+function addLayers(E) {
+    const base = E.base, main = E === P;
+    const tiles = new URL(base + "areas.pmtiles", location.href).href;
+    const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    const SURROUND = meta.frame && meta.surround && meta.surround !== "plain" ? meta.surround : null;
+    // stripes for any two lists, since the reader's coding can put any two in one bloc
+    const ls = meta.parties.map(p => p.letters);
+    for (const a of ls) for (const c of ls) if (a !== c) map.addImage(`h-${a}-${c}`, hatch(colors[a], colors[c]));
     // the sea near Israel and the Sea of Galilee in water blue (scripts/land_features.py); the land base
     // sits on top and already stops at the coast
     map.addSource("water", { type: "geojson", data: "data/water.geojson" });
@@ -840,15 +1321,20 @@ function initMap(base) {
     // the frame: everything outside the sea's rectangle in the page colour, with a thin border (build_site --frame)
     if (meta.frame) {
       const [w, s, e, n] = meta.frame, ring = [[w, s], [e, s], [e, n], [w, n], [w, s]];
-      map.addSource("frame", { type: "geojson", data: { type: "Feature", properties: {}, geometry: { type: "Polygon",
-        coordinates: [[[-179, -85], [179, -85], [179, 85], [-179, 85], [-179, -85]], ring.slice().reverse()] } } });
+      // four plain strips round the box: a world polygon with the box as a hole is cut wrongly into tiles at
+      // higher zooms and covered parts of the map inside the frame
+      const rect = (x0, y0, x1, y1) => ({ type: "Feature", properties: {}, geometry: { type: "Polygon",
+        coordinates: [[[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]]] } });
+      map.addSource("frame", { type: "geojson", data: { type: "FeatureCollection", features: [
+        rect(-179, n, 179, 85), rect(-179, -85, 179, s), rect(-179, s, w, n), rect(e, s, 179, n)] } });
       map.addSource("frame-line", { type: "geojson", data: { type: "Feature", properties: {},
         geometry: { type: "LineString", coordinates: ring } } });
       const pageBg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || "#f7f7f5";
       const ink = getComputedStyle(document.documentElement).getPropertyValue("--muted").trim() || "#5f6368";
-      map.once("idle", () => {  // above the labels, so nothing spills past the border
-        map.addLayer({ id: "frame", type: "fill", source: "frame", paint: { "fill-color": pageBg } });
-        map.addLayer({ id: "frame-line", type: "line", source: "frame-line", paint: { "line-color": ink, "line-width": 1.2 } });
+      const fm = map;  // this election's map: the handler runs outside inCtx
+      fm.once("idle", () => {  // above the labels, so nothing spills past the border
+        fm.addLayer({ id: "frame", type: "fill", source: "frame", paint: { "fill-color": pageBg } });
+        fm.addLayer({ id: "frame-line", type: "line", source: "frame-line", paint: { "line-color": ink, "line-width": 1.2 } });
       });
     }
 
@@ -888,43 +1374,69 @@ function initMap(base) {
       "symbol-sort-key": ["-", ["get", "v"]], "text-padding": 3, "text-max-width": 12 },
       paint: { "text-color": "#2b2b2b", "text-halo-color": "rgba(255,255,255,0.85)", "text-halo-width": 1.4 } });
 
-    applyShares();
-    map.on("mousemove", e => pick(e.point, false));
-    map.on("click", e => pick(e.point, true));
-    map.on("mouseout", () => { if (!pinned()) setHover(null); });
-  });
+    const m = map;  // handlers run outside inCtx: they name their own election
+    m.on("mousemove", e => pick(e.point, false, E));
+    m.on("click", e => pick(e.point, true, E));
+    m.on("mouseout", () => { if (!pinned()) setHover(null); });
+    // a place already chosen on the main map shows on the second as well
+    if (!main && P.hovered != null) hoverSecond(P.hovered);
+    if (!main) townHL(P.townCode ?? -1);
 }
 
+// the hovered or chosen area is outlined on both maps (always called for the main map's election)
 function setHover(id) {
-  if (hovered === id) return;
-  if (hovered !== null) map.setFeatureState({ ...FS, id: hovered }, { hover: false });
-  hovered = id;
-  if (id !== null) map.setFeatureState({ ...FS, id }, { hover: true });
+  if (P.hovered === id) return;
+  if (P.hovered != null) P.map.setFeatureState({ ...FS, id: P.hovered }, { hover: false });
+  P.hovered = hovered = id;
+  if (id != null) P.map.setFeatureState({ ...FS, id }, { hover: true });
+  hoverSecond(id);
+}
+function hoverSecond(id) {
+  if (!C || !C.map || !C.A || !C.map.getSource("areas")) return;
+  const j = id == null || !P.A ? null : C.keyIdx.get(keyOf(P.A, P.A.areas[id])) ?? null;
+  if (C.hovered === j) return;
+  if (C.hovered != null) C.map.setFeatureState({ ...FS, id: C.hovered }, { hover: false });
+  C.hovered = j;
+  if (j != null) C.map.setFeatureState({ ...FS, id: j }, { hover: true });
+}
+// the chosen town's outline, on both maps
+function townHL(code) {
+  P.townCode = code;
+  for (const E of [P, C]) if (E && E.map && E.map.getLayer("town-hl")) E.map.setFilter("town-hl", ["==", ["get", "c"], code]);
 }
 
 // a place is pinned once it is in the address and its details can be shown
 const pinned = () => place != null && A != null;
 
-function pick(point, sticky) {
-  if (!map.getLayer("fill")) return;
-  const f = map.queryRenderedFeatures(point, { layers: ["dots", "dots-fill", "fill"] })
+// what is under the pointer on either map; the panel always speaks for the main map's election, with the
+// second map's below it
+function pick(point, sticky, E = P) {
+  const m = E.map;
+  if (!m || !m.getLayer("fill")) return;
+  const f = m.queryRenderedFeatures(point, { layers: ["dots", "dots-fill", "fill"] })
     .find(x => x.properties.b !== "no_station" || x.properties.g === 1);  // empty land: no highlight
-  map.getCanvas().style.cursor = f ? "pointer" : "";
+  m.getCanvas().style.cursor = f ? "pointer" : "";
   // a pinned place (click, tap, search or link) keeps the panel and highlight; hover leaves it alone
   if (!sticky && pinned()) return;
   if (!f) { if (sticky) clearSelection(); else setHover(null); return; }
-  if (sticky) map.setFilter("town-hl", ["==", ["get", "c"], -1]);
+  if (sticky) townHL(-1);
   if (f.layer.id === "fill") {
-    setHover(f.id);
-    if (!A) { showInfo(`<div class="sub">${tr("Loading area details...", "טוען את פרטי האזור...")}</div>`); return; }
-    const id = f.id;
+    if (!A || (E !== P && !E.A)) { showInfo(`<div class="sub">${tr("Loading area details...", "טוען את פרטי האזור...")}</div>`); return; }
+    const id = E === P ? f.id : P.keyIdx.get(keyOf(E.A, E.A.areas[f.id]));
+    if (id == null) return;
+    setHover(id);
     showInfo(() => recordHtml(areaRecord(id)));
-    if (sticky) { const r = A.areas[f.id]; setPlace(`${A.towns[r[0]][0]}-${r[1]}`); }
+    if (sticky) { const r = A.areas[id]; setPlace(`${A.towns[r[0]][0]}-${r[1]}`); }
   } else {
     setHover(null);
-    const props = f.properties;
+    let props = f.properties;
+    if (E !== P) {  // the same locality on the main map, if it is a rough shape there too
+      const own = DOTS.features.find(x => +x.properties.SEMEL_YISHUV === +props.SEMEL_YISHUV);
+      if (!own) { showInfo(inCtx(E, () => `<div class="sub">${yearLabel(E.year)}</div>` + recordMain(dotRecord(props)))); return; }
+      props = own.properties;
+    }
     showInfo(() => recordHtml(dotRecord(props)));
-    if (sticky) setPlace(String(f.properties.SEMEL_YISHUV));
+    if (sticky) setPlace(String(props.SEMEL_YISHUV));
   }
 }
 
@@ -1053,7 +1565,7 @@ function chooseResult(e) {
   $("town-list").hidden = true;
   $("town").setAttribute("aria-expanded", "false");
   map.fitBounds([[w, s], [ea, n]], { padding: padding(), maxZoom: 15, duration: reduceMotion ? 0 : 900 });
-  map.setFilter("town-hl", ["==", ["get", "c"], -1]);
+  townHL(-1);
   if (g.areas.length === 1) {
     const i = g.areas[0];
     setPlace(`${t[0]}-${A.areas[i][1]}`);
@@ -1076,7 +1588,7 @@ function choose(ti, fly = true) {
   input.setAttribute("aria-expanded", "false");
   setPlace(String(t[0]));
   if (fly) map.fitBounds([[w, s], [e, n]], { padding: padding(), maxZoom: t[5] === "dot" ? 13 : 14, duration: reduceMotion ? 0 : 900 });
-  map.setFilter("town-hl", ["==", ["get", "c"], t[5] === "area" ? t[0] : -1]);
+  townHL(t[5] === "area" ? t[0] : -1);
   setHover(null);
   if (t[5] === "dot") {
     const f = DOTS.features.find(f => +f.properties.SEMEL_YISHUV === t[0]);

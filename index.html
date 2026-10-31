@@ -52,6 +52,7 @@
   .panel td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 6px; }
   .years { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
   #years { display: grid; grid-template-columns: repeat(4, 1fr); }  /* eight elections in two rows */
+  #modes { display: grid; grid-template-columns: 1fr 1fr; }  /* four colour modes in two rows */
   .years button { font: inherit; font-size: 13px; padding: 3px 8px; border-radius: 6px; white-space: nowrap;
     border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; }
   .years button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
@@ -70,6 +71,34 @@
   #copy-done { margin: 0 0 0 6px; }
   html[dir="rtl"] #copy-done { margin: 0 6px 0 0; }
   .panel tr.sel td { font-weight: 650; }
+  /* change view and bloc coding */
+  .pick[hidden] { display: none; }
+  .pick.two:not([hidden]) { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .pick.inline { display: flex; align-items: center; gap: 8px; }
+  .pick.inline label { margin: 0; flex: 1 1 auto; }
+  .pick.inline select { width: auto; flex: none; font-size: 13px; padding: 3px 4px; }
+  .chg { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; margin: 6px 0 8px; }
+  .chg .row { font-size: 13px; }
+  .panel h2.cmp-h { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 12px; color: var(--text); }
+  #coding-box > summary { font-size: 13px; color: var(--text); font-weight: 600; margin-top: 6px; }
+  #coding td { vertical-align: middle; }
+  #coding select { font: inherit; font-size: 12px; padding: 1px 2px; border-radius: 4px; max-width: 150px;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+  #coding-reset { font-size: 12px; margin-top: 4px; }
+  /* two maps side by side (phones: one above the other) */
+  #map2, .map-tag { display: none; }
+  body.compare #map { right: 50%; }
+  body.compare #map2 { display: block; position: absolute; top: var(--header-h); left: 50%; right: 0; bottom: 0;
+    background: var(--map-bg); border-left: 1px solid var(--border); }
+  html[dir="rtl"] body.compare #map { right: 0; left: 50%; }
+  html[dir="rtl"] body.compare #map2 { left: 0; right: 50%; border-left: 0; border-right: 1px solid var(--border); }
+  body.compare .map-tag { display: block; position: absolute; z-index: 1; bottom: 14px; transform: translateX(-50%);
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 1px 8px;
+    font-size: 13px; font-weight: 650; pointer-events: none; }
+  body.compare #map-tag1 { left: calc(25% + 153px); }  /* middle of what the side panel leaves of the first map */
+  body.compare #map-tag2 { left: 75%; }
+  html[dir="rtl"] body.compare #map-tag1 { left: calc(75% - 153px); }
+  html[dir="rtl"] body.compare #map-tag2 { left: 25%; }
   .blocbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 4px 0 8px; background: var(--border); }
 
   /* search */
@@ -124,6 +153,11 @@
     html[dir="rtl"] #side, html[dir="rtl"] #info { left: 8px; right: 8px; }  /* phone: full width in Hebrew too */
     .close { padding: 2px 4px; }
     .maplibregl-ctrl-bottom-right, .maplibregl-ctrl-bottom-left { bottom: 0; }
+    body.compare #map, html[dir="rtl"] body.compare #map { left: 0; right: 0; bottom: calc(50% - var(--header-h) / 2); }
+    body.compare #map2, html[dir="rtl"] body.compare #map2 { left: 0; right: 0; top: calc(50% + var(--header-h) / 2);
+      border: 0; border-top: 1px solid var(--border); }
+    body.compare #map-tag1, html[dir="rtl"] body.compare #map-tag1 { left: 50%; bottom: calc(50% - var(--header-h) / 2 + 8px); }
+    body.compare #map-tag2, html[dir="rtl"] body.compare #map-tag2 { left: 50%; bottom: auto; top: calc(50% + var(--header-h) / 2 + 8px); }
   }
 </style>
 </head>
@@ -146,6 +180,9 @@
 
 <main>
   <div id="map" role="region" aria-label="Election map" data-he-label="מפת הבחירות"></div>
+  <div id="map2" role="region" aria-label="Second election map" data-he-label="מפת הבחירות השנייה"></div>
+  <div class="map-tag" id="map-tag1" aria-hidden="true"></div>
+  <div class="map-tag" id="map-tag2" aria-hidden="true"></div>
   <div id="cross" aria-hidden="true"></div>
   <div id="status" data-he="טוען מפה...">Loading map...</div>
 
@@ -160,6 +197,7 @@
       <button type="button" data-mode="party" aria-pressed="true" data-he="מפלגה מובילה">Leading party</button>
       <button type="button" data-mode="bloc" aria-pressed="false" data-he="גוש">Bloc</button>
       <button type="button" data-mode="share" aria-pressed="false" data-he="מפלגה אחת">One party</button>
+      <button type="button" data-mode="change" aria-pressed="false" data-he="שינוי">Change</button>
     </div>
 
     <div class="search" role="search">
@@ -178,6 +216,14 @@
       <label for="party" data-he="מפלגה">Party</label>
       <select id="party"></select>
     </div>
+    <div class="pick two" id="change-pick" hidden>
+      <div><label for="measure" data-he="שינוי ב">Change in</label><select id="measure"></select></div>
+      <div><label for="from" data-he="מאז">Since</label><select id="from"></select></div>
+    </div>
+    <div class="pick inline" id="compare-pick">
+      <label for="compare" data-he="מפה שנייה לצד המפה">Second map beside it</label>
+      <select id="compare"></select>
+    </div>
     <details id="legend-box" open>
       <summary data-he="מקרא וקולות שאינם על המפה">Legend and votes off the map</summary>
       <div class="sub" id="intro" data-he="אזור נצבע בצבע הגוש כשהגוש זוכה ביותר משני שלישים מהקולות הכשרים; הצבע הוא של המפלגה המובילה בגוש באזור. פסים מסמנים מפלגה שנייה מאותו גוש שקיבלה לפחות מחצית מקולות המפלגה המובילה. <a href=&quot;about-he.html&quot;>איך זה עובד</a>.">An area takes a bloc colour when that bloc wins more than 2/3 of valid votes;
@@ -186,6 +232,13 @@
       <div id="legend-body"></div>
       <div id="top" hidden></div>
       <div id="envelopes"></div>
+    </details>
+    <details id="coding-box">
+      <summary id="coding-sum">Bloc coding</summary>
+      <div class="sub" data-he="לאיזה גוש נספרת כל רשימה. שינוי כאן חל על כל צבעי הגושים והנתונים במפה, וגם על תצוגת השינוי. * השיוך של האתר.">Which bloc each list counts for. A change here applies to every bloc colour and
+        figure on the map, and to the change view. * the site's own coding.</div>
+      <table id="coding"></table>
+      <button type="button" class="linkbtn" id="coding-reset" hidden data-he="חזרה לשיוך של האתר">Back to the site's coding</button>
     </details>
   </section>
 
