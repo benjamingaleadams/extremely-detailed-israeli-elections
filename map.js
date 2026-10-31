@@ -1,5 +1,5 @@
 // Map page: vector tiles from data/<year>/areas.pmtiles, hover details from areas.json,
-// town search from the same file. Built into site/ by scripts/build_site.py.
+// town search from the same file, neighbourhood names from data/area_names.json. Built into site/ by scripts/build_site.py.
 "use strict";
 
 // this election's blocs, right camp first; names differ by election (tables/blocs.csv)
@@ -12,6 +12,7 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isPhone = () => matchMedia("(max-width: 720px)").matches;
 const getJSON = url => fetch(url).then(r => { if (!r.ok) throw new Error(url + " " + r.status); return r.json(); });
 
+let NAMES = {};  // "<locality code x 10000 + area>": [English, Hebrew, [w, s, e, n], other CBS names in Hebrew]
 let meta, A = null, DOTS = { type: "FeatureCollection", features: [] }, map, parties, colors, blocColor = {};
 let hovered = null, mode = "party";
 const PREVIEW = window.PREVIEW_DATA === true;
@@ -245,7 +246,9 @@ async function start() {
   try { showNames = localStorage.getItem("town-names") !== "off"; } catch (e) { showNames = true; }
   $("names").addEventListener("change", e => setNames(e.target.checked));
   setNames(showNames);
-  const areasReady = getJSON(base + "areas.json").then(d => { A = d; buildSearch(); applyShares(); });
+  const namesReady = getJSON("data/area_names.json").then(d => { NAMES = d; }).catch(e => console.error(e));
+  const areasReady = Promise.all([getJSON(base + "areas.json"), namesReady])
+    .then(([d]) => { A = d; buildSearch(); applyShares(); });
   const dotsReady = getJSON(base + "dots.geojson").then(d => { DOTS = d; });
 
   applyLanguage();
@@ -385,7 +388,8 @@ function sharesFromArray(arr) { return arr ? A.parties.map((l, k) => [l, arr[k]]
 
 function areaRecord(i) {
   const r = A.areas[i], t = A.towns[r[0]];
-  return { name: t[2] || t[1], he: t[1], stat: r[1], valid: r[2], stations: r[3], approx: r[4],
+  const nb = NAMES[t[0] * 10000 + r[1]];
+  return { name: t[2] || t[1], he: t[1], stat: r[1], nb: nb ? nb[HE ? 1 : 0] : "", valid: r[2], stations: r[3], approx: r[4],
     bloc: r[5], shares: sharesFromArray(r[8]), other: r[9] || 0, kind: t[5],
     estFrom: r[10], estVotes: r[11], population: r[12], placeholder: r[13], grey: r[14] === 1, bloc2: r[15] };
 }
@@ -441,7 +445,7 @@ function resultsHtml(rec, verdict) {
 
 function recordHtml(rec) {
   const isDot = rec.kind === "dot";
-  let html = `<h3>${esc(HE ? rec.he : rec.name)}${rec.stat ? ` <span class="sub">${tr("area", "אזור")} ${rec.stat}</span>` : ""}</h3>
+  let html = `<h3>${esc(HE ? rec.he : rec.name)}${rec.stat ? ` <span class="sub">${rec.nb ? esc(rec.nb) + ", " : ""}${tr("area", "אזור")} ${rec.stat}</span>` : ""}</h3>
     <div class="he">${esc(HE ? rec.name : rec.he)}</div>`;
   if (isDot && rec.shape !== "cbs_merged") html += `<div class="sub">${dotKind(rec.he || "")}</div>`;
   if (rec.bloc === "no_station") return html + `<div class="sub">${rec.grey
@@ -689,13 +693,31 @@ let townIndex = [], active = -1, results = [];
 function buildSearch() {
   const size = new Map();
   for (const r of A.areas) size.set(r[0], (size.get(r[0]) || 0) + (r[2] || 0) + 1);
-  townIndex = A.towns.map((t, i) => {
-    if (t[5] === "none") return null;
-    const en = [t[2], ...t[4]].filter(Boolean);
+  const entry = (en, he, extra) => {
     const words = en.flatMap(n => n.toLowerCase().split(/[\s\-()]+/).map(normEn)).filter(Boolean);
-    return { i, en: en.map(normEn), words, sk: en.map(skeleton), he: normHe(t[1]),
-      heWords: t[1].split(/[\s\-]+/).map(normHe).filter(Boolean), size: size.get(i) || 0 };
-  }).filter(Boolean);
+    const hes = he.map(normHe).filter(Boolean);
+    return { en: en.map(normEn), words, sk: en.map(skeleton), hes,
+      heWords: he.flatMap(h => h.split(/[\s\-]+/)).map(normHe).filter(Boolean), ...extra };
+  };
+  townIndex = A.towns.map((t, i) => t[5] === "none" ? null
+    : entry([t[2], ...t[4]].filter(Boolean), [t[1]], { i, size: size.get(i) || 0 })).filter(Boolean);
+  // neighbourhoods: one entry per name in a town, covering every area that carries it
+  const byCode = new Map(A.areas.map((r, i) => [A.towns[r[0]][0] * 10000 + r[1], i]));
+  const groups = new Map();
+  for (const [code, [en, he, box, rest]] of Object.entries(NAMES)) {
+    const i = byCode.get(+code);
+    if (i == null) continue;
+    const ti = A.areas[i][0], key = ti + "|" + en;
+    const g = groups.get(key) || { ti, en, he, rest: new Set(), areas: [], box: [180, 90, -180, -90] };
+    g.areas.push(i);
+    (rest || "").split(", ").filter(Boolean).forEach(n => g.rest.add(n));
+    g.box = [Math.min(g.box[0], box[0]), Math.min(g.box[1], box[1]), Math.max(g.box[2], box[2]), Math.max(g.box[3], box[3])];
+    groups.set(key, g);
+  }
+  for (const g of groups.values()) {
+    townIndex.push(entry(g.en.split(" / "), [...g.he.split(" / "), ...g.rest],
+      { nb: g, i: g.ti, size: -1 }));  // after a town of the same score
+  }
 
   const input = $("town"), list = $("town-list");
   input.addEventListener("input", () => { results = search(input.value); active = results.length ? 0 : -1; render(); });
@@ -707,7 +729,7 @@ function buildSearch() {
       render();
     } else if (e.key === "Enter") {
       e.preventDefault();
-      if (results.length) choose(results[Math.max(active, 0)]);
+      if (results.length) chooseResult(results[Math.max(active, 0)]);
     } else if (e.key === "Escape") {
       if (!list.hidden) { list.hidden = true; input.setAttribute("aria-expanded", "false"); }
       else input.value = "";
@@ -716,7 +738,7 @@ function buildSearch() {
   input.addEventListener("blur", () => setTimeout(() => { list.hidden = true; input.setAttribute("aria-expanded", "false"); }, 150));
   list.addEventListener("mousedown", e => {
     const li = e.target.closest("li[data-k]");
-    if (li) { e.preventDefault(); choose(results[+li.dataset.k]); }
+    if (li) { e.preventDefault(); chooseResult(results[+li.dataset.k]); }
   });
 }
 
@@ -728,7 +750,8 @@ function search(q) {
     const h = normHe(q);
     if (!h) return [];
     for (const t of townIndex) {
-      let s = t.he === h ? 0 : t.he.startsWith(h) ? 1 : t.heWords.some(w => w.startsWith(h)) ? 2 : t.he.includes(h) ? 3 : 9;
+      let s = t.hes.includes(h) ? 0 : t.hes.some(e => e.startsWith(h)) ? 1 : t.heWords.some(w => w.startsWith(h)) ? 2
+        : t.hes.some(e => e.includes(h)) ? 3 : 9;
       if (s < 9) scored.push([s, t]);
     }
   } else {
@@ -746,23 +769,47 @@ function search(q) {
     }
   }
   scored.sort((a, b) => a[0] - b[0] || b[1].size - a[1].size);
-  return scored.slice(0, 8).map(([, t]) => t.i);
+  return scored.slice(0, 8).map(([, t]) => t);
 }
 
 function render() {
   const input = $("town"), list = $("town-list");
   if (!input.value.trim()) { list.hidden = true; input.setAttribute("aria-expanded", "false"); return; }
-  list.innerHTML = results.length ? results.map((ti, k) => {
-    const t = A.towns[ti];
+  list.innerHTML = results.length ? results.map((e, k) => {
+    const t = A.towns[e.i];
+    const en = e.nb ? `${e.nb.en}, ${t[2] || t[1]}` : t[2] || t[1], he = e.nb ? `${e.nb.he}, ${t[1]}` : t[1];
     return `<li role="option" id="opt-${k}" data-k="${k}" aria-selected="${k === active}">
-      <span>${esc(t[2] || t[1])}</span><span class="he">${esc(t[1])}</span></li>`;
-  }).join("") : `<li class="none" role="option" aria-disabled="true">${tr("No town found", "לא נמצא יישוב")}</li>`;
+      <span>${esc(en)}</span><span class="he">${esc(he)}</span></li>`;
+  }).join("") : `<li class="none" role="option" aria-disabled="true">${tr("Nothing found", "לא נמצא")}</li>`;
   list.hidden = false;
   input.setAttribute("aria-expanded", "true");
   if (active >= 0) {
     input.setAttribute("aria-activedescendant", `opt-${active}`);
     $(`opt-${active}`).scrollIntoView({ block: "nearest" });
   } else input.removeAttribute("aria-activedescendant");
+}
+
+// a search result: a town, or a neighbourhood (one area is pinned; several show their town)
+function chooseResult(e) {
+  if (!e.nb) { choose(e.i); return; }
+  const g = e.nb, t = A.towns[g.ti], [w, s, ea, n] = g.box;
+  $("town").value = `${HE ? g.he : g.en}, ${HE ? t[1] : t[2] || t[1]}`;
+  $("town-list").hidden = true;
+  $("town").setAttribute("aria-expanded", "false");
+  map.fitBounds([[w, s], [ea, n]], { padding: padding(), maxZoom: 15, duration: reduceMotion ? 0 : 900 });
+  map.setFilter("town-hl", ["==", ["get", "c"], -1]);
+  if (g.areas.length === 1) {
+    const i = g.areas[0];
+    setPlace(`${t[0]}-${A.areas[i][1]}`);
+    setHover(i);
+    showInfo(recordHtml(areaRecord(i)));
+    return;
+  }
+  setPlace(String(t[0]));
+  setHover(null);
+  showInfo(`<h3>${esc(HE ? g.he : g.en)}</h3><div class="he">${esc(HE ? g.en : g.he)}</div>
+    <div class="sub">${esc(HE ? t[1] : t[2] || t[1])}, ${tr("areas", "אזורים")} ${g.areas.map(i => A.areas[i][1]).sort((a, b) => a - b).join(", ")}.
+    ${tr("Hover an area for its own result.", "ריחוף מעל אזור מציג את התוצאה שלו.")}</div>`);
 }
 
 function choose(ti, fly = true) {
