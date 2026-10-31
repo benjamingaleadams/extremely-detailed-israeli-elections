@@ -260,9 +260,6 @@ const yearLabel = y => {
 // year buttons use the same "Apr 2019" as the text (design audit B5)
 const yearShort = yearLabel;
 const TOWN_TOTAL = tr("Town total", "סה״כ ביישוב");
-// land outside every Israeli locality (Palestinian towns and land in the West Bank, and Gaza): its own neutral
-// tone, not the cream of "nobody lives here" (design audit A2)
-const OUTSIDE = "#dcdad3";
 // a name's Hebrew form after the English one; Hebrew mode shows Hebrew only (CLAUDE.md; design audit B11)
 const otherName = (en, he) => HE || !he ? "" : `<span class="he">${esc(he)}</span>`;
 
@@ -841,8 +838,6 @@ function legendLand() {
     <div class="row">${swatch(meta.states.no_station)}${tr("Nobody lives here (no polling station)", "אין כאן תושבים (אין קלפי)")}</div>
     <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Built up, nobody lives here (industry, port, airport or campus)",
       "שטח בנוי שאין בו תושבים (תעשייה, נמל, שדה תעופה או קמפוס)")}</div>
-    <div class="row">${swatch(OUTSIDE)}${tr("Palestinian towns and land: no Israeli polling stations",
-      "יישובים ושטחים פלסטיניים: אין קלפיות לכנסת")}</div>
     <div class="row">${swatch(meta.states.park || "#cfe1b0")}${tr("Park", "פארק")}</div>
     <div class="row">${swatch(meta.states.beach || "#f0e8d4")}${tr("Beach", "חוף")}</div>`;
 }
@@ -1320,8 +1315,8 @@ function addLayers(E) {
     }
     // one land base under everything: CBS areas plus the West Bank, gaps closed, so nothing is unclaimed
     map.addSource("land", { type: "geojson", data: "data/land.geojson" });
-    map.addLayer({ id: "land", type: "fill", source: "land", paint: { "fill-color":
-      ["match", ["coalesce", ["get", "k"], "in"], "out", OUTSIDE, meta.states.no_station] } });
+    // Palestinian land is blank like every other empty land (Ben, 31 Oct: no tone of its own); hover names it
+    map.addLayer({ id: "land", type: "fill", source: "land", paint: { "fill-color": meta.states.no_station } });
     // parks, beaches and industry (OpenStreetMap, scripts/land_features.py): seen only where blank land leaves them
     // clear. Shown at every zoom, like the CBS grey areas, so nothing pops in (design audit B1); grey ones hover
     map.addSource("landfeat", { type: "geojson", data: "data/land_features.geojson", generateId: true });
@@ -1354,9 +1349,6 @@ function addLayers(E) {
       paint: { "line-color": "#000", "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0] } });
     map.addLayer({ id: "town-hl", type: "line", ...locSrc, filter: ["==", ["get", "c"], -1],
       paint: { "line-color": "#000", "line-width": 3 } });
-    // the outline of a hovered OpenStreetMap grey shape, as the CBS grey areas get
-    map.addLayer({ id: "landfeat-hl", type: "line", source: "landfeat",
-      paint: { "line-color": "#000", "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0] } });
 
     map.addSource("dots", { type: "geojson", data: DOTS });
     const poly = ["==", ["geometry-type"], "Polygon"];
@@ -1432,7 +1424,7 @@ function addLayers(E) {
     const m = map;  // handlers run outside inCtx: they name their own election
     m.on("mousemove", e => pick(e.point, false, E));
     m.on("click", e => pick(e.point, true, E));
-    m.on("mouseout", () => { landHover(null); if (!pinned()) { setHover(null); resetInfo(); } });
+    m.on("mouseout", () => { if (!pinned()) { setHover(null); resetInfo(); } });
     // a place already chosen on the main map shows on the second as well
     if (!main && P.hovered != null) hoverSecond(P.hovered);
     if (!main) townHL(P.townCode ?? -1);
@@ -1470,19 +1462,17 @@ function pick(point, sticky, E = P) {
   if (!m || !m.getLayer("fill")) return;
   const under = m.queryRenderedFeatures(point, { layers: ["dots", "dots-fill", "fill"] });
   const f = under.find(x => x.properties.b !== "no_station" || x.properties.g === 1);
-  // one rule for every grey shape (design audit B1): OpenStreetMap industry, ports and airports hover and name
-  // themselves like the CBS grey areas; then cream land with no residents, then land outside Israeli localities
+  // land with no result never highlights (Ben, 31 Oct): OpenStreetMap industry, ports and airports only name
+  // themselves in the panel, cream empty land shows nothing, land outside Israeli localities says so
   const osm = f ? null : m.queryRenderedFeatures(point, { layers: ["landfeat"] }).find(x => x.properties.t === "industry");
   const empty = f ? null : under.find(x => x.layer.id === "fill");
   const outside = f || osm || empty ? null : m.queryRenderedFeatures(point, { layers: ["land"] }).find(x => x.properties.k === "out");
-  m.getCanvas().style.cursor = f || osm ? "pointer" : "";
+  m.getCanvas().style.cursor = f ? "pointer" : "";
   // a pinned place (click, tap, search or link) keeps the panel and highlight; hover leaves it alone
   if (!sticky && pinned()) return;
-  landHover(osm && E === P ? osm.id : null);
   if (!f) {
     if (sticky) clearSelection(); else setHover(null);
     if (osm) showInfo(greyHtml(osm.properties, empty));
-    else if (empty && A && E === P) { setHover(empty.id); showInfo(() => recordHtml(areaRecord(empty.id))); }
     else if (outside) showInfo(`<h3>${tr("Palestinian towns and land", "יישובים ושטחים פלסטיניים")}</h3>
       <div class="sub">${tr("Outside every Israeli locality, so there are no Knesset polling stations here.",
         "מחוץ לכל יישוב ישראלי, ולכן אין כאן קלפיות לכנסת.")}</div>`);
@@ -1519,13 +1509,6 @@ function greyHtml(props, area) {
     ${where ? `<div class="sub">${where}</div>` : ""}
     <div class="sub">${tr("Built up, but nobody lives here (industry, port or airport), so no polling station.",
       "שטח בנוי, אך אין כאן תושבים (תעשייה, נמל או שדה תעופה), ולכן אין קלפי.")}</div>`;
-}
-let landHovered = null;
-function landHover(id) {
-  if (landHovered === id || !P.map || !P.map.getSource("landfeat")) return;
-  if (landHovered != null) P.map.setFeatureState({ source: "landfeat", id: landHovered }, { hover: false });
-  landHovered = id;
-  if (id != null) P.map.setFeatureState({ source: "landfeat", id }, { hover: true });
 }
 // the panel back to its starting hint, without touching the address (hover left every place)
 function resetInfo() {
