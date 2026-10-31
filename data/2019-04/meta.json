@@ -5,16 +5,19 @@
  "bloc_order": [
   "Right-wing bloc",
   "Anti-Netanyahu bloc",
+  "Uncommitted",
   "Arab parties"
  ],
  "bloc_he": {
   "Right-wing bloc": "גוש הימין",
   "Anti-Netanyahu bloc": "גוש המתנגדים לנתניהו",
+  "Uncommitted": "לא התחייבו לגוש",
   "Arab parties": "המפלגות הערביות"
  },
  "bloc_side": {
   "Right-wing bloc": "right",
   "Anti-Netanyahu bloc": "left",
+  "Uncommitted": "uncommitted",
   "Arab parties": "arab"
  },
  "parties": [
@@ -23,77 +26,128 @@
    "english": "Likud",
    "transliteration": "haLikud",
    "hebrew": "הליכוד",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "שס",
    "english": "Shas",
    "transliteration": "Shas",
    "hebrew": "ש״ס",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ג",
    "english": "United Torah Judaism",
    "transliteration": "Yahadut haTorah",
    "hebrew": "יהדות התורה",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ל",
    "english": "Yisrael Beytenu",
    "transliteration": "Yisrael Beytenu",
    "hebrew": "ישראל ביתנו",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "טב",
    "english": "Union of Right-Wing Parties",
    "transliteration": "Ichud Miflagot haYamin",
    "hebrew": "איחוד מפלגות הימין",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "כ",
    "english": "Kulanu",
    "transliteration": "Kulanu",
    "hebrew": "כולנו",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "פה",
    "english": "Blue and White",
    "transliteration": "Kachol Lavan",
    "hebrew": "כחול לבן",
-   "bloc": "Anti-Netanyahu bloc"
+   "bloc": "Anti-Netanyahu bloc",
+   "below_threshold": 0
   },
   {
    "letters": "אמת",
    "english": "Labor",
    "transliteration": "haAvoda",
    "hebrew": "העבודה",
-   "bloc": "Anti-Netanyahu bloc"
+   "bloc": "Anti-Netanyahu bloc",
+   "below_threshold": 0
   },
   {
    "letters": "מרצ",
    "english": "Meretz",
    "transliteration": "Meretz",
    "hebrew": "מרצ",
-   "bloc": "Anti-Netanyahu bloc"
+   "bloc": "Anti-Netanyahu bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ום",
    "english": "Hadash-Ta'al",
    "transliteration": "Hadash-Ta'al",
    "hebrew": "חד״ש-תע״ל",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
   },
   {
    "letters": "דעם",
    "english": "Ra'am-Balad",
    "transliteration": "Ra'am-Balad",
    "hebrew": "רע״ם-בל״ד",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
+  },
+  {
+   "letters": "נ",
+   "english": "New Right",
+   "transliteration": "New Right",
+   "hebrew": "הימין החדש",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 1
+  },
+  {
+   "letters": "ז",
+   "english": "Zehut",
+   "transliteration": "Zehut",
+   "hebrew": "זהות",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "נר",
+   "english": "Gesher",
+   "transliteration": "Gesher",
+   "hebrew": "גשר",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "צק",
+   "english": "Social Justice",
+   "transliteration": "Social Justice",
+   "hebrew": "צדק חברתי",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "נץ",
+   "english": "Shield of Israel",
+   "transliteration": "Shield of Israel",
+   "hebrew": "מגן ישראל",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
   }
  ],
  "colors": {
@@ -107,7 +161,12 @@
   "אמת": "#d7262e",
   "מרצ": "#b8005c",
   "ום": "#5eb814",
-  "דעם": "#03771a"
+  "דעם": "#03771a",
+  "נ": "#7ab8b0",
+  "ז": "#c4a35a",
+  "נר": "#a3a3c2",
+  "צק": "#9c8f6a",
+  "נץ": "#b9a38a"
  },
  "states": {
   "none": "#f6eea0",
@@ -157,7 +216,12 @@
     "אמת": 11111,
     "מרצ": 8155,
     "ום": 4197,
-    "דעם": 2791
+    "דעם": 2791,
+    "נ": 10645,
+    "ז": 15766,
+    "נר": 3584,
+    "צק": 209,
+    "נץ": 152
    }
   },
   "unplaced": {
@@ -227,5 +291,6 @@
   36.0,
   33.5
  ],
+ "surround": "plain",
  "built": "2026-10-31"
 }

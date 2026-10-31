@@ -1,0 +1,301 @@
+{
+ "year": "2006",
+ "subtitle": "17th Knesset, 28 March 2006",
+ "subtitle_he": "הכנסת ה-17, 28 במרץ 2006",
+ "bloc_order": [
+  "Right-wing bloc",
+  "Centre-left bloc",
+  "Uncommitted",
+  "Arab parties"
+ ],
+ "bloc_he": {
+  "Right-wing bloc": "גוש הימין",
+  "Centre-left bloc": "גוש המרכז-שמאל",
+  "Uncommitted": "לא התחייבו לגוש",
+  "Arab parties": "המפלגות הערביות"
+ },
+ "bloc_side": {
+  "Right-wing bloc": "right",
+  "Centre-left bloc": "left",
+  "Uncommitted": "uncommitted",
+  "Arab parties": "arab"
+ },
+ "parties": [
+  {
+   "letters": "כן",
+   "english": "Kadima",
+   "transliteration": "Kadima",
+   "hebrew": "קדימה",
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
+  },
+  {
+   "letters": "אמת",
+   "english": "Labor-Meimad",
+   "transliteration": "haAvoda-Meimad",
+   "hebrew": "העבודה-מימד",
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
+  },
+  {
+   "letters": "שס",
+   "english": "Shas",
+   "transliteration": "Shas",
+   "hebrew": "ש״ס",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
+  },
+  {
+   "letters": "מחל",
+   "english": "Likud",
+   "transliteration": "haLikud",
+   "hebrew": "הליכוד",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
+  },
+  {
+   "letters": "ל",
+   "english": "Yisrael Beytenu",
+   "transliteration": "Yisrael Beytenu",
+   "hebrew": "ישראל ביתנו",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
+  },
+  {
+   "letters": "טב",
+   "english": "National Union-NRP",
+   "transliteration": "haIchud haLeumi-Mafdal",
+   "hebrew": "האיחוד הלאומי-מפד״ל",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
+  },
+  {
+   "letters": "זך",
+   "english": "Gil Pensioners",
+   "transliteration": "Gil",
+   "hebrew": "גיל - מפלגת הגמלאים",
+   "bloc": "Uncommitted",
+   "below_threshold": 0
+  },
+  {
+   "letters": "ג",
+   "english": "United Torah Judaism",
+   "transliteration": "Yahadut haTorah",
+   "hebrew": "יהדות התורה",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
+  },
+  {
+   "letters": "מרצ",
+   "english": "Meretz-Yachad",
+   "transliteration": "Meretz-Yachad",
+   "hebrew": "מרצ-יחד",
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
+  },
+  {
+   "letters": "עם",
+   "english": "Ra'am-Ta'al",
+   "transliteration": "Ra'am-Ta'al",
+   "hebrew": "רע״ם-תע״ל",
+   "bloc": "Arab parties",
+   "below_threshold": 0
+  },
+  {
+   "letters": "ו",
+   "english": "Hadash",
+   "transliteration": "Hadash",
+   "hebrew": "חד״ש",
+   "bloc": "Arab parties",
+   "below_threshold": 0
+  },
+  {
+   "letters": "ד",
+   "english": "Balad",
+   "transliteration": "Balad",
+   "hebrew": "בל״ד",
+   "bloc": "Arab parties",
+   "below_threshold": 0
+  },
+  {
+   "letters": "רק",
+   "english": "Green Party",
+   "transliteration": "Green Party",
+   "hebrew": "הירוקים",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "קנ",
+   "english": "Ale Yarok",
+   "transliteration": "Ale Yarok",
+   "hebrew": "עלה ירוק",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "כ",
+   "english": "Jewish National Front",
+   "transliteration": "Jewish National Front",
+   "hebrew": "חזית יהודית לאומית",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 1
+  },
+  {
+   "letters": "פ",
+   "english": "Tafnit",
+   "transliteration": "Tafnit",
+   "hebrew": "תפנית",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  }
+ ],
+ "colors": {
+  "כן": "#e87fb3",
+  "אמת": "#d7262e",
+  "שס": "#f08a24",
+  "מחל": "#2f6fd1",
+  "ל": "#8e5bb5",
+  "טב": "#4f9298",
+  "זך": "#a58bc9",
+  "ג": "#360113",
+  "מרצ": "#b8005c",
+  "עם": "#03771a",
+  "ו": "#5eb814",
+  "ד": "#07d51f",
+  "רק": "#8db596",
+  "קנ": "#c2c48a",
+  "כ": "#ff4500",
+  "פ": "#6f7f8f"
+ },
+ "states": {
+  "none": "#f6eea0",
+  "no_station": "#fbf8ea",
+  "outline": "#8a8a8a",
+  "locality_outline": "#2b2b2b",
+  "west_bank_line": "#5c5c5c",
+  "arab_majority": "#16834f",
+  "built_empty": "#bdb9b0",
+  "park": "#cfe1b0",
+  "beach": "#f0e8d4",
+  "water": "#c6dcea"
+ },
+ "blocs": {
+  "Bibi bloc": "#2c5aa0",
+  "Change bloc": "#c2306f",
+  "Arab parties": "#16834f",
+  "Anti-Netanyahu bloc": "#c2306f",
+  "Right-wing bloc": "#2c5aa0",
+  "Uncommitted": "#8a6fb0",
+  "Centre-left bloc": "#c2306f",
+  "Right-religious bloc": "#2c5aa0"
+ },
+ "blocs_light": {
+  "Bibi bloc": "#9fbbe6",
+  "Change bloc": "#eda9c8",
+  "Anti-Netanyahu bloc": "#eda9c8",
+  "Right-wing bloc": "#9fbbe6",
+  "Uncommitted": "#d3c6e6",
+  "Centre-left bloc": "#eda9c8",
+  "Right-religious bloc": "#9fbbe6"
+ },
+ "notes": {
+  "total_valid": 3137064,
+  "mapped_valid": 2826390,
+  "dots_valid": 5942,
+  "double_envelope": {
+   "valid": 171390,
+   "by_party": {
+    "כן": 40205,
+    "אמת": 23356,
+    "שס": 12602,
+    "מחל": 17510,
+    "ל": 14365,
+    "טב": 17681,
+    "זך": 7835,
+    "ג": 3942,
+    "מרצ": 8828,
+    "עם": 1065,
+    "ו": 888,
+    "ד": 730,
+    "רק": 6483,
+    "קנ": 8924,
+    "כ": 1925,
+    "פ": 1470
+   }
+  },
+  "unplaced": {
+   "valid": 133342,
+   "by_town": {
+    "סח'נין": 10492,
+    "טירה": 7117,
+    "עראבה": 6634,
+    "שגור": 6243,
+    "כפר כנא": 5866,
+    "כפר קרע": 5365,
+    "כפר מנדא": 5288,
+    "טייבה": 5220,
+    "מגאר": 4936,
+    "אבו סנאן": 4645,
+    "בית ג'ן": 4412,
+    "טמרה": 4190,
+    "ריינה": 3824,
+    "כפר יאסיף": 3820,
+    "אעבלין": 3779,
+    "עין מאהל": 3528,
+    "טורעאן": 3513,
+    "כאבול": 3484,
+    "דייר חנא": 3443,
+    "ג'לג'וליה": 3170,
+    "עיר כרמל": 3134,
+    "אורנית": 2658,
+    "דבוריה": 2641,
+    "בועיינה-נוג'ידאת": 2394,
+    "כסרא-סמיע": 2377,
+    "לקיה": 2340,
+    "באקה-ג'ת": 2287,
+    "אכסאל": 2281,
+    "צורן-קדימה": 2276,
+    "פוריידיס": 1677,
+    "ג'סר א-זרקא": 1669,
+    "ביר אל-מכסור": 1640,
+    "שפרעם": 1248,
+    "שגב-שלום": 1112,
+    "מסעודין אל-עזאזמה": 1025,
+    "אבו קורינאת (שבט)": 539,
+    "אבו רובייעה (שבט)": 442,
+    "סייד (שבט)": 432,
+    "נצרת": 396,
+    "נווה אפעל": 348,
+    "חברון": 225,
+    "יפיע": 225,
+    "ערערה-בנגב": 169,
+    "מחנה יפה": 117,
+    "מחנה תל נוף": 113,
+    "עוקבי (בנו עוקבה)": 107,
+    "אסד (שבט)": 97,
+    "מג'דל שמס": 95,
+    "מחנה טלי": 75,
+    "תראבין א-צאנע (שב": 70,
+    "עטאוונה (שבט)": 70,
+    "ח'ואלד (שבט)": 54,
+    "סואעד (כמאנה) (שב": 40
+   }
+  }
+ },
+ "bounds": [
+  34.2674,
+  29.5321,
+  35.8954,
+  33.3351
+ ],
+ "dead_sea": true,
+ "frame": [
+  33.9,
+  29.3,
+  36.0,
+  33.5
+ ],
+ "surround": "plain",
+ "built": "2026-10-31"
+}

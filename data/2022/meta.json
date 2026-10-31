@@ -5,16 +5,19 @@
  "bloc_order": [
   "Bibi bloc",
   "Change bloc",
+  "Uncommitted",
   "Arab parties"
  ],
  "bloc_he": {
   "Bibi bloc": "גוש ביבי",
   "Change bloc": "גוש השינוי",
+  "Uncommitted": "לא התחייבו לגוש",
   "Arab parties": "המפלגות הערביות"
  },
  "bloc_side": {
   "Bibi bloc": "right",
   "Change bloc": "left",
+  "Uncommitted": "uncommitted",
   "Arab parties": "arab"
  },
  "parties": [
@@ -23,84 +26,112 @@
    "english": "Likud",
    "transliteration": "haLikud",
    "hebrew": "הליכוד",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ט",
    "english": "Religious Zionism",
    "transliteration": "haTzionut haDatit",
    "hebrew": "הציונות הדתית",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "שס",
    "english": "Shas",
    "transliteration": "Shas",
    "hebrew": "ש״ס",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ג",
    "english": "United Torah Judaism",
    "transliteration": "Yahadut haTorah",
    "hebrew": "יהדות התורה",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "פה",
    "english": "Yesh Atid",
    "transliteration": "Yesh Atid",
    "hebrew": "יש עתיד",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "כן",
    "english": "National Unity",
    "transliteration": "haMachane haMamlachti",
    "hebrew": "המחנה הממלכתי",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ל",
    "english": "Yisrael Beytenu",
    "transliteration": "Yisrael Beytenu",
    "hebrew": "ישראל ביתנו",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "אמת",
    "english": "Labor",
    "transliteration": "haAvoda",
    "hebrew": "העבודה",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "מרצ",
    "english": "Meretz",
    "transliteration": "Meretz",
    "hebrew": "מרצ",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 1
   },
   {
    "letters": "עם",
    "english": "Ra'am",
    "transliteration": "Ra'am",
    "hebrew": "רע״ם",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
   },
   {
    "letters": "ום",
    "english": "Hadash-Ta'al",
    "transliteration": "Hadash-Ta'al",
    "hebrew": "חד״ש-תע״ל",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
   },
   {
    "letters": "ד",
    "english": "Balad",
    "transliteration": "Balad",
    "hebrew": "בל״ד",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 1
+  },
+  {
+   "letters": "ב",
+   "english": "Jewish Home",
+   "transliteration": "Jewish Home",
+   "hebrew": "הבית היהודי",
+   "bloc": "Bibi bloc",
+   "below_threshold": 1
+  },
+  {
+   "letters": "ז",
+   "english": "Dawn Social Power",
+   "transliteration": "Dawn Social Power",
+   "hebrew": "שחר כוח חברתי",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
   }
  ],
  "colors": {
@@ -115,7 +146,9 @@
   "מרצ": "#b8005c",
   "עם": "#03771a",
   "ום": "#5eb814",
-  "ד": "#07d51f"
+  "ד": "#07d51f",
+  "ב": "#7ab8b0",
+  "ז": "#b9a38a"
  },
  "states": {
   "none": "#f6eea0",
@@ -166,7 +199,9 @@
     "מרצ": 14349,
     "עם": 8015,
     "ום": 7830,
-    "ד": 7311
+    "ד": 7311,
+    "ב": 6771,
+    "ז": 52
    }
   },
   "unplaced": {
@@ -239,5 +274,6 @@
   36.0,
   33.5
  ],
+ "surround": "plain",
  "built": "2026-10-31"
 }

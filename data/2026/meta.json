@@ -1,20 +1,23 @@
 {
  "year": "2026",
- "subtitle": "26th Knesset, 27 October 2026 · count not yet final",
- "subtitle_he": "הכנסת ה-26, 27 באוקטובר 2026 · הספירה טרם הסתיימה",
+ "subtitle": "26th Knesset, 27 October 2026 · provisional results (final due 4 Nov 2026)",
+ "subtitle_he": "הכנסת ה-26, 27 באוקטובר 2026 · תוצאות זמניות (הסופיות צפויות ב-4 בנובמבר 2026)",
  "bloc_order": [
   "Bibi bloc",
   "Change bloc",
+  "Uncommitted",
   "Arab parties"
  ],
  "bloc_he": {
   "Bibi bloc": "גוש ביבי",
   "Change bloc": "גוש השינוי",
+  "Uncommitted": "לא התחייבו לגוש",
   "Arab parties": "המפלגות הערביות"
  },
  "bloc_side": {
   "Bibi bloc": "right",
   "Change bloc": "left",
+  "Uncommitted": "uncommitted",
   "Arab parties": "arab"
  },
  "parties": [
@@ -23,77 +26,128 @@
    "english": "Likud",
    "transliteration": "haLikud",
    "hebrew": "הליכוד",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ב",
    "english": "Otzma Yehudit",
    "transliteration": "Otzma Yehudit",
    "hebrew": "עוצמה יהודית",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ט",
    "english": "Religious Zionism and Zehut",
    "transliteration": "haTzionut haDatit veZehut",
    "hebrew": "הציונות הדתית וזהות",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "שס",
    "english": "Shas",
    "transliteration": "Shas",
    "hebrew": "ש״ס",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ג",
    "english": "United Torah Judaism",
    "transliteration": "Yahadut haTorah",
    "hebrew": "יהדות התורה",
-   "bloc": "Bibi bloc"
+   "bloc": "Bibi bloc",
+   "below_threshold": 0
   },
   {
    "letters": "דרך",
    "english": "Yashar!",
    "transliteration": "Yashar",
    "hebrew": "ישר!",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "רק",
    "english": "Together",
    "transliteration": "Beyachad",
    "hebrew": "ביחד",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "אמת",
    "english": "The Democrats",
    "transliteration": "haDemokratim",
    "hebrew": "הדמוקרטים",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ל",
    "english": "Yisrael Beytenu",
    "transliteration": "Yisrael Beytenu",
    "hebrew": "ישראל ביתנו",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ודם",
    "english": "The Joint List",
    "transliteration": "haReshima haMeshutefet",
    "hebrew": "הרשימה המשותפת",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
   },
   {
    "letters": "עם",
    "english": "Ra'am",
    "transliteration": "Ra'am",
    "hebrew": "רע״ם",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
+  },
+  {
+   "letters": "די",
+   "english": "The Reservists",
+   "transliteration": "The Reservists",
+   "hebrew": "המילואימניקים",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "ך",
+   "english": "Amcha Yisrael",
+   "transliteration": "Amcha Yisrael",
+   "hebrew": "עמך ישראל",
+   "bloc": "Bibi bloc",
+   "below_threshold": 1
+  },
+  {
+   "letters": "ני",
+   "english": "Noam",
+   "transliteration": "Noam",
+   "hebrew": "נעם",
+   "bloc": "Bibi bloc",
+   "below_threshold": 1
+  },
+  {
+   "letters": "י",
+   "english": "Israel First",
+   "transliteration": "Israel First",
+   "hebrew": "ישראל תחילה",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "רץ",
+   "english": "HaKahal",
+   "transliteration": "HaKahal",
+   "hebrew": "הקהל",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
   }
  ],
  "colors": {
@@ -107,7 +161,12 @@
   "אמת": "#d7262e",
   "ל": "#8e5bb5",
   "ודם": "#5eb814",
-  "עם": "#03771a"
+  "עם": "#03771a",
+  "די": "#9c8f6a",
+  "ך": "#5c7f9e",
+  "ני": "#1f3a5f",
+  "י": "#a3a3c2",
+  "רץ": "#6b5b4b"
  },
  "states": {
   "none": "#f6eea0",
@@ -157,7 +216,12 @@
     "אמת": 27154,
     "ל": 26216,
     "ודם": 14093,
-    "עם": 12233
+    "עם": 12233,
+    "די": 17408,
+    "ך": 11837,
+    "ני": 1951,
+    "י": 58,
+    "רץ": 137
    }
   },
   "unplaced": {
@@ -223,5 +287,6 @@
   36.0,
   33.5
  ],
+ "surround": "plain",
  "built": "2026-10-31"
 }

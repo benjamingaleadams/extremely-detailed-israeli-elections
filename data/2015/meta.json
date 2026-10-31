@@ -26,70 +26,96 @@
    "english": "Likud",
    "transliteration": "haLikud",
    "hebrew": "הליכוד",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "כ",
    "english": "Kulanu",
    "transliteration": "Kulanu",
    "hebrew": "כולנו",
-   "bloc": "Uncommitted"
+   "bloc": "Uncommitted",
+   "below_threshold": 0
   },
   {
    "letters": "טב",
    "english": "The Jewish Home",
    "transliteration": "haBayit haYehudi",
    "hebrew": "הבית היהודי",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "שס",
    "english": "Shas",
    "transliteration": "Shas",
    "hebrew": "ש״ס",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ל",
    "english": "Yisrael Beytenu",
    "transliteration": "Yisrael Beytenu",
    "hebrew": "ישראל ביתנו",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ג",
    "english": "United Torah Judaism",
    "transliteration": "Yahadut haTorah",
    "hebrew": "יהדות התורה",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "אמת",
    "english": "Zionist Union",
    "transliteration": "haMachane haTzioni",
    "hebrew": "המחנה הציוני",
-   "bloc": "Centre-left bloc"
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
   },
   {
    "letters": "פה",
    "english": "Yesh Atid",
    "transliteration": "Yesh Atid",
    "hebrew": "יש עתיד",
-   "bloc": "Centre-left bloc"
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
   },
   {
    "letters": "מרצ",
    "english": "Meretz",
    "transliteration": "Meretz",
    "hebrew": "מרצ",
-   "bloc": "Centre-left bloc"
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ודעם",
    "english": "Joint List",
    "transliteration": "haReshima haMeshutefet",
    "hebrew": "הרשימה המשותפת",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
+  },
+  {
+   "letters": "קץ",
+   "english": "Yachad",
+   "transliteration": "Yachad",
+   "hebrew": "יחד",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 1
+  },
+  {
+   "letters": "קנ",
+   "english": "Ale Yarok",
+   "transliteration": "Ale Yarok",
+   "hebrew": "עלה ירוק",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
   }
  ],
  "colors": {
@@ -102,7 +128,9 @@
   "אמת": "#d7262e",
   "פה": "#d6338f",
   "מרצ": "#b8005c",
-  "ודעם": "#5eb814"
+  "ודעם": "#5eb814",
+  "קץ": "#b5651d",
+  "קנ": "#c2c48a"
  },
  "states": {
   "none": "#f6eea0",
@@ -151,7 +179,9 @@
     "אמת": 41202,
     "פה": 21885,
     "מרצ": 10618,
-    "ודעם": 7299
+    "ודעם": 7299,
+    "קץ": 6758,
+    "קנ": 8472
    }
   },
   "unplaced": {
@@ -223,5 +253,6 @@
   36.0,
   33.5
  ],
+ "surround": "plain",
  "built": "2026-10-31"
 }

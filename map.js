@@ -9,7 +9,7 @@ const fmt = n => Math.round(n).toLocaleString("en-US");
 const pctFmt = x => (Math.round(x * 10) / 10).toFixed(1) + "%";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const isPhone = () => matchMedia("(max-width: 720px)").matches;
+const isPhone = () => matchMedia("(max-width: 900px)").matches;
 const getJSON = url => fetch(url).then(r => { if (!r.ok) throw new Error(url + " " + r.status); return r.json(); });
 
 let PAGES = {};  // locality code -> town page slug (data/places.json)
@@ -21,6 +21,10 @@ const PREVIEW = window.PREVIEW_DATA === true;
 // ---------- the address is the state: ?year=&view=&party=&place=&lang= plus #zoom/lat/lng ----------
 // Shared links depend on these names (CLAUDE.md, "Shareable links"): never rename or reuse one.
 const Q = new URLSearchParams(location.search);
+// a shared link (one with a year) shows exactly what the sender saw: this browser's last view is ignored,
+// and a link that already had a map position keeps it (MapLibre writes a hash of its own on load)
+const SHARED = Q.has("year");
+const linkHadHash = !!location.hash;
 const MODES = ["party", "bloc", "share"];
 let year = null, shareParty = null, place = null;
 const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
@@ -39,14 +43,21 @@ function stateParams() {
 function syncURL() {
   if (!year) return;
   history.replaceState(history.state, "", "?" + stateParams().toString() + location.hash);
+  langHref();
+}
+// the language link always points at this view in the other language (also for middle-click)
+function langHref() {
+  const sw = $("lang-switch");
+  if (!sw || !year) return;
+  const q = stateParams();
+  if (HE) q.delete("lang"); else q.set("lang", "he");
+  sw.href = "?" + q.toString() + location.hash;
 }
 
-// ---------- language: English by default, Hebrew with ?lang=he (remembered per browser) ----------
-const HE = (() => {
-  const q = new URLSearchParams(location.search).get("lang");
-  if (q) { try { localStorage.setItem("lang", q); } catch (e) { /* private window */ } return q === "he"; }
-  try { return localStorage.getItem("lang") === "he"; } catch (e) { return false; }
-})();
+// ---------- language: English by default, Hebrew with ?lang=he ----------
+// only the address decides, so a link without lang= always opens in English (technical review H2);
+// Hebrew pages link to the map with lang=he
+const HE = Q.get("lang") === "he";
 const tr = (en, he) => HE ? he : en;
 const blocName = b => HE ? (BLOC_HE[b] || b) : b;
 // "2019-04" -> "Apr 2019"; plain years stay as they are
@@ -56,15 +67,22 @@ const yearLabel = y => {
   const [yr, mo] = String(y).split("-");
   return mo ? `${MONTHS[HE ? "he" : "en"][+mo - 1]} ${yr}` : yr;
 };
+// year buttons: "Apr '19", so the eight elections fit in two rows
+const yearShort = y => {
+  const [yr, mo] = String(y).split("-");
+  return mo ? `${MONTHS[HE ? "he" : "en"][+mo - 1]} '${yr.slice(2)}` : yr;
+};
 const TOWN_TOTAL = tr("Town total", "סה״כ ביישוב");
+// a name's other-language form on a second line or after it: Hebrew runs right to left, English left to right
+const otherName = (en, he) => HE ? `<span class="alt" dir="ltr">${esc(en)}</span>` : `<span class="he">${esc(he)}</span>`;
 
 function applyLanguage() {
   const sw = $("lang-switch");
   if (sw) {
-    // built when followed, so it carries the current view and map position
-    const target = () => { const q = stateParams(); q.set("lang", HE ? "en" : "he"); return "?" + q.toString() + location.hash; };
-    sw.href = target();
-    sw.addEventListener("click", () => { sw.href = target(); });
+    // kept current by syncURL, and refreshed when followed so it carries the map position
+    langHref();
+    sw.addEventListener("click", langHref);
+    window.addEventListener("hashchange", langHref);
     sw.textContent = HE ? "English" : "עברית";
     sw.lang = HE ? "en" : "he";
   }
@@ -74,9 +92,9 @@ function applyLanguage() {
   for (const el of document.querySelectorAll("[data-he]")) el.innerHTML = el.dataset.he;
   for (const el of document.querySelectorAll("[data-he-label]")) el.setAttribute("aria-label", el.dataset.heLabel);
   $("town").placeholder = "למשל חיפה או Haifa";
-  for (const a of document.querySelectorAll(".site-header nav a:not(#lang-switch), .site-footer a"))
-    a.href = a.getAttribute("href").replace("about.html", "about-he.html").replace("sources.html", "sources-he.html")
-      .replace(/^(town|sectors)\/index\.html$/, "$1/he/index.html");
+  for (const a of document.querySelectorAll("[data-he-href]")) a.href = a.dataset.heHref;
+  for (const a of document.querySelectorAll(".site-footer a"))
+    a.href = a.getAttribute("href").replace("sources.html", "sources-he.html");
 }
 const FS = PREVIEW ? { source: "areas" } : { source: "areas", sourceLayer: "areas" };
 
@@ -91,7 +109,7 @@ function twoBlocStops(f = c => c) {
 
 // one-party view: the party's share of valid votes in classes, from a pale tint to its full colour
 const SHARE_BREAKS = [5, 10, 20, 35, 50];
-const SHARE_TINT = [0.1, 0.25, 0.42, 0.6, 0.8, 1];
+const SHARE_TINT = [0.2, 0.33, 0.48, 0.64, 0.82, 1];  // the lowest step stays clear of the cream empty land
 function mix(hex, t) {  // hex colour blended towards white; t = 1 keeps the colour
   const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255];
   return "#" + c.map(v => Math.round(255 - (255 - v) * t).toString(16).padStart(2, "0")).join("");
@@ -126,7 +144,8 @@ function setNames(on) {
   showNames = on;
   try { localStorage.setItem("town-names", on ? "on" : "off"); } catch (e) { /* private window */ }
   $("names").checked = on;
-  if (map && map.getLayer("labels")) map.setLayoutProperty("labels", "visibility", on ? "visible" : "none");
+  for (const id of ["labels", "feature-labels"])
+    if (map && map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
 }
 
 function setMode(m) {
@@ -149,6 +168,7 @@ function setMode(m) {
   legend();
   syncURL();
   repaint();
+  refreshInfo();
 }
 
 function setShareParty(l) {
@@ -157,6 +177,7 @@ function setShareParty(l) {
   legend();
   syncURL();
   repaint();
+  refreshInfo();
 }
 
 // the selected party's share in every area, as feature state (the tiles carry only the leader)
@@ -189,6 +210,15 @@ function clearSelection() {
   $("info-body").innerHTML = tr(INFO_HINT_EN, $("info-body").dataset.he);
   $("info-body").classList.add("sub");
   $("info").classList.add("empty");
+  if (document.body.classList.contains("info-open")) foldSide(false);
+  document.body.classList.remove("info-open");
+  infoFn = null;
+  $("town").value = "";
+}
+
+function foldSide(on) {
+  document.body.classList.toggle("side-folded", on);
+  $("side-toggle").setAttribute("aria-expanded", String(!on));
 }
 
 // "Copy link": the address already holds the whole view
@@ -233,8 +263,8 @@ async function start() {
   // a link's own view wins over this browser's last one
   let saved = null;
   try { saved = localStorage.getItem("colour-mode"); } catch (e) { /* private window */ }
-  mode = MODES.includes(Q.get("view")) ? Q.get("view") : MODES.includes(saved) ? saved : "party";
-  const askedParty = meta.parties.find(p => slug(p.english) === Q.get("party"));
+  mode = MODES.includes(Q.get("view")) ? Q.get("view") : !SHARED && MODES.includes(saved) ? saved : "party";
+  const askedParty = findParty(Q.get("party"));
   shareParty = askedParty ? askedParty.letters : meta.parties[0].letters;
   $("party").innerHTML = meta.parties.map(p => `<option value="${esc(p.letters)}">${esc(label(p.letters))}</option>`).join("");
   $("party").value = shareParty;
@@ -251,11 +281,11 @@ async function start() {
   const namesReady = getJSON("data/area_names.json").then(d => { NAMES = d; }).catch(e => console.error(e));
   getJSON("data/places.json").then(d => { PAGES = d; }).catch(e => console.error(e));
   const areasReady = Promise.all([getJSON(base + "areas.json"), namesReady])
-    .then(([d]) => { A = d; buildSearch(); applyShares(); });
+    .then(([d]) => { A = d; buildSearch(); applyShares(); topPlaces(); });
   const dotsReady = getJSON(base + "dots.geojson").then(d => { DOTS = d; });
 
   applyLanguage();
-  $("subtitle").textContent = HE ? (meta.subtitle_he || meta.subtitle) : meta.subtitle;
+  heading();
   document.title = tr(`Extremely Detailed Israeli Elections: ${yearLabel(meta.year)}`,
     `בחירות ישראל ברזולוציה מלאה: ${yearLabel(meta.year)}`);
   yearButtons(years, year);
@@ -267,6 +297,17 @@ async function start() {
   restorePlace();
 }
 
+// the panel heading names the election ("Knesset election, 27 October 2026"); the Knesset and any
+// note on the count go below it (meta.subtitle: "26th Knesset, 27 October 2026 · provisional results ...")
+function heading() {
+  const sub = HE ? (meta.subtitle_he || meta.subtitle) : meta.subtitle;
+  const [first, ...rest] = sub.split(" · ");
+  const cut = first.indexOf(", ");
+  if (cut < 0) { $("subtitle").textContent = sub; return; }
+  $("title").textContent = tr(`Knesset election, ${first.slice(cut + 2)}`, `הבחירות לכנסת, ${first.slice(cut + 2)}`);
+  $("subtitle").textContent = [first.slice(0, cut), ...rest].join(" · ");
+}
+
 // ?place=<locality code> (a town) or <locality code>-<statistical area> (one area)
 function restorePlace() {
   if (!place || !A) return;
@@ -275,13 +316,25 @@ function restorePlace() {
   const ti = A.towns.findIndex(t => t[0] === code);
   if (ti < 0) { setPlace(null); return; }
   const i = Number.isNaN(stat) || stat == null ? -1 : A.areas.findIndex(r => r[0] === ti && r[1] === stat);
-  if (i < 0) { choose(ti, !location.hash); return; }
-  showInfo(recordHtml(areaRecord(i)));
+  if (i < 0) { choose(ti, !linkHadHash); return; }
+  showInfo(() => recordHtml(areaRecord(i)));
   setHover(i);
-  if (!location.hash) {
+  if (!linkHadHash) {
     const [w, s, e, n] = A.towns[ti][3];
     map.fitBounds([[w, s], [e, n]], { padding: padding(), maxZoom: 14, duration: 0 });
   }
+}
+
+// a party by its slug; after a change of year, the same list under its name in that election
+// ("joint-list" 2021 is "The Joint List" in 2026, "labor" is "Labor-Gesher" in Sept 2019)
+function findParty(asked) {
+  if (!asked) return null;
+  const bare = s => s.replace(/^the-/, "");
+  const a = bare(asked);
+  return meta.parties.find(p => slug(p.english) === asked)
+    || meta.parties.find(p => bare(slug(p.english)) === a)
+    || meta.parties.find(p => { const b = bare(slug(p.english)); return b.startsWith(a + "-") || a.startsWith(b + "-"); })
+    || null;
 }
 
 // ---------- names ----------
@@ -289,16 +342,19 @@ function restorePlace() {
 function label(l) {
   const p = parties[l];
   if (!p) return tr("Other lists", "רשימות אחרות");
-  if (HE) return p.hebrew;
-  return p.english === p.transliteration ? p.english : `${p.english} (${p.transliteration})`;
+  // English name only (Ben, 31 Oct: no transliterations); Hebrew in Hebrew mode
+  return HE ? p.hebrew : p.english;
 }
+// lists that won no seats but are shown by name (tables/parties.csv, below_threshold): said in text, not on the map
+const belowNote = l => parties[l] && +parties[l].below_threshold === 1
+  ? ` <span class="muted">${tr("below threshold", "מתחת לאחוז החסימה")}</span>` : "";
 function swatch(c) { return `<span class="sw" style="background:${c}"></span>`; }
 
 // ---------- side panel ----------
 
 function yearButtons(years, year) {
   $("years").innerHTML = [...years].sort().map(y =>
-    `<button type="button" data-year="${y}" aria-pressed="${y === year}">${yearLabel(y)}</button>`).join("");
+    `<button type="button" data-year="${y}" aria-pressed="${y === year}" title="${yearLabel(y)}">${yearShort(y)}</button>`).join("");
   $("years").addEventListener("click", e => {
     const y = e.target.closest("button")?.dataset.year;
     if (!y || y === year) return;
@@ -318,13 +374,15 @@ function legend() {
   let html = "";
   if (mode === "share") {
     const c = shareColors(), edges = [0, ...SHARE_BREAKS];
-    html += `<h2>${esc(label(shareParty))}</h2><div class="sub">${tr("Share of valid votes", "שיעור מהקולות הכשרים")}</div>`
+    // ranges in their own left-to-right span, so Hebrew mode shows "5–10%", not "10%–5"
+    const range = t => `<bdi dir="ltr">${t}</bdi>`;
+    html += `<div class="ptitle">${esc(label(shareParty))}</div><div class="sub">${tr("Share of valid votes", "שיעור מהקולות הכשרים")}</div>`
       + c.map((col, i) => `<div class="row">${swatch(col)}${i === c.length - 1
-        ? tr(`${edges[i]}% or more`, `${edges[i]}% ומעלה`)
-        : i === 0 ? tr(`Under ${edges[1]}%`, `פחות מ-${edges[1]}%`) : `${edges[i]}–${edges[i + 1]}%`}</div>`).join("");
+        ? tr(`${edges[i]}% or more`, `${range(edges[i] + "%")} ומעלה`)
+        : i === 0 ? tr(`Under ${edges[1]}%`, `פחות מ-${range(edges[1] + "%")}`) : range(`${edges[i]}–${edges[i + 1]}%`)}</div>`).join("");
   } else if (mode === "bloc") {
     const light = meta.blocs_light || {};
-    const pname = l => esc(HE ? parties[l].hebrew : parties[l].english);
+    const pname = l => esc(label(l));
     html += TWO_BLOCS.map(b => `<h2>${blocName(b)}</h2><div class="sub">${
       meta.parties.filter(p => p.bloc === b).map(p => pname(p.letters)).join(", ")}</div>
       <div class="row">${swatch(blocColor[b])}${tr("Over 2/3 of valid votes", "יותר משני שלישים מהקולות הכשרים")}</div>
@@ -339,19 +397,63 @@ function legend() {
       })();
   } else for (const b of BLOCS) {
     const ps = meta.parties.filter(p => p.bloc === b);
-    html += `<h2>${blocName(b)}</h2>` + ps.map(p => `<div class="row">${swatch(colors[p.letters])}${esc(label(p.letters))}</div>`).join("");
+    html += `<h2>${blocName(b)}</h2>` + ps.map(p => `<div class="row">${swatch(colors[p.letters])}<span>${esc(label(p.letters))}${belowNote(p.letters)}</span></div>`).join("");
   }
   html += `<h2>${tr("Other", "אחר")}</h2>
     ${mode === "share" ? "" : `<div class="row">${swatch(meta.states.none)}${mode === "bloc" ? tr("No bloc with a majority", "אין גוש עם רוב")
       : tr("No bloc above 2/3", "אין גוש מעל שני שלישים")}</div>`}
     <div class="row">${swatch(meta.states.no_station)}${tr("Nobody lives here (no polling station)", "אין כאן תושבים (אין קלפי)")}</div>
-    <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Built up, nobody lives here (industry, port, airport, campus, offices)",
-      "שטח בנוי ללא תושבים (תעשייה, נמל, שדה תעופה, קמפוס, משרדים)")}</div>
+    <div class="row">${swatch(meta.states.built_empty || "#bdb9b0")}${tr("Industry, port or campus, no residents",
+      "תעשייה, נמל או קמפוס, ללא תושבים")}</div>
     <div class="row">${swatch(meta.states.park || "#cfe1b0")}${tr("Park", "פארק")}</div>
-    <div class="row">${swatch(meta.states.beach || "#f0e8d4")}${tr("Beach", "חוף")}</div>
-    <div class="row"><span class="sw" style="border:1.5px dashed #333;background:transparent"></span>
-      ${tr("Locality without a CBS boundary (outline approximate)", "יישוב ללא גבול למ״ס (קו מתאר משוער)")}</div>`;
+    <div class="row">${swatch(meta.states.beach || "#f0e8d4")}${tr("Beach", "חוף")}</div>`;
   lg.innerHTML = html;
+  topPlaces();
+}
+
+// ---------- one-party view: the places where the party did best ----------
+
+const TOP_N = 25, TOP_MIN_VALID = 1000;
+// every locality's valid votes and the chosen party's share: the official town total where there is one,
+// else the sum of its areas with stations of their own; localities without a CBS boundary from their dot
+function placeShares(k) {
+  const sums = new Map();
+  for (const r of A.areas) {
+    if (!r[8] || r[10] != null) continue;
+    const s = sums.get(r[0]) || [0, 0];
+    s[0] += r[2]; s[1] += r[2] * (k < 0 ? 0 : r[8][k]) / 100;
+    sums.set(r[0], s);
+  }
+  const dots = new Map(DOTS.features.map(f => [+f.properties.SEMEL_YISHUV, f.properties]));
+  const out = [];
+  A.towns.forEach((t, ti) => {
+    let valid = 0, share = 0;
+    if (t[5] === "area") {
+      if (t[6]) { valid = t[6][0]; share = k < 0 ? 0 : t[6][2][k]; }
+      else if (sums.has(ti)) { const [v, n] = sums.get(ti); valid = v; share = v ? 100 * n / v : 0; }
+    } else if (t[5] === "dot" && dots.has(t[0])) {
+      const p = dots.get(t[0]);
+      valid = +p.valid || 0; share = +(p["pct_" + shareParty] || 0);
+    }
+    if (valid >= TOP_MIN_VALID) out.push([ti, share, valid]);
+  });
+  return out.sort((a, b) => b[1] - a[1] || b[2] - a[2]).slice(0, TOP_N);
+}
+
+function topPlaces() {
+  const box = $("top");
+  if (!box) return;
+  if (mode !== "share" || !A) { box.innerHTML = ""; box.hidden = true; return; }
+  const rows = placeShares(A.parties.indexOf(shareParty));
+  box.hidden = false;
+  box.innerHTML = `<h2>${tr("Top places", "המקומות המובילים")}</h2>
+    <div class="sub">${tr(`Highest share for ${esc(label(shareParty))}; places with at least ${fmt(TOP_MIN_VALID)} valid votes`,
+      `השיעור הגבוה ביותר ל${esc(label(shareParty))}; מקומות עם ${fmt(TOP_MIN_VALID)} קולות כשרים לפחות`)}</div>
+    <table>${rows.map(([ti, share], n) => {
+      const t = A.towns[ti];
+      return `<tr><td class="rank">${n + 1}</td><td><button type="button" class="linkbtn" data-ti="${ti}">${
+        esc(HE ? t[1] : (t[2] || t[1]))}</button></td><td class="n">${pctFmt(share)}</td></tr>`;
+    }).join("")}</table>`;
 }
 
 function envelopes() {
@@ -360,8 +462,8 @@ function envelopes() {
     .reduce((s, p) => s + (env.by_party[p.letters] || 0), 0)]));
   const byParty = [...meta.parties].sort((a, b) => (env.by_party[b.letters] || 0) - (env.by_party[a.letters] || 0));
   const offMap = `<div class="sub" style="margin-top:6px">${tr(`Also off the map: ${fmt(n.unplaced.valid)} votes from stations
-      that could not be placed in a statistical area.`, `גם מחוץ למפה: ${fmt(n.unplaced.valid)} קולות מקלפיות שלא ניתן היה
-      לשייך לאזור סטטיסטי.`)}</div>`;
+      that could not be placed in a statistical area. Town totals include them.`, `גם מחוץ למפה: ${fmt(n.unplaced.valid)} קולות מקלפיות שלא ניתן היה
+      לשייך לאזור סטטיסטי. הסיכומים ליישוב כוללים אותם.`)}</div>`;
   if (!env.valid) {  // the committee counts double envelopes days after the regular boxes
     $("envelopes").innerHTML = `
     <h2>${tr("Votes not on the map", "קולות שאינם על המפה")}</h2>
@@ -375,9 +477,11 @@ function envelopes() {
   $("envelopes").innerHTML = `
     <h2>${tr("Votes not on the map", "קולות שאינם על המפה")}</h2>
     <div class="sub">${tr(`Double-envelope votes (soldiers, hospitals, prisons, diplomats) have no location:
-      <b>${fmt(env.valid)}</b>, ${pctFmt(100 * env.valid / n.total_valid)} of ${fmt(n.total_valid)} valid votes.`,
+      <b>${fmt(env.valid)}</b>, ${pctFmt(100 * env.valid / n.total_valid)} of ${fmt(n.total_valid)} valid votes.
+      They are in no area's or town's result.`,
       `לקולות המעטפות הכפולות (חיילים, בתי חולים, בתי סוהר, נציגויות) אין מיקום:
-      <b>${fmt(env.valid)}</b>, ${pctFmt(100 * env.valid / n.total_valid)} מתוך ${fmt(n.total_valid)} קולות כשרים.`)}</div>
+      <b>${fmt(env.valid)}</b>, ${pctFmt(100 * env.valid / n.total_valid)} מתוך ${fmt(n.total_valid)} קולות כשרים.
+      הם אינם בתוצאה של אף אזור או יישוב.`)}</div>
     <table>${BLOCS.map(b => `<tr><td>${blocName(b)}</td><td class="n">${fmt(blocTotals[b])}</td>
       <td class="n">${pctFmt(100 * blocTotals[b] / env.valid)}</td></tr>`).join("")}</table>
     <details><summary>${tr("By party", "לפי מפלגה")}</summary><table>${byParty.map(p =>
@@ -392,15 +496,16 @@ function sharesFromArray(arr) { return arr ? A.parties.map((l, k) => [l, arr[k]]
 function areaRecord(i) {
   const r = A.areas[i], t = A.towns[r[0]];
   const nb = NAMES[t[0] * 10000 + r[1]];
-  return { code: t[0], name: t[2] || t[1], he: t[1], stat: r[1], nb: nb ? nb[HE ? 1 : 0] : "", valid: r[2], stations: r[3], approx: r[4],
-    bloc: r[5], shares: sharesFromArray(r[8]), other: r[9] || 0, kind: t[5],
-    estFrom: r[10], estVotes: r[11], population: r[12], placeholder: r[13], grey: r[14] === 1, bloc2: r[15] };
+  return { ti: r[0], code: t[0], name: t[2] || t[1], he: t[1], stat: r[1], nb: nb ? nb[HE ? 1 : 0] : "", valid: r[2], stations: r[3], approx: r[4],
+    bloc: r[5], leader: r[6], shares: sharesFromArray(r[8]), other: r[9] || 0, kind: t[5],
+    estFrom: r[10], estVotes: r[11], population: r[12], placeholder: r[13], grey: r[14] === 1, bloc2: r[15],
+    popGroup: r[16], nbrStations: r[17] || 0, streetStations: r[18] || 0 };
 }
 
 function dotRecord(p) {
   const shares = Object.keys(p).filter(k => k.startsWith("pct_") && k !== "pct_other").map(k => [k.slice(4), +p[k]]);
   return { code: +p.SEMEL_YISHUV, name: p.SHEM_YISHUV_ENGLISH || p.SHEM_YISHUV, he: p.SHEM_YISHUV, valid: +p.valid, stations: +p.stations,
-    approx: +p.approx_stations, bloc: p.bloc, shares, other: +(p.pct_other || 0), kind: "dot", shape: p.shape_source, bloc2: p.bloc2 };
+    approx: +p.approx_stations, bloc: p.bloc, leader: p.leader, shares, other: +(p.pct_other || 0), kind: "dot", shape: p.shape_source, bloc2: p.bloc2 };
 }
 
 function dotKind(he) {
@@ -428,19 +533,25 @@ function resultsHtml(rec, verdict) {
       : b2 === "arab" ? tr("Arab parties majority", "רוב למפלגות הערביות") : tr("No bloc with a majority", "אין גוש עם רוב");
     else verdict = top ? `${blocName(top)}, ${blocShare[top] > 200 / 3 ? tr("over 2/3", "מעל שני שלישים") : tr("majority", "רוב")}`
       : arab > 50 ? tr("Arab parties majority", "רוב למפלגות הערביות") : tr("No bloc with a majority", "אין גוש עם רוב");
+  } else if (verdict !== TOWN_TOTAL && rec.leader && parties[rec.leader] && rec.bloc !== "none") {
+    // the leading-party view: name the party whose colour fills the area
+    verdict += tr(`, ${esc(label(rec.leader))} leads`, `, ${esc(label(rec.leader))} מובילה`);
   }
   const counts = rec.estFrom != null
-    ? tr(`estimated${rec.population ? ` · ${fmt(rec.population)} residents (2022 census)` : ""}`,
-         `הערכה${rec.population ? ` · ${fmt(rec.population)} תושבים (מפקד 2022)` : ""}`)
+    ? tr(`no polling station of its own${rec.population ? ` · ${fmt(rec.population)} residents (2022 census${rec.popGroup ? `, a total shared by ${rec.popGroup} areas` : ""})` : ""}`,
+         `אין בו קלפי${rec.population ? ` · ${fmt(rec.population)} תושבים (מפקד 2022${rec.popGroup ? `, סכום משותף ל-${rec.popGroup} אזורים` : ""})` : ""}`)
     : tr(`${fmt(rec.valid)} valid votes · ${rec.stations} station${rec.stations === 1 ? "" : "s"}`,
          `${fmt(rec.valid)} קולות כשרים · ${rec.stations === 1 ? "קלפי אחת" : `${rec.stations} קלפיות`}`);
   let html = `<div class="sub">${verdict} · ${counts}</div>
     ${blocBar(blocShare)}
     <table>${BLOCS.map(b => `<tr><td><div class="row">${swatch(blocColor[b])}${blocName(b)}</div></td><td class="n">${pctFmt(blocShare[b])}</td></tr>`).join("")}</table>
     <h2>${tr("Parties", "מפלגות")}</h2><table>`;
+  // one line per party: its name, the other language's name in muted text, its share
   for (const [l, v] of shares.filter(([l, v]) => v >= 0.5 || (mode === "share" && l === shareParty))) {
+    const p = parties[l];
+    if (!p) continue;
     html += `<tr${mode === "share" && l === shareParty ? ' class="sel"' : ""}><td><div class="row">${swatch(colors[l])}
-      <span>${esc(label(l))}<br><span class="he">${esc(HE ? parties[l].english : parties[l].hebrew)}</span></span></div></td>
+      <span>${esc(label(l))} ${otherName(p.english, p.hebrew)}${belowNote(l)}</span></div></td>
       <td class="n">${pctFmt(v)}</td></tr>`;
   }
   return html + `<tr><td>${tr("Other lists", "רשימות אחרות")}</td><td class="n">${pctFmt(rec.other)}</td></tr></table>`;
@@ -450,73 +561,120 @@ function resultsHtml(rec, verdict) {
 const pageLink = code => PAGES[code]
   ? ` · <a href="town/${PAGES[code]}/${HE ? "he/" : ""}">${tr("Town page", "דף היישוב")}</a>` : "";
 
+// votes of a town that could not be placed in any of its areas: official town total minus placed votes
+function townSplit(ti) {
+  let placed = 0, stations = 0;
+  for (const r of A.areas) if (r[0] === ti && r[8] && r[10] == null) { placed += r[2]; stations += r[3]; }
+  const off = A.towns[ti][6];
+  return { placed, stations, official: off, unplaced: off ? Math.max(0, off[0] - placed) : 0 };
+}
+
 function recordHtml(rec) {
   const isDot = rec.kind === "dot";
   let html = `<h3>${esc(HE ? rec.he : rec.name)}${rec.stat ? ` <span class="sub">${rec.nb ? esc(rec.nb) + ", " : ""}${tr("area", "אזור")} ${rec.stat}</span>` : ""}</h3>
-    <div class="he">${esc(HE ? rec.name : rec.he)}${pageLink(rec.code)}</div>`;
+    <div class="sub">${otherName(rec.name, rec.he)}${pageLink(rec.code)}</div>`;
   if (isDot && rec.shape !== "cbs_merged") html += `<div class="sub">${dotKind(rec.he || "")}</div>`;
   if (rec.bloc === "no_station") return html + `<div class="sub">${rec.grey
     ? tr("Built up, but nobody lives here (campus, industry or offices), so no polling station.",
          "שטח בנוי, אך אין כאן תושבים (קמפוס, תעשייה או משרדים), ולכן אין קלפי.")
     : tr("No polling station in this area.", "אין קלפי באזור זה.")}</div>`;
   html += resultsHtml(rec, rec.bloc === "none" ? tr("No bloc above 2/3", "אין גוש מעל שני שלישים") : blocName(rec.bloc));
-  if (rec.placeholder) html += `<div class="flag">${rec.placeholder === "osm"
-    ? tr("CBS publishes only a point for this locality. Outline is its built-up area as mapped in OpenStreetMap, approximate.",
-         "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. קו המתאר הוא השטח הבנוי כפי שממופה ב-OpenStreetMap, משוער.")
+  const flag = (en, he) => { html += `<div class="flag">${tr(en, he)}</div>`; };
+  if (rec.placeholder) rec.placeholder === "osm"
+    ? flag("CBS publishes only a point for this locality. Outline is its built-up area as mapped in OpenStreetMap, approximate.",
+           "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. קו המתאר הוא השטח הבנוי כפי שממופה ב-OpenStreetMap, משוער.")
     : rec.placeholder === "buildings"
-    ? tr("CBS publishes only a point for this locality. Outline drawn round its buildings (Microsoft building footprints), approximate.",
-         "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. קו המתאר משורטט סביב המבנים שלו (טביעות מבנים של Microsoft), משוער.")
-    : tr("CBS publishes only a point for this locality. Shape drawn round that point, approximate.",
-         "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. הצורה משורטטת סביב הנקודה, משוערת.")}</div>`;
-  if (rec.estFrom === 0) html += `<div class="flag">${tr(`The polling stations in this town could not be placed in
-    statistical areas, so every populated area shows the whole town's result (${fmt(rec.estVotes)} valid votes).`,
-    `לא ניתן היה לשייך את הקלפיות ביישוב זה לאזורים סטטיסטיים, ולכן כל אזור מיושב מציג את תוצאות היישוב כולו
-    (${fmt(rec.estVotes)} קולות כשרים).`)}</div>`;
-  else if (rec.estFrom != null) html += `<div class="flag">${tr(`No polling station in this area. People live here, so it shows the results of
-    area ${rec.estFrom}, the nearest area in the same town with a station (${fmt(rec.estVotes)} valid votes).`,
-    `אין קלפי באזור זה. יש בו תושבים, ולכן מוצגות תוצאות אזור ${rec.estFrom}, האזור הקרוב ביותר באותו יישוב שיש בו
-    קלפי (${fmt(rec.estVotes)} קולות כשרים).`)}</div>`;
-  if (rec.shape === "cbs_merged") html += `<div class="flag">${tr("Formed after the CBS 2022 boundaries were drawn; shown as the combined boundary of the localities it replaced.",
-    "הוקם אחרי ששורטטו גבולות הלמ״ס של 2022; מוצג כגבול המשותף של היישובים שאותם החליף.")}</div>`;
-  if (rec.shape === "osm") html += `<div class="flag">${tr("No CBS boundary: outline is the nearest matching area mapped in OpenStreetMap, approximate.",
-    "אין גבול למ״ס: קו המתאר הוא השטח המתאים הקרוב ביותר ב-OpenStreetMap, משוער.")}</div>`;
-  if (rec.shape === "buildings") html += `<div class="flag">${tr("No CBS boundary: outline drawn round its buildings (Microsoft building footprints), approximate.",
-    "אין גבול למ״ס: קו המתאר משורטט סביב המבנים שלו (טביעות מבנים של Microsoft), משוער.")}</div>`;
+    ? flag("CBS publishes only a point for this locality. Outline drawn round its buildings (Microsoft building footprints), approximate.",
+           "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. קו המתאר משורטט סביב המבנים שלו (טביעות מבנים של Microsoft), משוער.")
+    : flag("CBS publishes only a point for this locality. Shape drawn round that point, approximate.",
+           "הלמ״ס מפרסמת ליישוב זה נקודה בלבד. הצורה משורטטת סביב הנקודה, משוערת.");
+  if (rec.estFrom === 0) flag(`None of this town's polling stations could be placed in a statistical area, so every
+    populated area shows the whole town's result (${fmt(rec.estVotes)} valid votes). It says nothing about differences
+    between neighbourhoods.`,
+    `לא ניתן היה לשייך אף קלפי ביישוב זה לאזור סטטיסטי, ולכן כל אזור מיושב מציג את תוצאות היישוב כולו
+    (${fmt(rec.estVotes)} קולות כשרים). אין בכך מידע על הבדלים בין השכונות.`);
+  else if (rec.estFrom != null) flag(`Estimate: people live here but there is no polling station inside the area, so it
+    shows the result of area ${rec.estFrom}, the nearest area in the same town with a station (${fmt(rec.estVotes)} valid votes).
+    Its residents may in fact vote at another station.`,
+    `הערכה: יש כאן תושבים אך אין קלפי בתוך האזור, ולכן מוצגות תוצאות אזור ${rec.estFrom}, האזור הקרוב ביותר
+    באותו יישוב שיש בו קלפי (${fmt(rec.estVotes)} קולות כשרים). ייתכן שתושביו מצביעים בקלפי אחרת.`);
+  if (rec.shape === "cbs_merged") flag("Formed after the CBS 2022 boundaries were drawn; shown as the combined boundary of the localities it replaced.",
+    "הוקם אחרי ששורטטו גבולות הלמ״ס של 2022; מוצג כגבול המשותף של היישובים שאותם החליף.");
+  if (rec.shape === "osm") flag("No CBS boundary: outline is the nearest matching area mapped in OpenStreetMap, approximate.",
+    "אין גבול למ״ס: קו המתאר הוא השטח המתאים הקרוב ביותר ב-OpenStreetMap, משוער.");
+  if (rec.shape === "buildings") flag("No CBS boundary: outline drawn round its buildings (Microsoft building footprints), approximate.",
+    "אין גבול למ״ס: קו המתאר משורטט סביב המבנים שלו (טביעות מבנים של Microsoft), משוער.");
   // "circle" is the older name for the same fallback
-  if (rec.shape === "point" || rec.shape === "circle") html += `<div class="flag">${tr("No CBS boundary and no buildings found: marker at its approximate location.",
-    "אין גבול למ״ס ולא נמצאו מבנים: סימון במיקום המשוער.")}</div>`;
-  if (!isDot && rec.approx > 0) html += `<div class="flag">${tr(`${rec.approx} of ${rec.stations} station${rec.stations > 1 ? "s" : ""}
-    placed approximately (location borrowed from a nearby-numbered station).`,
-    `${rec.approx} מתוך ${rec.stations} קלפיות מוקמו בקירוב (לפי קלפי בעלת מספר סמוך).`)}</div>`;
+  if (rec.shape === "point" || rec.shape === "circle") flag("No CBS boundary and no buildings found: marker at its approximate location.",
+    "אין גבול למ״ס ולא נמצאו מבנים: סימון במיקום המשוער.");
+  if (!isDot && rec.approx > 0) {
+    const nb = rec.nbrStations, st = rec.streetStations, of = `${rec.stations} station${rec.stations > 1 ? "s" : ""}`;
+    if (nb + st > 0 && nb + st <= rec.approx) {
+      if (st) flag(`${st} of ${of} placed from the street name only (no house number or venue found), so ${st > 1 ? "they" : "it"} may
+        belong in a neighbouring area.`, `${st} מתוך ${rec.stations} קלפיות מוקמו לפי שם הרחוב בלבד (לא נמצאו מספר בית או מקום),
+        ולכן ייתכן שהן שייכות לאזור סמוך.`);
+      if (nb) flag(`${nb} of ${of} had no usable address and ${nb > 1 ? "were" : "was"} placed with the nearest-numbered station
+        in the same town.`, `ל-${nb} מתוך ${rec.stations} קלפיות לא הייתה כתובת שמישה, והן מוקמו לפי הקלפי בעלת המספר הסמוך באותו יישוב.`);
+    } else flag(`${rec.approx} of ${of} placed approximately (from the street only, or with a nearby-numbered station).`,
+      `${rec.approx} מתוך ${rec.stations} קלפיות מוקמו בקירוב (לפי הרחוב בלבד, או לפי קלפי בעלת מספר סמוך).`);
+  }
+  if (rec.estFrom == null && rec.valid < 100) flag("Fewer than 100 valid votes: a handful of votes can change the colour.",
+    "פחות מ-100 קולות כשרים: קולות בודדים יכולים לשנות את הצבע.");
+  // the rest of the town: votes that are in the town total but in no area
+  if (!isDot && rec.estFrom !== 0 && rec.ti != null && A.towns[rec.ti][6]) {
+    const sp = townSplit(rec.ti);
+    if (sp.unplaced >= Math.max(50, 0.01 * sp.official[0])) flag(`${fmt(sp.unplaced)} of this town's ${fmt(sp.official[0])} valid votes
+      could not be placed in an area and are in no area's result; the town total includes them.`,
+      `${fmt(sp.unplaced)} מתוך ${fmt(sp.official[0])} הקולות הכשרים ביישוב לא שויכו לאזור ואינם בתוצאה של אף אזור; סה״כ היישוב כולל אותם.`);
+  }
   return html;
 }
 
 function townHtml(ti) {
   const t = A.towns[ti];
-  let valid = 0, stations = 0, nAreas = 0, withStations = 0, other = 0;
-  const votes = Object.fromEntries(A.parties.map(l => [l, 0]));
-  for (const r of A.areas) {
-    if (r[0] !== ti) continue;
-    nAreas++;
-    if (!r[8] || r[10] != null) continue;  // no station, or colour borrowed from a neighbour
-    withStations++; valid += r[2]; stations += r[3];
-    A.parties.forEach((l, k) => { votes[l] += r[8][k] * r[2] / 100; });
-    other += (r[9] || 0) * r[2] / 100;
+  const nAreas = A.areas.reduce((n, r) => n + (r[0] === ti), 0);
+  const sp = townSplit(ti);
+  let html = `<h3>${esc(HE ? t[1] : (t[2] || t[1]))}</h3><div class="sub">${otherName(t[2] || "", t[1])}${pageLink(t[0])}</div>
+    <div class="sub">${tr(`Whole town: ${nAreas} statistical area${nAreas === 1 ? "" : "s"}. Hover an area for its own result.`,
+      `כל היישוב: ${nAreas === 1 ? "אזור סטטיסטי אחד" : `${nAreas} אזורים סטטיסטיים`}. ריחוף מעל אזור מציג את התוצאה שלו.`)}</div>`;
+  let rec;
+  if (sp.official) {  // the official whole-town result, placed in areas or not
+    const [valid, boxes, pct, other] = sp.official;
+    rec = { valid, stations: boxes, other, shares: A.parties.map((l, k) => [l, pct[k]]) };
+  } else {  // no official total in this build: the areas with stations of their own
+    let valid = 0, other = 0;
+    const votes = Object.fromEntries(A.parties.map(l => [l, 0]));
+    for (const r of A.areas) {
+      if (r[0] !== ti || !r[8] || r[10] != null) continue;
+      valid += r[2];
+      A.parties.forEach((l, k) => { votes[l] += r[8][k] * r[2] / 100; });
+      other += (r[9] || 0) * r[2] / 100;
+    }
+    if (!valid) return html;
+    rec = { valid, stations: sp.stations, other: 100 * other / valid, shares: A.parties.map(l => [l, 100 * votes[l] / valid]) };
   }
-  let html = `<h3>${esc(HE ? t[1] : (t[2] || t[1]))}</h3><div class="he">${esc(HE ? (t[2] || "") : t[1])}${pageLink(t[0])}</div>
-    <div class="sub">${tr(`Whole town: ${nAreas} statistical areas, ${withStations} with polling stations.
-    Hover an area for its own result.`, `כל היישוב: ${nAreas} אזורים סטטיסטיים, מהם ${withStations} עם קלפיות.
-    ריחוף מעל אזור מציג את התוצאה שלו.`)}</div>`;
-  if (!valid) return html;
-  const rec = { valid, stations, other: 100 * other / valid,
-    shares: A.parties.map(l => [l, 100 * votes[l] / valid]) };
-  return html + resultsHtml(rec, TOWN_TOTAL);
+  html += resultsHtml(rec, TOWN_TOTAL);
+  if (sp.official && sp.unplaced > 0) html += `<div class="flag">${sp.placed === 0
+    ? tr(`None of the town's ${fmt(sp.unplaced)} votes could be placed in an area, so every populated area on the map
+      shows this whole-town result.`, `אף אחד מ-${fmt(sp.unplaced)} הקולות ביישוב לא שויך לאזור, ולכן כל אזור מיושב במפה
+      מציג את תוצאת היישוב כולו.`)
+    : tr(`${fmt(sp.unplaced)} votes could not be placed in an area: they are in this total but in no area's result.`,
+      `${fmt(sp.unplaced)} קולות לא שויכו לאזור: הם כלולים בסה״כ זה אך לא בתוצאה של אף אזור.`)}</div>`;
+  return html;
 }
 
-function showInfo(html) {
-  $("info-body").innerHTML = html;
+// the panel remembers how it was made, so a change of view or party redraws it (technical review M1)
+let infoFn = null;
+function showInfo(make) {
+  infoFn = typeof make === "function" ? make : null;
+  $("info-body").innerHTML = infoFn ? infoFn() : make;
   $("info-body").classList.remove("sub");
   $("info").classList.remove("empty");
+  if (isPhone() && !document.body.classList.contains("info-open")) foldSide(true);  // room for the map
+  document.body.classList.add("info-open");
+}
+function refreshInfo() {
+  if (infoFn && A && !$("info").classList.contains("empty")) $("info-body").innerHTML = infoFn();
 }
 
 // ---------- map ----------
@@ -535,6 +693,8 @@ function padding() {
   return { top: 24, bottom: 24, left: $("side").offsetWidth + 40, right: $("info").offsetWidth + 40 };
 }
 
+const FIRST_VIEW = [[34.35, 31.15], [35.75, 33.1]];
+
 function initMap(base) {
   // PREVIEW (scripts/build_preview.py, for hosts that can't serve tiles): plain GeoJSON instead
   if (!PREVIEW) maplibregl.addProtocol("pmtiles", new pmtiles.Protocol().tile);
@@ -542,26 +702,46 @@ function initMap(base) {
   if (maplibregl.getRTLTextPluginStatus() === "unavailable")
     maplibregl.setRTLTextPlugin(new URL("vendor/mapbox-gl-rtl-text-0.2.3.js", location.href).href, true);
   const tiles = new URL(base + "areas.pmtiles", location.href).href;
-  const mapBg = getComputedStyle(document.documentElement).getPropertyValue("--map-bg").trim() || "#e6e6e3";
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  // inside the frame: today's grey, or with a surround (previews) the sea fills it and the neighbours sit on top
+  const SURROUND = meta.frame && meta.surround && meta.surround !== "plain" ? meta.surround : null;
+  const bgColor = () => SURROUND ? (meta.states.water || "#c6dcea") : (css("--map-bg") || "#e6e6e3");
+  const mapBg = bgColor();
 
   map = new maplibregl.Map({
     container: "map",
     style: { version: 8, sources: {}, glyphs: new URL("fonts/", location.href).href + `{fontstack}/{range}.${PREVIEW ? "woff" : "pbf"}`,
       layers: [{ id: "bg", type: "background", paint: { "background-color": mapBg } }] },
-    bounds: meta.bounds, fitBoundsOptions: { padding: padding() },
+    // first view: the populated band from Nahariya to Beersheba; Eilat is a scroll away (style review, item 6)
+    bounds: FIRST_VIEW, fitBoundsOptions: { padding: padding() },
     // with a frame, panning stops a little past it (more to the sides, where the panels sit)
     maxBounds: meta.frame ? [[meta.frame[0] - 2.5, meta.frame[1] - 0.6], [meta.frame[2] + 2.5, meta.frame[3] + 0.6]] : undefined,
     hash: true, attributionControl: false, dragRotate: false, pitchWithRotate: false, maxZoom: 16, minZoom: 4,
   });
   // sea and large water follow the page theme, also when it changes after load
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => map.setPaintProperty("bg", "background-color",
-    getComputedStyle(document.documentElement).getPropertyValue("--map-bg").trim() || "#e6e6e3"));
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (!map.getLayer("bg")) return;  // the style may still be loading
+    map.setPaintProperty("bg", "background-color", bgColor());
+    if (map.getLayer("nb-land")) {
+      map.setPaintProperty("nb-land", "fill-color", css(SURROUND === "quiet" ? "--map-bg" : "--nb-land"));
+      map.setPaintProperty("nb-border", "line-color", css("--nb-line"));
+      for (const id of ["nb-country", "nb-city"]) if (map.getLayer(id)) {
+        map.setPaintProperty(id, "text-color", css("--nb-text"));
+        map.setPaintProperty(id, "text-halo-color", css("--nb-land"));
+      }
+      if (map.getLayer("nb-road")) map.setPaintProperty("nb-road", "line-color", css("--nb-road"));
+    }
+  });
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();
-  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+  // controls in the corner the panels leave free: bottom-left in Hebrew, where the side panel is on the right
+  const corner = HE ? "bottom-left" : "bottom-right";
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), corner);
   map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution:
     tr('<a href="sources.html">CEC, CBS and others</a> · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      '<a href="sources-he.html">ועדת הבחירות, הלמ״ס ואחרים</a> · © <a href="https://www.openstreetmap.org/copyright">תורמי OpenStreetMap</a>') }));
+      '<a href="sources-he.html">ועדת הבחירות, הלמ״ס ואחרים</a> · © <a href="https://www.openstreetmap.org/copyright">תורמי OpenStreetMap</a>') }), corner);
+  // start the credits folded on phones; one tap opens them
+  if (isPhone()) map.once("load", () => document.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show"));
 
   const canvas = map.getCanvas();
   canvas.setAttribute("aria-label", tr("Election map. Arrow keys move, plus and minus zoom, Enter reads the area under the cross.",
@@ -592,6 +772,22 @@ function initMap(base) {
     // sits on top and already stops at the coast
     map.addSource("water", { type: "geojson", data: "data/water.geojson" });
     map.addLayer({ id: "water", type: "fill", source: "water", paint: { "fill-color": meta.states.water || "#c6dcea" } });
+    // with a surround (previews) the neighbours sit over that sea, so their own coast wins near Aqaba and Taba
+    if (SURROUND) {
+      // the neighbours (Natural Earth): muted land, their borders, and with "relief" a gentle hillshade
+      map.addSource("surround", { type: "geojson", data: "data/surround.geojson" });
+      map.addLayer({ id: "nb-land", type: "fill", source: "surround", filter: ["==", ["get", "k"], "land"],
+        paint: { "fill-color": css(SURROUND === "quiet" ? "--map-bg" : "--nb-land") } });
+      if (SURROUND === "relief") {
+        const [w, s, e, n] = meta.frame;
+        map.addSource("hillshade", { type: "image", url: "data/hillshade.png", coordinates: [[w, n], [e, n], [e, s], [w, s]] });
+        map.addLayer({ id: "hillshade", type: "raster", source: "hillshade", paint: { "raster-opacity": 1, "raster-fade-duration": 0 } });
+      }
+      map.addLayer({ id: "nb-road", type: "line", source: "surround", filter: ["==", ["get", "k"], "road"],
+        paint: { "line-color": css("--nb-road"), "line-width": ["interpolate", ["linear"], ["zoom"], 7, 0.5, 11, 1.4] } });
+      map.addLayer({ id: "nb-border", type: "line", source: "surround", filter: ["==", ["get", "k"], "border"],
+        paint: { "line-color": css("--nb-line"), "line-width": 1 } });
+    }
     // one land base under everything: CBS areas plus the West Bank, gaps closed, so nothing is unclaimed
     map.addSource("land", { type: "geojson", data: "data/land.geojson" });
     map.addLayer({ id: "land", type: "fill", source: "land", paint: { "fill-color": meta.states.no_station } });
@@ -599,7 +795,8 @@ function initMap(base) {
     map.addSource("landfeat", { type: "geojson", data: "data/land_features.geojson" });
     map.addLayer({ id: "landfeat", type: "fill", source: "landfeat", minzoom: 9, paint: { "fill-color": ["match", ["get", "t"],
       "park", meta.states.park || "#cfe1b0", "beach", meta.states.beach || "#f0e8d4", meta.states.built_empty || "#bdb9b0"] } });
-    map.addSource("west-bank", { type: "geojson", data: "data/west_bank.geojson" });
+    // dotted lines round the West Bank and Gaza and along the Golan's pre-1967 line (build_site.write_borders)
+    map.addSource("west-bank", { type: "geojson", data: "data/borders.geojson" });
 
     if (PREVIEW) {
       map.addSource("areas", { type: "geojson", data: base + "areas.geojson" });
@@ -627,7 +824,7 @@ function initMap(base) {
     map.addLayer({ id: "dots-fill", type: "fill", source: "dots", filter: poly,
       paint: { "fill-color": colorExpr("bloc", "leader", "bloc2") } });
     map.addLayer({ id: "dots-line", type: "line", source: "dots", filter: poly,
-      paint: { "line-color": "#333", "line-width": 1, "line-dasharray": [2, 1] } });
+      paint: { "line-color": "#333", "line-width": 1 } });  // plain outline; the hover panel gives the caveat
     map.addLayer({ id: "dots", type: "circle", source: "dots", filter: ["==", ["geometry-type"], "Point"], paint: {
       "circle-color": colorExpr("bloc", "leader", "bloc2"), "circle-stroke-color": "#333", "circle-stroke-width": 0.8,
       "circle-radius": ["interpolate", ["linear"], ["zoom"], 7, ["interpolate", ["linear"], ["get", "valid"], 0, 2, 3000, 6],
@@ -655,6 +852,30 @@ function initMap(base) {
       });
     }
 
+    if (SURROUND) {
+      const name = HE ? ["coalesce", ["get", "nh"], ["get", "n"]] : ["get", "n"];
+      map.addLayer({ id: "nb-country", type: "symbol", source: "surround", filter: ["==", ["get", "k"], "country"], minzoom: 6,
+        layout: { "text-field": name, "text-font": ["Noto Sans Medium"], "text-size": ["interpolate", ["linear"], ["zoom"], 7, 11, 10, 14],
+          "text-letter-spacing": 0.25, "text-padding": 2 },
+        paint: { "text-color": css("--nb-text"), "text-halo-color": css("--nb-land"), "text-halo-width": 1 } });
+      map.addLayer({ id: "nb-city", type: "symbol", source: "surround", filter: ["==", ["get", "k"], "city"], minzoom: 7,
+        layout: { "text-field": name, "text-font": ["Noto Sans Medium"], "text-size": ["case", ["==", ["get", "cap"], 1], 12, 10.5],
+          "text-anchor": "left", "text-offset": [0.5, 0], "icon-allow-overlap": false, "text-padding": 2 },
+        paint: { "text-color": css("--nb-text"), "text-halo-color": css("--nb-land"), "text-halo-width": 1 } });
+      map.addLayer({ id: "nb-city-dot", type: "circle", source: "surround", filter: ["==", ["get", "k"], "city"], minzoom: 7,
+        paint: { "circle-radius": ["case", ["==", ["get", "cap"], 1], 3, 2], "circle-color": css("--nb-text"),
+          "circle-stroke-width": ["case", ["==", ["get", "cap"], 1], 1, 0], "circle-stroke-color": css("--nb-land") } });
+    }
+    // names of big parks, industrial zones and airports (OpenStreetMap): small, grey, only at city zooms,
+    // and below the town names, which win any collision
+    map.addSource("featlabels", { type: "geojson", data: "data/feature_labels.geojson" });
+    map.addLayer({ id: "feature-labels", type: "symbol", source: "featlabels", minzoom: 12,
+      filter: ["any", [">=", ["zoom"], 13], [">=", ["get", "a"], 1]],  // the biggest from zoom 12, the rest from 13
+      layout: { visibility: showNames ? "visible" : "none",
+        "text-field": HE ? ["coalesce", ["get", "nh"], ["get", "n"]] : ["get", "n"], "text-font": ["Noto Sans Medium"],
+        "text-size": 10.5, "text-max-width": 9, "text-padding": 4, "text-letter-spacing": 0.02,
+        "symbol-sort-key": ["-", ["get", "a"]] },
+      paint: { "text-color": "#6b6b6b", "text-halo-color": "rgba(255,255,255,0.8)", "text-halo-width": 1.2 } });
     // town names in capitals, as on the reference; bigger places win when labels collide
     map.addSource("labels", { type: "geojson", data: base + "labels.geojson" });
     map.addLayer({ id: "labels", type: "symbol", source: "labels", minzoom: 6,
@@ -662,9 +883,9 @@ function initMap(base) {
       layout: { visibility: showNames ? "visible" : "none",
       "text-field": HE ? ["coalesce", ["get", "nh"], ["get", "n"]] : ["get", "n"], "text-font": ["Noto Sans Medium"],
       "text-size": ["interpolate", ["linear"], ["zoom"],
-        7, ["interpolate", ["linear"], ["get", "v"], 0, 8, 50000, 11],
+        7, ["interpolate", ["linear"], ["get", "v"], 0, 9, 50000, 11],
         12, ["interpolate", ["linear"], ["get", "v"], 0, 11, 50000, 16]],
-      "symbol-sort-key": ["-", ["get", "v"]], "text-padding": 3, "text-max-width": 8 },
+      "symbol-sort-key": ["-", ["get", "v"]], "text-padding": 3, "text-max-width": 12 },
       paint: { "text-color": "#2b2b2b", "text-halo-color": "rgba(255,255,255,0.85)", "text-halo-width": 1.4 } });
 
     applyShares();
@@ -696,11 +917,13 @@ function pick(point, sticky) {
   if (f.layer.id === "fill") {
     setHover(f.id);
     if (!A) { showInfo(`<div class="sub">${tr("Loading area details...", "טוען את פרטי האזור...")}</div>`); return; }
-    showInfo(recordHtml(areaRecord(f.id)));
+    const id = f.id;
+    showInfo(() => recordHtml(areaRecord(id)));
     if (sticky) { const r = A.areas[f.id]; setPlace(`${A.towns[r[0]][0]}-${r[1]}`); }
   } else {
     setHover(null);
-    showInfo(recordHtml(dotRecord(f.properties)));
+    const props = f.properties;
+    showInfo(() => recordHtml(dotRecord(props)));
     if (sticky) setPlace(String(f.properties.SEMEL_YISHUV));
   }
 }
@@ -750,6 +973,8 @@ function buildSearch() {
 
   const input = $("town"), list = $("town-list");
   input.addEventListener("input", () => { results = search(input.value); active = results.length ? 0 : -1; render(); });
+  // anything typed while the town list was still loading
+  if (input.value.trim() && document.activeElement === input) { results = search(input.value); active = results.length ? 0 : -1; render(); }
   input.addEventListener("keydown", e => {
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       if (!results.length) return;
@@ -793,6 +1018,8 @@ function search(q) {
       else if (t.words.some(w => w.startsWith(n))) s = 2;
       else if (n.length > 2 && t.en.some(e => e.includes(n))) s = 3;
       else if (k.length > 2 && t.sk.some(e => e.startsWith(k))) s = 4;
+      // short skeletons ("Raanana" -> "rn", "Taibe" -> "tb") match only a whole name's skeleton
+      else if (k.length === 2 && n.length >= 4 && t.sk.includes(k)) s = 4;
       else if (k.length > 3 && t.sk.some(e => e.includes(k))) s = 5;
       if (s < 9) scored.push([s, t]);
     }
@@ -808,7 +1035,7 @@ function render() {
     const t = A.towns[e.i];
     const en = e.nb ? `${e.nb.en}, ${t[2] || t[1]}` : t[2] || t[1], he = e.nb ? `${e.nb.he}, ${t[1]}` : t[1];
     return `<li role="option" id="opt-${k}" data-k="${k}" aria-selected="${k === active}">
-      <span>${esc(en)}</span><span class="he">${esc(he)}</span></li>`;
+      <span>${esc(HE ? he : en)}</span>${otherName(en, he)}</li>`;
   }).join("") : `<li class="none" role="option" aria-disabled="true">${tr("Nothing found", "לא נמצא")}</li>`;
   list.hidden = false;
   input.setAttribute("aria-expanded", "true");
@@ -831,12 +1058,12 @@ function chooseResult(e) {
     const i = g.areas[0];
     setPlace(`${t[0]}-${A.areas[i][1]}`);
     setHover(i);
-    showInfo(recordHtml(areaRecord(i)));
+    showInfo(() => recordHtml(areaRecord(i)));
     return;
   }
   setPlace(String(t[0]));
   setHover(null);
-  showInfo(`<h3>${esc(HE ? g.he : g.en)}</h3><div class="he">${esc(HE ? g.en : g.he)}</div>
+  showInfo(`<h3>${esc(HE ? g.he : g.en)}</h3><div class="sub">${otherName(g.en, g.he)}</div>
     <div class="sub">${esc(HE ? t[1] : t[2] || t[1])}, ${tr("areas", "אזורים")} ${g.areas.map(i => A.areas[i][1]).sort((a, b) => a - b).join(", ")}.
     ${tr("Hover an area for its own result.", "ריחוף מעל אזור מציג את התוצאה שלו.")}</div>`);
 }
@@ -844,7 +1071,7 @@ function chooseResult(e) {
 function choose(ti, fly = true) {
   const t = A.towns[ti], [w, s, e, n] = t[3];
   const input = $("town");
-  input.value = t[2] || t[1];
+  input.value = HE ? t[1] : (t[2] || t[1]);
   $("town-list").hidden = true;
   input.setAttribute("aria-expanded", "false");
   setPlace(String(t[0]));
@@ -853,11 +1080,12 @@ function choose(ti, fly = true) {
   setHover(null);
   if (t[5] === "dot") {
     const f = DOTS.features.find(f => +f.properties.SEMEL_YISHUV === t[0]);
-    showInfo(f ? recordHtml(dotRecord(f.properties)) : `<h3>${esc(t[2])}</h3>`);
+    showInfo(f ? () => recordHtml(dotRecord(f.properties)) : `<h3>${esc(HE ? t[1] : t[2])}</h3>`);
     return;
   }
   const own = A.areas.reduce((acc, r, i) => (r[0] === ti ? acc.concat(i) : acc), []);
-  showInfo(own.length === 1 ? recordHtml(areaRecord(own[0])) : townHtml(ti));
+  // a one-area town shows its area, unless some of its votes could not be placed there: then the town total
+  showInfo(own.length === 1 && !townSplit(ti).unplaced ? () => recordHtml(areaRecord(own[0])) : () => townHtml(ti));
 }
 
 // ---------- page wiring ----------
@@ -869,6 +1097,13 @@ document.addEventListener("keydown", e => {
   }
 });
 document.querySelector("#info .close").addEventListener("click", clearSelection);
+// "Top places" (one-party view): a click flies to the place and shows its total
+$("top").addEventListener("click", e => {
+  const b = e.target.closest("button[data-ti]");
+  if (b && A && map) choose(+b.dataset.ti);
+});
+// phones: the side panel folds to its title row, and folds itself while a place's details are open
+$("side-toggle").addEventListener("click", () => foldSide(!document.body.classList.contains("side-folded")));
 if (isPhone()) $("legend-box").open = false;
 if (HE) $("status").textContent = $("status").dataset.he;  // before the rest of the page switches language
 

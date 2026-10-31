@@ -76,4 +76,44 @@ ul.areas li { break-inside: avoid; }
 html[dir="rtl"] .page th, html[dir="rtl"] .page td { text-align: right; }
 html[dir="rtl"] .page td.n, html[dir="rtl"] .page th.n { text-align: left; }
 html[dir="rtl"] .page table.data th, html[dir="rtl"] .page table.data td { padding: 4px 0 4px 8px; }
+.page p.rule { font-size: 14px; margin: 4px 0 8px; }
+details.members { margin: 4px 0 8px; }
+details.members summary { cursor: pointer; color: var(--accent); font-size: 14px; }
+.page table.members td.nb { white-space: normal; min-width: 180px; font-size: 13px; }
+.page table.members td.why { white-space: normal; min-width: 160px; font-size: 12px; color: var(--muted); }
+table.rank .ra { display: none; }
+table.rank tr.minor { display: none; }
+main.all-ranks table.rank tr.minor { display: table-row; }
+main.all-ranks table.rank .ra { display: inline; }
+main.all-ranks table.rank .rb { display: none; }
+.toggle { font-size: 13px; margin: 4px 0; }
 @media (max-width: 720px) { .site-header nav a.wide-only { display: none; } .page.place h1 .alt { display: block; margin: 2px 0 0; } }
+/* locator map (minimap.js): a framed box beside the facts, below them on a phone */
+.lead { display: grid; grid-template-columns: minmax(0, 1fr) 300px; column-gap: 28px; align-items: start; }
+.lead-text { grid-column: 1; grid-row: 1; min-width: 0; }
+.lead-text > :first-child { margin-top: 0; }
+figure.minimap { grid-column: 2; grid-row: 1; margin: 2px 0 12px; padding: 3px; background: var(--surface);
+  border: 1px solid var(--border); }
+.minimap .mm { position: relative; height: 280px; background: var(--map-bg); overflow: hidden; }
+.minimap .mm-map { position: absolute; inset: 0; display: block; }
+.minimap .mm-map:focus-visible { outline-offset: -3px; }
+.minimap .mm-map canvas { cursor: pointer; }
+.minimap .mm-inset { position: absolute; top: 6px; inset-inline-start: 6px; width: 32px; height: 86px;
+  border: 1px solid #8a8a8a; background: #c6dcea; pointer-events: none; opacity: 0; transition: opacity .2s; }
+.minimap.ready .mm-inset { opacity: 1; }
+.minimap .mm-inset img { display: block; width: 100%; height: 100%; }
+.minimap .mm-inset i { position: absolute; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%;
+  background: #d0021b; box-shadow: 0 0 0 1.5px #fff; }
+.minimap .mm-credit { position: absolute; bottom: 0; inset-inline-end: 0; font-size: 10px; line-height: 1.4;
+  padding: 0 4px; background: rgba(255,255,255,.75); color: #333; }
+.minimap .mm-credit a { color: #333; }
+.minimap figcaption { font-size: 12px; line-height: 1.4; color: var(--muted); padding: 4px 2px 1px; }
+.minimap.failed .mm { display: none; }
+@media (max-width: 720px) {
+  .lead { display: flex; flex-direction: column; align-items: stretch; }
+  .lead-text { display: contents; }
+  .lead-text > * { order: 2; }
+  .lead-text > p.facts { order: 0; }
+  figure.minimap { order: 1; margin: 4px 0 8px; }
+  .minimap .mm { height: 220px; }
+}

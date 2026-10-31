@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vote by census decile and vote transfers · Extremely Detailed Israeli Elections</title>
+<meta name="description" content="How Israeli statistical areas voted in 2022 and 2026 by median wage, degree share and share of young people, and estimated vote transfers between 2021, 2022 and 2026.">
+<meta property="og:site_name" content="Extremely Detailed Israeli Elections">
+<meta property="og:title" content="Vote by census decile and vote transfers">
+<link rel="canonical" href="https://israelielections.org/analysis/">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="analysis.css">
+<script src="analysis.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="../index.html"><span class="long">Extremely Detailed Israeli Elections</span><span class="short">Israeli Elections</span></a>
+  <nav id="site-nav" aria-label="Site">
+    <a href="../index.html">Maps</a>
+    <a href="../town/index.html">Places</a>
+    <a href="../sectors/index.html">Sectors</a>
+    <a href="../rank/index.html">Rankings</a>
+    <a href="../compare/index.html">Compare</a>
+    <a href="../about.html"><span class="long">About the method</span><span class="short">Method</span></a>
+    <a href="../sources.html"><span class="long">Sources and credits</span><span class="short">Sources</span></a>
+  </nav>
+  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
+</header>
+<main class="page wide" id="content">
+  <h1>Vote by census decile and vote transfers</h1>
+  <p class="toc"><a href="#deciles">Vote by census decile</a> · <a href="#transfers">Vote transfers</a> · <a href="#method">Method</a></p>
+
+  <h2 id="deciles">Vote by census decile</h2>
+  <p>Statistical areas ranked by a 2022 census figure and cut into ten groups, each holding about a tenth of
+    the eligible voters. Shares are summed from box votes, as a percentage of valid votes.</p>
+  <div class="controls">
+    <div class="ctl"><span class="lbl">Election</span><div class="years" id="d-year">
+      <button type="button" data-v="2022" aria-pressed="false">2022</button>
+      <button type="button" data-v="2026" aria-pressed="true">2026</button></div></div>
+    <div class="ctl"><span class="lbl">Areas</span><div class="years" id="d-set">
+      <button type="button" data-v="jewish" aria-pressed="true">Jewish</button>
+      <button type="button" data-v="arab" aria-pressed="false">Arab</button></div></div>
+    <div class="ctl"><span class="lbl">Ranked by</span><div class="years" id="d-measure">
+      <button type="button" data-v="wage" aria-pressed="true">Median wage</button>
+      <button type="button" data-v="degree" aria-pressed="false">Academic degree</button>
+      <button type="button" data-v="young" aria-pressed="false">Aged 0 to 19</button></div></div>
+  </div>
+  <div class="scroll"><table class="data" id="d-sides"></table></div>
+  <div class="scroll"><table class="data" id="d-lists"></table></div>
+  <p class="note">These compare areas, not people: the top wage decile is a set of areas whose median
+    wage is high, and its vote includes everyone who votes there. Boxes are placed by their polling
+    building, which is not always where their voters live. Jewish areas cover 97.7% (2022) and 97.5% (2026)
+    of eligible voters in Jewish, Jerusalem and mixed localities; Arab areas (Muslim or Christian main
+    religion) only 68.3% and 75.1% of those in Arab and Bedouin localities, because about a fifth to a quarter of
+    their boxes could not be placed in an area and 25 of 44 southern Bedouin localities (mostly tribes) have no census
+    figures. In Jewish areas the lowest wage and degree deciles are largely Haredi areas. Druze areas are
+    in neither set. Turnout counts double-envelope voters (mostly soldiers) as not voting.</p>
+
+  <h2 id="transfers">Vote transfers</h2>
+  <p>Estimated share of each list's voters in the earlier election (rows) who voted for each list, or did
+    not vote, in the later one (columns). Each row sums to 100%.</p>
+  <div class="controls">
+    <div class="ctl"><span class="lbl">Elections</span><div class="years" id="t-pair">
+      <button type="button" data-v="2021_2022" aria-pressed="false">2021 to 2022</button>
+      <button type="button" data-v="2022_2026" aria-pressed="true">2022 to 2026</button></div></div>
+    <label class="check"><input type="checkbox" id="t-ci"> Show 95% intervals</label>
+  </div>
+  <p class="meta" id="t-meta"></p>
+  <div class="scroll"><table class="data matrix" id="t-matrix"></table></div>
+  <p class="note">An ecological estimate from box totals, not a survey: it assumes that a list's voters
+    split the same way in every box, which is not true (Likud voters in Haredi and in secular
+    neighbourhoods do not move alike), and it sees only net flows. It uses only comparable boxes (same
+    number and building, stable size): 43% of eligible voters for 2021 to 2022, 31% for 2022 to 2026, so new
+    neighbourhoods are missing. The intervals reflect sampling between towns only, not the error from that
+    assumption, so the true uncertainty is larger. Small rows (Other lists, Jewish Home) are unstable. Flows to and
+    from "Did not vote" also absorb people who moved, died, came of age or voted by double envelope.</p>
+
+  <h2 id="method">Method</h2>
+  <ul>
+    <li>Deciles: census 2022 statistical areas (combined areas as the census publishes them; small localities as
+      one unit); median yearly wage of employees, share aged 15+ with an academic degree, share aged 0 to 19.
+      Units are sorted and each goes to the decile holding the midpoint of its eligible voters, recomputed
+      for each election. Main religion from the census. After numbersguys.com.</li>
+    <li>Transfers: comparable boxes as on numbersguys.com: same locality and box number, same building (same
+      venue and address, or within 150 m), eligible voters within 10% of the town's own growth, and, outside
+      Arab, Bedouin and Druze localities, an Arab-party share that moved by less than 25 points. Constrained least
+      squares weighted by eligible voters, rows non-negative and summing to 1; lists under 1% nationally and
+      invalid votes are grouped. 200 bootstrap fits resampling whole localities.</li>
+    <li>Blocs: Bibi bloc and Change bloc as on the map (tables/parties.csv); "Other" adds uncommitted and
+      small lists. Code: scripts/analysis_deciles.py, scripts/analysis_transfers.py. Data:
+      <a href="data/deciles_2022.csv">deciles 2022</a>, <a href="data/deciles_2026.csv">deciles 2026</a>,
+      <a href="data/transfers_2021_2022.csv">transfers 2021 to 2022</a>,
+      <a href="data/transfers_2022_2026.csv">transfers 2022 to 2026</a>.</li>
+  </ul>
+</main>
+<footer class="site-footer">
+  An independent, unofficial map. Not affiliated with the Central Elections Committee or the
+  Central Bureau of Statistics. Data built 31 October 2026. <a href="../sources.html">Sources and credits</a>.
+</footer>
+</body>
+</html>

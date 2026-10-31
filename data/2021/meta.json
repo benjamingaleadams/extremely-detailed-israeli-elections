@@ -23,91 +23,104 @@
    "english": "Likud",
    "transliteration": "haLikud",
    "hebrew": "הליכוד",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "שס",
    "english": "Shas",
    "transliteration": "Shas",
    "hebrew": "ש״ס",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ג",
    "english": "United Torah Judaism",
    "transliteration": "Yahadut haTorah",
    "hebrew": "יהדות התורה",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ט",
    "english": "Religious Zionism",
    "transliteration": "haTzionut haDatit",
    "hebrew": "הציונות הדתית",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "פה",
    "english": "Yesh Atid",
    "transliteration": "Yesh Atid",
    "hebrew": "יש עתיד",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "כן",
    "english": "Blue and White",
    "transliteration": "Kachol Lavan",
    "hebrew": "כחול לבן",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ב",
    "english": "Yamina",
    "transliteration": "Yamina",
    "hebrew": "ימינה",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "אמת",
    "english": "Labor",
    "transliteration": "haAvoda",
    "hebrew": "העבודה",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ל",
    "english": "Yisrael Beytenu",
    "transliteration": "Yisrael Beytenu",
    "hebrew": "ישראל ביתנו",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ת",
    "english": "New Hope",
    "transliteration": "Tikva Chadasha",
    "hebrew": "תקווה חדשה",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "מרצ",
    "english": "Meretz",
    "transliteration": "Meretz",
    "hebrew": "מרצ",
-   "bloc": "Change bloc"
+   "bloc": "Change bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ודעם",
    "english": "Joint List",
    "transliteration": "haReshima haMeshutefet",
    "hebrew": "הרשימה המשותפת",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
   },
   {
    "letters": "עם",
    "english": "Ra'am",
    "transliteration": "Ra'am",
    "hebrew": "רע״ם",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
   }
  ],
  "colors": {
@@ -249,5 +262,6 @@
   36.0,
   33.5
  ],
+ "surround": "plain",
  "built": "2026-10-31"
 }

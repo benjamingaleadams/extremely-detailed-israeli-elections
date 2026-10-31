@@ -1,0 +1,24 @@
+/* Analysis page (web/analysis). Loaded after ../site.css. */
+.page.wide { max-width: 1080px; }
+.page h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 36px 0 6px; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; margin: 10px 0; }
+.ctl { display: flex; align-items: center; gap: 8px; }
+.ctl .lbl { font-size: 13px; color: var(--muted); }
+.years { display: flex; flex-wrap: wrap; gap: 6px; }
+.years button { font: inherit; font-size: 13px; padding: 3px 10px; border-radius: 6px;
+  border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; }
+.years button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.scroll { overflow-x: auto; margin: 8px 0 14px; }
+.page table.data { width: auto; min-width: 100%; font-size: 13px; margin: 0; }
+.page table.data th, .page table.data td { padding: 4px 8px; white-space: nowrap; }
+.page table.data thead th { font-size: 12px; color: var(--muted); font-weight: 600; vertical-align: bottom; }
+.page table.data th[scope="row"] { font-weight: 400; }
+.page table.data .n { text-align: end; font-variant-numeric: tabular-nums; }
+.page table.data .of { color: var(--muted); }
+.page table.matrix thead th.to { white-space: normal; min-width: 52px; max-width: 80px; }
+.page table.matrix td.c { text-align: end; font-variant-numeric: tabular-nums; }
+.page table.matrix td.c .ci { display: block; font-size: 11px; color: var(--muted); }
+.page table.matrix td.z { color: var(--border); }
+.page .meta { font-size: 13px; color: var(--muted); margin: 4px 0; }
+.page p.note { font-size: 14px; max-width: none; }
+@media (max-width: 600px) { .page .scroll table { display: table; } }

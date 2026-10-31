@@ -17,6 +17,7 @@
 </script>
 <link rel="preconnect" href="https://unpkg.com">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="site.css">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" defer></script>
 <script src="https://unpkg.com/pmtiles@3.2.1/dist/pmtiles.js" defer></script>
@@ -28,7 +29,8 @@
     border-radius: 8px; padding: 10px 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     max-height: calc(100vh - var(--header-h) - 32px); overflow: auto; font-size: 14px; line-height: 1.4; }
   #side { top: calc(var(--header-h) + 16px); left: 16px; width: 290px; }
-  #info { top: calc(var(--header-h) + 16px); right: 16px; width: 300px; }
+  /* the details panel stops above the zoom buttons and credits in the bottom corner */
+  #info { top: calc(var(--header-h) + 16px); right: 16px; width: 300px; max-height: calc(100vh - var(--header-h) - 130px); }
   /* Hebrew: mirror the two panels */
   html[dir="rtl"] #side { left: auto; right: 16px; }
   html[dir="rtl"] #info { right: auto; left: 16px; }
@@ -40,11 +42,17 @@
   .row { display: flex; align-items: center; gap: 8px; margin: 2px 0; }
   .sw { width: 16px; height: 12px; border: 1px solid rgba(0,0,0,.25); flex: none; }
   .he { color: var(--muted); font-size: 12px; direction: rtl; unicode-bidi: isolate; }
+  .muted { color: var(--muted); font-size: 11px; }
+  .alt { color: var(--muted); font-size: 12px; direction: ltr; unicode-bidi: isolate; }  /* English beside Hebrew */
+  .ptitle { font-size: 14px; font-weight: 650; margin: 10px 0 2px; }  /* one-party heading: names keep their case */
+  #top td.rank { color: var(--muted); width: 2.2em; font-variant-numeric: tabular-nums; }
+  #top .linkbtn { font-size: 12px; text-align: start; }
   .panel table { width: 100%; border-collapse: collapse; font-size: 12px; }
   .panel td { padding: 2px 0; vertical-align: top; }
   .panel td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 6px; }
   .years { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
-  .years button { font: inherit; font-size: 13px; padding: 3px 10px; border-radius: 6px;
+  #years { display: grid; grid-template-columns: repeat(4, 1fr); }  /* eight elections in two rows */
+  .years button { font: inherit; font-size: 13px; padding: 3px 8px; border-radius: 6px; white-space: nowrap;
     border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; }
   .years button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
   .years button:disabled { opacity: .5; cursor: not-allowed; }
@@ -74,7 +82,7 @@
     box-shadow: 0 4px 14px rgba(0,0,0,.15); max-height: 300px; overflow: auto; }
   .search li { padding: 5px 8px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
   .search li[aria-selected="true"], .search li:hover { background: var(--bg); }
-  .search li .he { flex: none; }
+  .search li .he, .search li .alt { flex: none; }
   .search .none { color: var(--muted); cursor: default; }
 
   /* keyboard crosshair, shown only while the map itself has focus */
@@ -87,45 +95,66 @@
   body.map-focus #cross { display: block; }
   .maplibregl-canvas:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
   .maplibregl-ctrl-attrib { font-size: 11px; }
+  /* Hebrew: the credits box keeps MapLibre's own layout, its text still runs right to left */
+  html[dir="rtl"] .maplibregl-ctrl-attrib { direction: ltr; }
+  html[dir="rtl"] .maplibregl-ctrl-attrib-inner { direction: rtl; }
   #status { position: absolute; left: 50%; top: calc(var(--header-h) + 50%); transform: translate(-50%, -50%);
     z-index: 1; color: var(--muted); }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .close { display: none; }
+  .close { position: sticky; top: 0; float: right; font: inherit; font-size: 18px; line-height: 1;
+    background: none; border: 0; color: var(--muted); padding: 0 2px; cursor: pointer; z-index: 1; }
+  html[dir="rtl"] .close { float: left; }
+  #info.empty .close { display: none; }
+  .side-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  #side-toggle { display: none; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sw { border-color: rgba(255,255,255,.45); } }
+  :root[data-theme="dark"] .sw { border-color: rgba(255,255,255,.45); }
 
-  @media (max-width: 720px) {
+  /* phones and portrait tablets: the side panel along the top, the details as a sheet at the bottom */
+  @media (max-width: 900px) {
     #side { top: calc(var(--header-h) + 8px); left: 8px; right: 8px; width: auto; max-height: 45vh; padding: 8px 10px; }
+    #side-toggle { display: block; font: inherit; font-size: 13px; background: none; border: 1px solid var(--border);
+      border-radius: 6px; color: var(--muted); padding: 1px 8px; cursor: pointer; flex: none; }
+    body.side-folded #side > :not(.side-head) { display: none; }
+    body.side-folded #side h1 { margin: 0; }
     #side h1 { font-size: 15px; }
     #intro { display: none; }
     #info { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; max-height: 40vh; }
     #info.empty { display: none; }
     html[dir="rtl"] #side, html[dir="rtl"] #info { left: 8px; right: 8px; }  /* phone: full width in Hebrew too */
-    .close { display: block; position: sticky; top: 0; float: right; font: inherit; font-size: 18px; line-height: 1;
-      background: none; border: 0; color: var(--muted); padding: 2px 4px; cursor: pointer; }
-    .maplibregl-ctrl-bottom-right { bottom: 0; }
+    .close { padding: 2px 4px; }
+    .maplibregl-ctrl-bottom-right, .maplibregl-ctrl-bottom-left { bottom: 0; }
   }
 </style>
 </head>
 <body>
 <a class="skip" href="#town" data-he="דילוג לחיפוש יישוב">Skip to town search</a>
 <header class="site-header">
-  <a class="brand" href="index.html" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</a>
-  <nav aria-label="Site">
-    <a href="index.html" aria-current="page" data-he="מפה">Map</a>
-    <a href="town/index.html" data-he="יישובים">Places</a>
-    <a href="sectors/index.html" data-he="מגזרים">Sectors</a>
-    <a href="about.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
-    <a href="sources.html"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
-    <a href="index.html?lang=he" id="lang-switch" lang="he">עברית</a>
+  <a class="brand" href="index.html" data-he-href="index.html?lang=he"><span class="long" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</span><span class="short" data-he="בחירות ישראל">Israeli Elections</span></a>
+  <nav id="site-nav" aria-label="Site" data-he-label="ניווט באתר">
+    <a href="index.html" data-he-href="index.html?lang=he" aria-current="page" data-he="מפות">Maps</a>
+    <a href="town/index.html" data-he-href="town/he/index.html" data-he="יישובים">Places</a>
+    <a href="sectors/index.html" data-he-href="sectors/he/index.html" data-he="מגזרים">Sectors</a>
+    <a href="rank/index.html" data-he-href="rank/he/index.html" data-he="דירוגים">Rankings</a>
+    <a href="compare/index.html" data-he-href="compare/index.html?lang=he" data-he="השוואה">Compare</a>
+    <a href="about.html" data-he-href="about-he.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
+    <a href="sources.html" data-he-href="sources-he.html"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
   </nav>
+  <a href="index.html?lang=he" id="lang-switch" class="lang" lang="he">עברית</a>
+  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" data-he="תפריט" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
 </header>
+
 <main>
   <div id="map" role="region" aria-label="Election map" data-he-label="מפת הבחירות"></div>
   <div id="cross" aria-hidden="true"></div>
   <div id="status" data-he="טוען מפה...">Loading map...</div>
 
   <section id="side" class="panel" aria-labelledby="title">
-    <h1 id="title" data-he="תוצאות הבחירות לפי אזור סטטיסטי">Election results by statistical area</h1>
-    <div class="sub" id="subtitle"></div>
+    <div class="side-head">
+      <div><h1 id="title" data-he="תוצאות הבחירות לפי אזור סטטיסטי">Election results by statistical area</h1>
+      <div class="sub" id="subtitle"></div></div>
+      <button type="button" id="side-toggle" aria-expanded="true" aria-controls="side" data-he="תפריט">Menu</button>
+    </div>
     <div class="years" role="group" aria-label="Election year" data-he-label="שנת הבחירות" id="years"></div>
     <div class="years" role="group" aria-label="Colour areas by" data-he-label="צביעת האזורים לפי" id="modes">
       <button type="button" data-mode="party" aria-pressed="true" data-he="מפלגה מובילה">Leading party</button>
@@ -155,9 +184,8 @@
         the colour is the bloc's leading party. Stripes show a second party from the same bloc with at least half
         the leader's votes. <a href="about.html">How this works</a>.</div>
       <div id="legend-body"></div>
+      <div id="top" hidden></div>
       <div id="envelopes"></div>
-      <div class="sub" style="margin-top:8px" data-he="מקלדת: <kbd>/</kbd> חיפוש, לחיצה על המפה ואז חיצים להזזה, <kbd>+</kbd> <kbd>-</kbd> לזום, <kbd>Enter</kbd> לקריאת האזור שמתחת לצלב.">Keyboard: <kbd>/</kbd> search, click the map then arrows to move,
-        <kbd>+</kbd> <kbd>-</kbd> to zoom, <kbd>Enter</kbd> to read the area under the cross.</div>
     </details>
   </section>
 

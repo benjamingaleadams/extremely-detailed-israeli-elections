@@ -26,63 +26,96 @@
    "english": "Likud",
    "transliteration": "haLikud",
    "hebrew": "הליכוד",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "שס",
    "english": "Shas",
    "transliteration": "Shas",
    "hebrew": "ש״ס",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ג",
    "english": "United Torah Judaism",
    "transliteration": "Yahadut haTorah",
    "hebrew": "יהדות התורה",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "טב",
    "english": "Yamina",
    "transliteration": "Yamina",
    "hebrew": "ימינה",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "פה",
    "english": "Blue and White",
    "transliteration": "Kachol Lavan",
    "hebrew": "כחול לבן",
-   "bloc": "Anti-Netanyahu bloc"
+   "bloc": "Anti-Netanyahu bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ל",
    "english": "Yisrael Beytenu",
    "transliteration": "Yisrael Beytenu",
    "hebrew": "ישראל ביתנו",
-   "bloc": "Uncommitted"
+   "bloc": "Uncommitted",
+   "below_threshold": 0
   },
   {
    "letters": "אמת",
    "english": "Labor-Gesher",
    "transliteration": "haAvoda-Gesher",
    "hebrew": "העבודה-גשר",
-   "bloc": "Anti-Netanyahu bloc"
+   "bloc": "Anti-Netanyahu bloc",
+   "below_threshold": 0
   },
   {
    "letters": "מרצ",
    "english": "Democratic Union",
    "transliteration": "haMachane haDemokrati",
    "hebrew": "המחנה הדמוקרטי",
-   "bloc": "Anti-Netanyahu bloc"
+   "bloc": "Anti-Netanyahu bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ודעם",
    "english": "Joint List",
    "transliteration": "haReshima haMeshutefet",
    "hebrew": "הרשימה המשותפת",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
+  },
+  {
+   "letters": "כף",
+   "english": "Otzma Yehudit",
+   "transliteration": "Otzma Yehudit",
+   "hebrew": "עוצמה יהודית",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 1
+  },
+  {
+   "letters": "זץ",
+   "english": "Tzomet",
+   "transliteration": "Tzomet",
+   "hebrew": "צומת",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "נך",
+   "english": "Respect and Equality",
+   "transliteration": "Respect and Equality",
+   "hebrew": "כבוד ושוויון",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
   }
  ],
  "colors": {
@@ -94,7 +127,10 @@
   "ל": "#8e5bb5",
   "אמת": "#d7262e",
   "מרצ": "#b8005c",
-  "ודעם": "#5eb814"
+  "ודעם": "#5eb814",
+  "כף": "#ff4500",
+  "זץ": "#c4a35a",
+  "נך": "#b9a38a"
  },
  "states": {
   "none": "#f6eea0",
@@ -142,7 +178,10 @@
     "ל": 14019,
     "אמת": 13211,
     "מרצ": 13861,
-    "ודעם": 11974
+    "ודעם": 11974,
+    "כף": 6583,
+    "זץ": 845,
+    "נך": 94
    }
   },
   "unplaced": {
@@ -209,5 +248,6 @@
   36.0,
   33.5
  ],
+ "surround": "plain",
  "built": "2026-10-31"
 }

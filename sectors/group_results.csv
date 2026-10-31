@@ -1,0 +1,465 @@
+group,slug,name_en,name_he,election,membership_basis,places,valid,turnout,right,left,arab,uncommitted,right_change,left_change,arab_change,uncommitted_change
+jewish,jewish,Jewish (neighbourhoods and small places),יהודים (שכונות ויישובים קטנים),2013,2013,1040,3143483,65.31,53.07,40.57,0.71,3.25,,,,
+jewish,jewish,Jewish (neighbourhoods and small places),יהודים (שכונות ויישובים קטנים),2015,2013,1048,3453775,69.3,55.02,34.75,0.68,9.26,1.95,-5.82,-0.03,6.01
+jewish,jewish,Jewish (neighbourhoods and small places),יהודים (שכונות ויישובים קטנים),2019-04,2015,1064,3614683,67.46,58.2,35.88,0.55,4.87,3.18,1.13,-0.13,-4.39
+jewish,jewish,Jewish (neighbourhoods and small places),יהודים (שכונות ויישובים קטנים),2019-09,2019-04,1067,3608634,66.72,52.51,38.0,0.8,8.26,-5.69,2.12,0.26,3.39
+jewish,jewish,Jewish (neighbourhoods and small places),יהודים (שכונות ויישובים קטנים),2020,2019-09,1067,3652035,66.91,55.98,42.58,1.1,0.0,3.46,4.59,0.3,-8.26
+jewish,jewish,Jewish (neighbourhoods and small places),יהודים (שכונות ויישובים קטנים),2021,2020,1068,3551285,63.98,53.2,44.63,0.66,0.0,-2.78,2.05,-0.44,0.0
+jewish,jewish,Jewish (neighbourhoods and small places),יהודים (שכונות ויישובים קטנים),2022,2021,1068,3760608,65.8,55.88,41.67,0.97,0.0,2.68,-2.96,0.31,0.0
+jewish,jewish,Jewish (neighbourhoods and small places),יהודים (שכונות ויישובים קטנים),2026,2022,1072,4354914,70.85,51.68,43.1,1.29,3.14,-4.22,1.45,0.32,3.14
+j-secular,secular,Secular (neighbourhoods and small places),חילונים (שכונות ויישובים קטנים),2013,2013,713,2217750,64.41,42.66,50.59,0.77,3.12,,,,
+j-secular,secular,Secular (neighbourhoods and small places),חילונים (שכונות ויישובים קטנים),2015,2013,713,2432718,68.34,44.4,44.33,0.7,10.28,1.74,-6.26,-0.08,7.16
+j-secular,secular,Secular (neighbourhoods and small places),חילונים (שכונות ויישובים קטנים),2019-04,2015,724,2527491,66.46,47.57,46.2,0.6,5.08,3.17,1.89,-0.1,-5.2
+j-secular,secular,Secular (neighbourhoods and small places),חילונים (שכונות ויישובים קטנים),2019-09,2019-04,728,2516986,65.52,40.17,48.64,0.86,9.88,-7.4,2.44,0.26,4.8
+j-secular,secular,Secular (neighbourhoods and small places),חילונים (שכונות ויישובים קטנים),2020,2019-09,727,2538675,65.57,43.82,54.62,1.19,0.0,3.66,5.97,0.33,-9.88
+j-secular,secular,Secular (neighbourhoods and small places),חילונים (שכונות ויישובים קטנים),2021,2020,727,2484056,63.21,40.75,56.83,0.72,0.0,-3.07,2.21,-0.47,0.0
+j-secular,secular,Secular (neighbourhoods and small places),חילונים (שכונות ויישובים קטנים),2022,2021,727,2592036,64.29,43.2,54.03,1.05,0.0,2.45,-2.8,0.33,0.0
+j-secular,secular,Secular (neighbourhoods and small places),חילונים (שכונות ויישובים קטנים),2026,2022,723,3017896,69.9,39.22,55.43,1.34,3.56,-3.98,1.4,0.29,3.55
+j-sec-urban,urban-secular-neighbourhoods,Urban secular neighbourhoods,שכונות עירוניות חילוניות,2013,2013,92,1983769,63.44,45.3,47.87,0.8,3.16,,,,
+j-sec-urban,urban-secular-neighbourhoods,Urban secular neighbourhoods,שכונות עירוניות חילוניות,2015,2013,92,2180317,67.53,47.18,41.25,0.74,10.52,1.88,-6.62,-0.05,7.36
+j-sec-urban,urban-secular-neighbourhoods,Urban secular neighbourhoods,שכונות עירוניות חילוניות,2019-04,2015,94,2256499,65.55,50.69,43.03,0.64,5.06,3.51,1.79,-0.11,-5.46
+j-sec-urban,urban-secular-neighbourhoods,Urban secular neighbourhoods,שכונות עירוניות חילוניות,2019-09,2019-04,94,2249069,64.67,42.64,45.66,0.92,10.33,-8.05,2.63,0.28,5.27
+j-sec-urban,urban-secular-neighbourhoods,Urban secular neighbourhoods,שכונות עירוניות חילוניות,2020,2019-09,94,2271097,64.78,46.32,52.07,1.24,0.0,3.68,6.4,0.32,-10.33
+j-sec-urban,urban-secular-neighbourhoods,Urban secular neighbourhoods,שכונות עירוניות חילוניות,2021,2020,94,2214714,62.25,43.14,54.41,0.77,0.0,-3.18,2.35,-0.48,0.0
+j-sec-urban,urban-secular-neighbourhoods,Urban secular neighbourhoods,שכונות עירוניות חילוניות,2022,2021,93,2319294,63.58,45.63,51.57,1.11,0.0,2.49,-2.84,0.34,0.0
+j-sec-urban,urban-secular-neighbourhoods,Urban secular neighbourhoods,שכונות עירוניות חילוניות,2026,2022,94,2705616,69.24,41.35,53.19,1.43,3.56,-4.29,1.62,0.32,3.55
+j-sec-kibbutz,kibbutzim-secular,Secular kibbutzim,קיבוצים חילוניים,2013,2013,242,81280,71.52,9.14,85.12,0.66,2.2,,,,
+j-sec-kibbutz,kibbutzim-secular,Secular kibbutzim,קיבוצים חילוניים,2015,2013,242,87165,73.3,9.86,83.63,0.31,5.88,0.72,-1.49,-0.35,3.68
+j-sec-kibbutz,kibbutzim-secular,Secular kibbutzim,קיבוצים חילוניים,2019-04,2015,244,93472,73.21,10.52,84.67,0.3,4.21,0.65,1.04,-0.01,-1.67
+j-sec-kibbutz,kibbutzim-secular,Secular kibbutzim,קיבוצים חילוניים,2019-09,2019-04,243,92183,71.82,9.26,86.64,0.39,3.3,-1.26,1.97,0.09,-0.91
+j-sec-kibbutz,kibbutzim-secular,Secular kibbutzim,קיבוצים חילוניים,2020,2019-09,243,92411,71.34,10.71,88.11,0.87,0.0,1.45,1.47,0.48,-3.3
+j-sec-kibbutz,kibbutzim-secular,Secular kibbutzim,קיבוצים חילוניים,2021,2020,244,93848,71.11,10.47,87.44,0.31,0.0,-0.24,-0.67,-0.56,0.0
+j-sec-kibbutz,kibbutzim-secular,Secular kibbutzim,קיבוצים חילוניים,2022,2021,244,94916,69.64,11.28,86.12,0.61,0.01,0.81,-1.32,0.3,0.01
+j-sec-kibbutz,kibbutzim-secular,Secular kibbutzim,קיבוצים חילוניים,2026,2022,244,109099,73.89,11.08,85.0,0.63,3.07,-0.2,-1.12,0.01,3.07
+j-sec-moshav,moshavim-secular,Secular moshavim,מושבים חילוניים,2013,2013,257,96043,76.66,25.67,68.07,0.41,3.19,,,,
+j-sec-moshav,moshavim-secular,Secular moshavim,מושבים חילוניים,2015,2013,257,103095,79.0,24.83,65.11,0.18,9.62,-0.84,-2.96,-0.23,6.43
+j-sec-moshav,moshavim-secular,Secular moshavim,מושבים חילוניים,2019-04,2015,258,109182,77.7,26.24,67.7,0.18,5.56,1.4,2.59,0.0,-4.07
+j-sec-moshav,moshavim-secular,Secular moshavim,מושבים חילוניים,2019-09,2019-04,259,108013,76.23,22.92,67.51,0.25,8.95,-3.34,-0.16,0.06,3.38
+j-sec-moshav,moshavim-secular,Secular moshavim,מושבים חילוניים,2020,2019-09,259,107430,75.52,27.83,71.34,0.53,0.0,4.91,3.83,0.28,-8.95
+j-sec-moshav,moshavim-secular,Secular moshavim,מושבים חילוניים,2021,2020,260,107181,74.26,25.61,72.19,0.17,0.0,-2.22,0.85,-0.36,0.0
+j-sec-moshav,moshavim-secular,Secular moshavim,מושבים חילוניים,2022,2021,260,108333,73.35,27.26,70.45,0.4,0.01,1.65,-1.74,0.23,0.01
+j-sec-moshav,moshavim-secular,Secular moshavim,מושבים חילוניים,2026,2022,260,123501,78.61,24.73,70.9,0.4,3.76,-2.53,0.45,0.01,3.75
+j-sec-community,community-settlements-secular,Secular community settlements,יישובים קהילתיים חילוניים,2013,2013,70,43181,75.17,27.17,67.0,0.52,2.82,,,,
+j-sec-community,community-settlements-secular,Secular community settlements,יישובים קהילתיים חילוניים,2015,2013,70,47518,76.89,27.4,63.2,0.23,8.91,0.23,-3.8,-0.29,6.09
+j-sec-community,community-settlements-secular,Secular community settlements,יישובים קהילתיים חילוניים,2019-04,2015,73,52598,74.97,28.77,64.38,0.25,6.24,1.37,1.18,0.02,-2.67
+j-sec-community,community-settlements-secular,Secular community settlements,יישובים קהילתיים חילוניים,2019-09,2019-04,74,52088,72.98,27.51,66.07,0.4,5.59,-1.7,2.19,0.15,-0.7
+j-sec-community,community-settlements-secular,Secular community settlements,יישובים קהילתיים חילוניים,2020,2019-09,73,51937,72.58,30.06,68.79,0.73,0.0,3.04,2.22,0.33,-5.6
+j-sec-community,community-settlements-secular,Secular community settlements,יישובים קהילתיים חילוניים,2021,2020,73,52796,71.94,28.01,69.65,0.31,0.0,-2.04,0.87,-0.42,0.0
+j-sec-community,community-settlements-secular,Secular community settlements,יישובים קהילתיים חילוניים,2022,2021,73,53472,70.65,29.75,67.4,0.54,0.0,1.74,-2.26,0.23,0.0
+j-sec-community,community-settlements-secular,Secular community settlements,יישובים קהילתיים חילוניים,2026,2022,73,61269,76.44,27.29,67.66,0.67,4.11,-2.46,0.27,0.13,4.11
+j-religious,religious-traditional,Religious and traditional (neighbourhoods and small places),דתיים ומסורתיים (שכונות ויישובים קטנים),2013,2013,353,608740,65.16,70.94,22.41,0.79,4.14,,,,
+j-religious,religious-traditional,Religious and traditional (neighbourhoods and small places),דתיים ומסורתיים (שכונות ויישובים קטנים),2015,2013,361,682832,70.38,73.65,15.94,0.92,9.18,2.71,-6.47,0.13,5.04
+j-religious,religious-traditional,Religious and traditional (neighbourhoods and small places),דתיים ומסורתיים (שכונות ויישובים קטנים),2019-04,2015,366,718515,68.81,76.92,16.24,0.63,5.7,3.27,0.3,-0.28,-3.48
+j-religious,religious-traditional,Religious and traditional (neighbourhoods and small places),דתיים ומסורתיים (שכונות ויישובים קטנים),2019-09,2019-04,365,713437,68.1,73.84,18.62,1.0,6.02,-3.09,2.38,0.36,0.32
+j-religious,religious-traditional,Religious and traditional (neighbourhoods and small places),דתיים ומסורתיים (שכונות ויישובים קטנים),2020,2019-09,365,729055,69.01,77.72,20.61,1.32,0.0,3.88,1.99,0.33,-6.02
+j-religious,religious-traditional,Religious and traditional (neighbourhoods and small places),דתיים ומסורתיים (שכונות ויישובים קטנים),2021,2020,366,690221,64.7,75.54,22.37,0.75,0.0,-2.17,1.75,-0.57,0.0
+j-religious,religious-traditional,Religious and traditional (neighbourhoods and small places),דתיים ומסורתיים (שכונות ויישובים קטנים),2022,2021,367,759890,68.39,77.97,19.7,1.1,0.0,2.41,-2.66,0.35,0.0
+j-religious,religious-traditional,Religious and traditional (neighbourhoods and small places),דתיים ומסורתיים (שכונות ויישובים קטנים),2026,2022,376,868757,73.19,73.36,21.29,1.45,3.12,-4.57,1.56,0.35,3.12
+j-rel-urban,urban-religious-neighbourhoods,Urban religious and traditional neighbourhoods,שכונות עירוניות דתיות ומסורתיות,2013,2013,62,497672,63.14,68.71,24.27,0.95,4.17,,,,
+j-rel-urban,urban-religious-neighbourhoods,Urban religious and traditional neighbourhoods,שכונות עירוניות דתיות ומסורתיות,2015,2013,62,556800,68.52,71.86,17.2,1.1,9.52,3.15,-7.07,0.15,5.35
+j-rel-urban,urban-religious-neighbourhoods,Urban religious and traditional neighbourhoods,שכונות עירוניות דתיות ומסורתיות,2019-04,2015,61,577559,66.71,75.7,17.56,0.78,5.4,3.85,0.36,-0.32,-4.13
+j-rel-urban,urban-religious-neighbourhoods,Urban religious and traditional neighbourhoods,שכונות עירוניות דתיות ומסורתיות,2019-09,2019-04,61,574439,66.17,71.76,20.15,1.21,6.3,-3.95,2.59,0.44,0.9
+j-rel-urban,urban-religious-neighbourhoods,Urban religious and traditional neighbourhoods,שכונות עירוניות דתיות ומסורתיות,2020,2019-09,61,587379,67.15,75.5,22.53,1.61,0.0,3.75,2.38,0.4,-6.3
+j-rel-urban,urban-religious-neighbourhoods,Urban religious and traditional neighbourhoods,שכונות עירוניות דתיות ומסורתיות,2021,2020,61,550108,62.52,73.25,24.48,0.92,0.0,-2.26,1.96,-0.69,0.0
+j-rel-urban,urban-religious-neighbourhoods,Urban religious and traditional neighbourhoods,שכונות עירוניות דתיות ומסורתיות,2022,2021,61,611731,66.68,76.04,21.37,1.34,0.0,2.79,-3.12,0.42,0.0
+j-rel-urban,urban-religious-neighbourhoods,Urban religious and traditional neighbourhoods,שכונות עירוניות דתיות ומסורתיות,2026,2022,62,697997,71.81,71.26,22.95,1.77,3.16,-4.76,1.56,0.44,3.15
+j-rel-kibbutz,kibbutzim-religious,Religious kibbutzim,קיבוצים דתיים,2013,2013,20,6401,79.25,80.89,13.87,0.06,4.61,,,,
+j-rel-kibbutz,kibbutzim-religious,Religious kibbutzim,קיבוצים דתיים,2015,2013,20,6478,79.18,81.41,13.79,0.06,4.26,0.52,-0.09,-0.0,-0.35
+j-rel-kibbutz,kibbutzim-religious,Religious kibbutzim,קיבוצים דתיים,2019-04,2015,20,6901,79.69,74.67,15.5,0.04,9.64,-6.74,1.72,-0.02,5.38
+j-rel-kibbutz,kibbutzim-religious,Religious kibbutzim,קיבוצים דתיים,2019-09,2019-04,20,6653,76.43,79.84,18.59,0.09,1.22,5.17,3.09,0.05,-8.42
+j-rel-kibbutz,kibbutzim-religious,Religious kibbutzim,קיבוצים דתיים,2020,2019-09,20,6722,76.65,81.23,18.24,0.12,0.0,1.38,-0.35,0.03,-1.22
+j-rel-kibbutz,kibbutzim-religious,Religious kibbutzim,קיבוצים דתיים,2021,2020,20,6820,75.86,78.4,20.48,0.07,0.0,-2.82,2.25,-0.05,0.0
+j-rel-kibbutz,kibbutzim-religious,Religious kibbutzim,קיבוצים דתיים,2022,2021,20,7009,74.79,75.62,23.01,0.06,0.0,-2.78,2.53,-0.02,0.0
+j-rel-kibbutz,kibbutzim-religious,Religious kibbutzim,קיבוצים דתיים,2026,2022,20,8131,77.0,66.73,27.0,0.16,5.31,-8.88,3.98,0.1,5.31
+j-rel-moshav,moshavim-religious-traditional,Religious and traditional moshavim,מושבים דתיים ומסורתיים,2013,2013,183,54676,73.11,75.33,18.92,0.1,4.61,,,,
+j-rel-moshav,moshavim-religious-traditional,Religious and traditional moshavim,מושבים דתיים ומסורתיים,2015,2013,184,62569,78.85,75.21,13.19,0.18,11.15,-0.12,-5.72,0.08,6.54
+j-rel-moshav,moshavim-religious-traditional,Religious and traditional moshavim,מושבים דתיים ומסורתיים,2019-04,2015,184,68230,77.97,79.38,14.0,0.06,6.22,4.17,0.8,-0.13,-4.93
+j-rel-moshav,moshavim-religious-traditional,Religious and traditional moshavim,מושבים דתיים ומסורתיים,2019-09,2019-04,184,68117,77.31,75.78,15.54,0.16,8.24,-3.59,1.54,0.1,2.02
+j-rel-moshav,moshavim-religious-traditional,Religious and traditional moshavim,מושבים דתיים ומסורתיים,2020,2019-09,184,69299,78.13,83.6,15.95,0.21,0.0,7.82,0.41,0.06,-8.24
+j-rel-moshav,moshavim-religious-traditional,Religious and traditional moshavim,מושבים דתיים ומסורתיים,2021,2020,184,67491,74.48,81.5,17.03,0.14,0.0,-2.11,1.08,-0.07,0.0
+j-rel-moshav,moshavim-religious-traditional,Religious and traditional moshavim,מושבים דתיים ומסורתיים,2022,2021,185,72378,77.7,83.41,15.27,0.17,0.0,1.91,-1.77,0.03,0.0
+j-rel-moshav,moshavim-religious-traditional,Religious and traditional moshavim,מושבים דתיים ומסורתיים,2026,2022,185,80429,80.6,79.19,16.88,0.14,3.48,-4.22,1.61,-0.03,3.47
+j-rel-community,community-settlements-religious,Religious and traditional community settlements,יישובים קהילתיים דתיים ומסורתיים,2013,2013,68,43960,81.06,89.03,6.93,0.04,3.26,,,,
+j-rel-community,community-settlements-religious,Religious and traditional community settlements,יישובים קהילתיים דתיים ומסורתיים,2015,2013,76,50241,82.52,90.58,5.6,0.05,3.57,1.55,-1.33,0.01,0.31
+j-rel-community,community-settlements-religious,Religious and traditional community settlements,יישובים קהילתיים דתיים ומסורתיים,2019-04,2015,82,59147,80.92,86.49,5.86,0.04,7.45,-4.09,0.27,-0.0,3.88
+j-rel-community,community-settlements-religious,Religious and traditional community settlements,יישובים קהילתיים דתיים ומסורתיים,2019-09,2019-04,82,57852,78.47,91.18,7.03,0.05,1.48,4.63,1.19,0.01,-5.94
+j-rel-community,community-settlements-religious,Religious and traditional community settlements,יישובים קהילתיים דתיים ומסורתיים,2020,2019-09,83,59231,78.52,92.2,7.4,0.06,0.0,1.06,0.36,0.01,-1.5
+j-rel-community,community-settlements-religious,Religious and traditional community settlements,יישובים קהילתיים דתיים ומסורתיים,2021,2020,82,59349,76.35,89.64,9.1,0.04,0.0,-2.56,1.7,-0.03,0.0
+j-rel-community,community-settlements-religious,Religious and traditional community settlements,יישובים קהילתיים דתיים ומסורתיים,2022,2021,82,61845,76.07,90.62,8.24,0.05,0.0,0.98,-0.86,0.01,0.0
+j-rel-community,community-settlements-religious,Religious and traditional community settlements,יישובים קהילתיים דתיים ומסורתיים,2026,2022,84,74047,79.19,87.23,9.96,0.07,2.19,-3.38,1.72,0.02,2.19
+j-haredi,haredi,Haredi (neighbourhoods and small places),חרדים (שכונות ויישובים קטנים),2013,2013,33,316993,72.78,91.61,5.31,0.09,2.41,,,,
+j-haredi,haredi,Haredi (neighbourhoods and small places),חרדים (שכונות ויישובים קטנים),2015,2013,34,338225,74.52,93.79,3.85,0.09,2.06,2.18,-1.46,-0.0,-0.35
+j-haredi,haredi,Haredi (neighbourhoods and small places),חרדים (שכונות ויישובים קטנים),2019-04,2015,34,368677,72.06,94.62,3.36,0.04,1.79,0.83,-0.49,-0.05,-0.28
+j-haredi,haredi,Haredi (neighbourhoods and small places),חרדים (שכונות ויישובים קטנים),2019-09,2019-04,34,378211,72.8,94.36,3.76,0.06,1.64,-0.26,0.4,0.01,-0.14
+j-haredi,haredi,Haredi (neighbourhoods and small places),חרדים (שכונות ויישובים קטנים),2020,2019-09,36,384305,72.48,95.05,4.72,0.09,0.0,0.68,0.96,0.04,-1.65
+j-haredi,haredi,Haredi (neighbourhoods and small places),חרדים (שכונות ויישובים קטנים),2021,2020,36,377008,68.01,94.31,5.02,0.17,0.0,-0.74,0.3,0.08,0.0
+j-haredi,haredi,Haredi (neighbourhoods and small places),חרדים (שכונות ויישובים קטנים),2022,2021,36,408682,71.32,95.28,4.11,0.23,0.0,0.98,-0.91,0.06,0.0
+j-haredi,haredi,Haredi (neighbourhoods and small places),חרדים (שכונות ויישובים קטנים),2026,2022,36,468261,72.86,91.76,4.08,0.69,0.51,-3.52,-0.03,0.46,0.51
+j-har-cities,haredi-towns-neighbourhoods,Haredi neighbourhoods of Haredi towns,שכונות חרדיות בערים חרדיות,2013,2013,16,140151,81.56,95.05,2.23,0.03,2.42,,,,
+j-har-cities,haredi-towns-neighbourhoods,Haredi neighbourhoods of Haredi towns,שכונות חרדיות בערים חרדיות,2015,2013,16,148969,82.7,97.35,1.42,0.01,1.06,2.3,-0.8,-0.02,-1.35
+j-har-cities,haredi-towns-neighbourhoods,Haredi neighbourhoods of Haredi towns,שכונות חרדיות בערים חרדיות,2019-04,2015,14,153394,79.72,97.9,1.05,0.02,0.9,0.45,-0.35,0.0,-0.08
+j-har-cities,haredi-towns-neighbourhoods,Haredi neighbourhoods of Haredi towns,שכונות חרדיות בערים חרדיות,2019-09,2019-04,16,159834,80.24,98.29,1.23,0.01,0.39,0.46,0.2,-0.0,-0.61
+j-har-cities,haredi-towns-neighbourhoods,Haredi neighbourhoods of Haredi towns,שכונות חרדיות בערים חרדיות,2020,2019-09,17,189673,77.64,98.55,1.34,0.02,0.0,0.29,0.08,0.0,-0.38
+j-har-cities,haredi-towns-neighbourhoods,Haredi neighbourhoods of Haredi towns,שכונות חרדיות בערים חרדיות,2021,2020,18,189928,73.87,98.26,1.4,0.02,0.0,-0.3,0.06,-0.0,0.0
+j-har-cities,haredi-towns-neighbourhoods,Haredi neighbourhoods of Haredi towns,שכונות חרדיות בערים חרדיות,2022,2021,17,205777,76.88,98.63,1.13,0.02,0.0,0.37,-0.28,0.0,0.0
+j-har-cities,haredi-towns-neighbourhoods,Haredi neighbourhoods of Haredi towns,שכונות חרדיות בערים חרדיות,2026,2022,17,245228,77.51,94.96,1.27,0.02,0.23,-3.67,0.14,0.0,0.23
+j-har-other,haredi-neighbourhoods-elsewhere,Haredi neighbourhoods of other towns,שכונות חרדיות בערים אחרות,2013,2013,13,172399,66.99,88.93,7.72,0.14,2.4,,,,
+j-har-other,haredi-neighbourhoods-elsewhere,Haredi neighbourhoods of other towns,שכונות חרדיות בערים אחרות,2015,2013,14,184425,69.01,91.04,5.73,0.15,2.83,2.11,-1.99,0.01,0.43
+j-har-other,haredi-neighbourhoods-elsewhere,Haredi neighbourhoods of other towns,שכונות חרדיות בערים אחרות,2019-04,2015,15,206970,67.22,92.37,5.01,0.06,2.32,1.19,-0.59,-0.08,-0.51
+j-har-other,haredi-neighbourhoods-elsewhere,Haredi neighbourhoods of other towns,שכונות חרדיות בערים אחרות,2019-09,2019-04,15,213539,68.15,91.52,5.55,0.09,2.6,-0.84,0.54,0.03,0.28
+j-har-other,haredi-neighbourhoods-elsewhere,Haredi neighbourhoods of other towns,שכונות חרדיות בערים אחרות,2020,2019-09,15,189738,68.06,91.64,8.01,0.17,0.0,1.03,1.89,0.07,-2.92
+j-har-other,haredi-neighbourhoods-elsewhere,Haredi neighbourhoods of other towns,שכונות חרדיות בערים אחרות,2021,2020,15,185085,62.92,90.42,8.58,0.33,0.0,-1.22,0.58,0.16,0.0
+j-har-other,haredi-neighbourhoods-elsewhere,Haredi neighbourhoods of other towns,שכונות חרדיות בערים אחרות,2022,2021,16,197767,66.39,91.9,7.13,0.46,0.0,1.49,-1.45,0.13,0.0
+j-har-other,haredi-neighbourhoods-elsewhere,Haredi neighbourhoods of other towns,שכונות חרדיות בערים אחרות,2026,2022,16,217345,68.31,88.22,7.14,1.46,0.81,-3.68,0.01,1.0,0.81
+j-har-small,haredi-villages,Haredi villages and small places,כפרים ויישובים קטנים חרדיים,2013,2013,4,4443,70.67,87.1,9.36,0.16,2.77,,,,
+j-har-small,haredi-villages,Haredi villages and small places,כפרים ויישובים קטנים חרדיים,2015,2013,4,4831,72.4,88.86,7.14,0.06,3.71,1.76,-2.22,-0.1,0.94
+j-har-small,haredi-villages,Haredi villages and small places,כפרים ויישובים קטנים חרדיים,2019-04,2015,5,8313,72.89,90.22,4.82,0.06,4.79,-2.16,0.11,0.02,2.14
+j-har-small,haredi-villages,Haredi villages and small places,כפרים ויישובים קטנים חרדיים,2019-09,2019-04,3,4838,68.51,90.22,8.5,0.06,0.91,3.03,0.39,-0.04,-3.54
+j-har-small,haredi-villages,Haredi villages and small places,כפרים ויישובים קטנים חרדיים,2020,2019-09,4,4894,68.32,91.52,8.11,0.1,0.0,1.22,-0.32,0.04,-0.9
+j-har-small,haredi-villages,Haredi villages and small places,כפרים ויישובים קטנים חרדיים,2021,2020,3,1995,64.08,79.2,18.55,0.1,0.0,-2.03,0.31,-0.05,0.0
+j-har-small,haredi-villages,Haredi villages and small places,כפרים ויישובים קטנים חרדיים,2022,2021,3,5138,67.92,91.34,7.49,0.21,0.02,1.18,-0.99,0.15,0.02
+j-har-small,haredi-villages,Haredi villages and small places,כפרים ויישובים קטנים חרדיים,2026,2022,3,5688,69.46,89.49,8.28,0.23,1.25,-1.85,0.79,0.01,1.23
+arab,arab,Arab (towns and neighbourhoods),ערבים (יישובים ושכונות),2013,2013,134,383805,55.42,7.4,10.19,80.84,0.56,,,,
+arab,arab,Arab (towns and neighbourhoods),ערבים (יישובים ושכונות),2015,2013,135,466054,63.18,4.27,6.89,86.66,1.05,-3.13,-3.3,5.82,0.49
+arab,arab,Arab (towns and neighbourhoods),ערבים (יישובים ושכונות),2019-04,2015,136,397935,47.81,6.89,14.84,75.99,0.68,2.62,7.94,-10.68,-0.37
+arab,arab,Arab (towns and neighbourhoods),ערבים (יישובים ושכונות),2019-09,2019-04,136,492142,58.61,3.08,8.85,84.96,1.51,-3.81,-5.99,8.98,0.82
+arab,arab,Arab (towns and neighbourhoods),ערבים (יישובים ושכונות),2020,2019-09,136,552145,64.38,2.36,5.07,92.08,0.0,-0.72,-3.78,7.12,-1.51
+arab,arab,Arab (towns and neighbourhoods),ערבים (יישובים ושכונות),2021,2020,136,386621,43.94,5.54,8.62,84.93,0.0,3.17,3.55,-7.15,0.0
+arab,arab,Arab (towns and neighbourhoods),ערבים (יישובים ושכונות),2022,2021,136,486421,53.04,3.13,5.63,90.5,0.02,-2.41,-2.99,5.56,0.02
+arab,arab,Arab (towns and neighbourhoods),ערבים (יישובים ושכונות),2026,2022,137,797196,78.4,1.4,4.91,92.81,0.11,-1.72,-0.72,2.31,0.09
+a-muslim,muslim-arab-towns,Muslim Arab towns,יישובים ערביים מוסלמיים,2013,2013,61,269784,59.07,4.45,8.88,85.56,0.37,,,,
+a-muslim,muslim-arab-towns,Muslim Arab towns,יישובים ערביים מוסלמיים,2015,2013,61,336984,68.8,2.42,5.06,91.26,0.54,-2.02,-3.82,5.7,0.18
+a-muslim,muslim-arab-towns,Muslim Arab towns,יישובים ערביים מוסלמיים,2019-04,2015,61,281362,51.29,5.05,11.94,80.93,0.41,2.63,6.88,-10.33,-0.14
+a-muslim,muslim-arab-towns,Muslim Arab towns,יישובים ערביים מוסלמיים,2019-09,2019-04,61,344216,62.08,1.93,5.97,89.95,0.78,-3.13,-5.96,9.02,0.38
+a-muslim,muslim-arab-towns,Muslim Arab towns,יישובים ערביים מוסלמיים,2020,2019-09,61,389022,68.81,1.26,2.68,95.67,0.0,-0.67,-3.29,5.72,-0.78
+a-muslim,muslim-arab-towns,Muslim Arab towns,יישובים ערביים מוסלמיים,2021,2020,61,259000,44.84,3.44,6.28,89.62,0.0,2.19,3.6,-6.05,0.0
+a-muslim,muslim-arab-towns,Muslim Arab towns,יישובים ערביים מוסלמיים,2022,2021,61,326290,54.35,1.56,3.57,94.23,0.01,-1.88,-2.71,4.61,0.01
+a-muslim,muslim-arab-towns,Muslim Arab towns,יישובים ערביים מוסלמיים,2026,2022,61,525982,80.41,0.51,3.32,95.33,0.05,-1.05,-0.25,1.1,0.04
+a-bedouin,bedouin,Bedouin,בדואים,2013,2013,58,58111,46.18,7.72,9.92,80.26,0.74,,,,
+a-bedouin,bedouin,Bedouin,בדואים,2015,2013,59,68496,48.89,3.41,8.61,83.15,1.63,-4.31,-1.31,2.89,0.89
+a-bedouin,bedouin,Bedouin,בדואים,2019-04,2015,60,64047,37.94,5.34,17.0,74.9,1.23,1.93,8.39,-8.24,-0.4
+a-bedouin,bedouin,Bedouin,בדואים,2019-09,2019-04,60,89804,52.01,2.8,13.03,80.83,1.21,-2.54,-3.97,5.93,-0.02
+a-bedouin,bedouin,Bedouin,בדואים,2020,2019-09,60,100400,56.7,1.63,6.13,91.43,0.0,-1.17,-6.9,10.59,-1.21
+a-bedouin,bedouin,Bedouin,בדואים,2021,2020,60,76935,41.58,6.84,4.75,86.85,0.0,5.21,-1.39,-4.57,0.0
+a-bedouin,bedouin,Bedouin,בדואים,2022,2021,60,100464,50.96,2.38,4.3,92.48,0.05,-4.45,-0.45,5.63,0.05
+a-bedouin,bedouin,Bedouin,בדואים,2026,2022,61,184253,80.78,0.45,2.16,96.6,0.07,-1.93,-2.13,4.12,0.02
+a-bed-south,southern-bedouin,Southern Bedouin,בדואים בדרום,2013,2013,35,39626,45.79,4.96,3.3,89.79,0.47,,,,
+a-bed-south,southern-bedouin,Southern Bedouin,בדואים בדרום,2015,2013,36,45898,47.02,2.52,6.07,87.28,1.32,-2.44,2.77,-2.51,0.84
+a-bed-south,southern-bedouin,Southern Bedouin,בדואים בדרום,2019-04,2015,38,45219,37.47,3.3,8.99,86.03,0.43,0.77,2.92,-1.25,-0.88
+a-bed-south,southern-bedouin,Southern Bedouin,בדואים בדרום,2019-09,2019-04,38,64303,52.06,1.86,8.34,86.43,1.34,-1.44,-0.65,0.4,0.91
+a-bed-south,southern-bedouin,Southern Bedouin,בדואים בדרום,2020,2019-09,38,71132,56.02,1.09,3.76,94.37,0.0,-0.77,-4.58,7.94,-1.34
+a-bed-south,southern-bedouin,Southern Bedouin,בדואים בדרום,2021,2020,38,56567,42.34,4.8,3.03,90.36,0.0,3.72,-0.73,-4.01,0.0
+a-bed-south,southern-bedouin,Southern Bedouin,בדואים בדרום,2022,2021,38,73181,51.0,1.83,3.44,93.91,0.01,-2.98,0.41,3.55,0.01
+a-bed-south,southern-bedouin,Southern Bedouin,בדואים בדרום,2026,2022,39,137867,81.45,0.35,0.89,98.05,0.06,-1.48,-2.55,4.14,0.05
+a-bed-south-towns,southern-bedouin-towns,Southern Bedouin towns and villages,עיירות וכפרים בדואיים בדרום,2013,2013,15,31294,53.2,3.99,3.39,90.91,0.45,,,,
+a-bed-south-towns,southern-bedouin-towns,Southern Bedouin towns and villages,עיירות וכפרים בדואיים בדרום,2015,2013,16,35400,53.52,2.07,5.88,88.24,1.34,-1.92,2.49,-2.67,0.89
+a-bed-south-towns,southern-bedouin-towns,Southern Bedouin towns and villages,עיירות וכפרים בדואיים בדרום,2019-04,2015,18,36610,42.16,3.41,8.95,86.21,0.39,1.34,3.06,-2.02,-0.95
+a-bed-south-towns,southern-bedouin-towns,Southern Bedouin towns and villages,עיירות וכפרים בדואיים בדרום,2019-09,2019-04,18,49761,55.91,2.08,9.03,85.09,1.5,-1.33,0.08,-1.12,1.11
+a-bed-south-towns,southern-bedouin-towns,Southern Bedouin towns and villages,עיירות וכפרים בדואיים בדרום,2020,2019-09,18,55567,60.71,1.18,4.2,93.91,0.0,-0.9,-4.82,8.81,-1.5
+a-bed-south-towns,southern-bedouin-towns,Southern Bedouin towns and villages,עיירות וכפרים בדואיים בדרום,2021,2020,18,44532,46.21,5.18,3.49,89.37,0.0,4.0,-0.71,-4.53,0.0
+a-bed-south-towns,southern-bedouin-towns,Southern Bedouin towns and villages,עיירות וכפרים בדואיים בדרום,2022,2021,18,58271,56.05,1.89,4.01,93.36,0.01,-3.29,0.51,3.99,0.01
+a-bed-south-towns,southern-bedouin-towns,Southern Bedouin towns and villages,עיירות וכפרים בדואיים בדרום,2026,2022,19,104779,83.8,0.34,1.0,98.04,0.04,-1.55,-3.0,4.67,0.03
+a-bed-south-tribes,southern-bedouin-tribes,Southern Bedouin tribes,שבטים בדואיים בדרום,2013,2013,20,8332,30.12,8.58,2.98,85.59,0.56,,,,
+a-bed-south-tribes,southern-bedouin-tribes,Southern Bedouin tribes,שבטים בדואיים בדרום,2015,2013,20,10498,33.34,4.03,6.71,84.07,1.23,-4.55,3.73,-1.51,0.66
+a-bed-south-tribes,southern-bedouin-tribes,Southern Bedouin tribes,שבטים בדואיים בדרום,2019-04,2015,20,8609,25.46,2.8,9.16,85.25,0.62,-1.23,2.46,1.17,-0.61
+a-bed-south-tribes,southern-bedouin-tribes,Southern Bedouin tribes,שבטים בדואיים בדרום,2019-09,2019-04,20,14542,42.15,1.09,5.98,90.99,0.8,-1.71,-3.19,5.74,0.18
+a-bed-south-tribes,southern-bedouin-tribes,Southern Bedouin tribes,שבטים בדואיים בדרום,2020,2019-09,20,15565,43.9,0.76,2.16,96.04,0.0,-0.33,-3.82,5.04,-0.8
+a-bed-south-tribes,southern-bedouin-tribes,Southern Bedouin tribes,שבטים בדואיים בדרום,2021,2020,20,12035,32.3,3.42,1.31,94.0,0.0,2.66,-0.85,-2.04,0.0
+a-bed-south-tribes,southern-bedouin-tribes,Southern Bedouin tribes,שבטים בדואיים בדרום,2022,2021,20,14910,37.71,1.6,1.21,96.06,0.0,-1.83,-0.11,2.06,0.0
+a-bed-south-tribes,southern-bedouin-tribes,Southern Bedouin tribes,שבטים בדואיים בדרום,2026,2022,20,33088,74.81,0.39,0.52,98.1,0.11,-1.2,-0.68,2.04,0.11
+a-bed-north,northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2013,2013,23,18485,47.03,13.65,24.12,59.82,1.31,,,,
+a-bed-north,northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2015,2013,23,22598,53.18,5.21,13.78,74.74,2.27,-8.44,-10.35,14.92,0.96
+a-bed-north,northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2019-04,2015,22,18828,39.1,10.26,36.26,48.18,3.14,5.05,22.48,-26.56,0.87
+a-bed-north,northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2019-09,2019-04,22,25501,51.87,5.19,24.88,66.72,0.89,-5.07,-11.38,18.54,-2.25
+a-bed-north,northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2020,2019-09,22,29268,58.43,2.95,11.91,84.27,0.0,-2.24,-12.97,17.54,-0.89
+a-bed-north,northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2021,2020,22,20368,39.62,12.49,9.52,77.12,0.0,9.54,-2.39,-7.15,0.0
+a-bed-north,northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2022,2021,22,27283,50.85,3.87,6.6,88.65,0.16,-8.61,-2.92,11.53,0.16
+a-bed-north,northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2026,2022,22,46386,78.87,0.75,5.95,92.29,0.11,-3.12,-0.65,3.64,-0.05
+a-christian,christian,Christian Arab towns,יישובים ערביים נוצריים,2013,2013,6,13746,60.95,10.37,12.67,75.56,0.79,,,,
+a-christian,christian,Christian Arab towns,יישובים ערביים נוצריים,2015,2013,6,15697,66.25,7.69,15.81,72.92,3.03,-2.68,3.14,-2.64,2.25
+a-christian,christian,Christian Arab towns,יישובים ערביים נוצריים,2019-04,2015,6,14435,56.83,9.31,27.2,62.06,0.51,1.62,11.39,-10.86,-2.53
+a-christian,christian,Christian Arab towns,יישובים ערביים נוצריים,2019-09,2019-04,6,16618,64.63,3.17,17.72,69.58,8.65,-6.15,-9.48,7.52,8.15
+a-christian,christian,Christian Arab towns,יישובים ערביים נוצריים,2020,2019-09,6,17395,67.1,3.56,15.77,80.29,0.0,0.39,-1.94,10.71,-8.65
+a-christian,christian,Christian Arab towns,יישובים ערביים נוצריים,2021,2020,6,14355,54.8,9.3,22.9,67.2,0.0,5.74,7.12,-13.08,0.0
+a-christian,christian,Christian Arab towns,יישובים ערביים נוצריים,2022,2021,6,15826,59.04,4.93,18.48,75.8,0.03,-4.37,-4.42,8.6,0.03
+a-christian,christian,Christian Arab towns,יישובים ערביים נוצריים,2026,2022,6,20972,75.88,2.98,22.99,73.32,0.18,-1.95,4.52,-2.48,0.15
+a-mixed,arab-neighbourhoods-mixed-cities,Arab neighbourhoods of mixed and Jewish cities,שכונות ערביות בערים מעורבות ויהודיות,2013,2013,9,42164,48.35,24.89,18.17,53.15,1.49,,,,
+a-mixed,arab-neighbourhoods-mixed-cities,Arab neighbourhoods of mixed and Jewish cities,שכונות ערביות בערים מעורבות ויהודיות,2015,2013,9,44877,53.54,18.27,14.93,62.32,3.32,-6.62,-3.24,9.17,1.83
+a-mixed,arab-neighbourhoods-mixed-cities,Arab neighbourhoods of mixed and Jewish cities,שכונות ערביות בערים מעורבות ויהודיות,2019-04,2015,9,38091,42.6,22.13,27.91,46.56,1.88,3.86,12.97,-15.76,-1.44
+a-mixed,arab-neighbourhoods-mixed-cities,Arab neighbourhoods of mixed and Jewish cities,שכונות ערביות בערים מעורבות ויהודיות,2019-09,2019-04,9,41504,47.79,13.17,20.06,58.68,5.3,-8.96,-7.85,12.12,3.42
+a-mixed,arab-neighbourhoods-mixed-cities,Arab neighbourhoods of mixed and Jewish cities,שכונות ערביות בערים מעורבות ויהודיות,2020,2019-09,9,45328,50.82,13.03,19.11,67.26,0.0,-0.05,-0.83,8.3,-5.25
+a-mixed,arab-neighbourhoods-mixed-cities,Arab neighbourhoods of mixed and Jewish cities,שכונות ערביות בערים מעורבות ויהודיות,2021,2020,9,36331,39.96,16.23,27.84,54.44,0.0,3.21,8.73,-12.82,0.0
+a-mixed,arab-neighbourhoods-mixed-cities,Arab neighbourhoods of mixed and Jewish cities,שכונות ערביות בערים מעורבות ויהודיות,2022,2021,9,43841,47.32,15.8,19.35,63.47,0.01,-0.44,-8.48,9.03,0.01
+a-mixed,arab-neighbourhoods-mixed-cities,Arab neighbourhoods of mixed and Jewish cities,שכונות ערביות בערים מעורבות ויהודיות,2026,2022,9,65989,61.72,10.66,19.45,68.32,0.73,-5.14,0.1,4.85,0.72
+druze,druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2013,2013,18,45299,55.27,35.72,38.84,23.69,1.0,,,,
+druze,druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2015,2013,18,49480,56.74,32.42,26.49,24.0,16.43,-3.3,-12.35,0.31,15.43
+druze,druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2019-04,2015,19,53322,55.16,30.45,50.27,14.75,2.55,-1.97,23.78,-9.25,-13.88
+druze,druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2019-09,2019-04,19,51389,53.65,12.61,54.14,20.74,11.74,-17.84,3.87,5.99,9.19
+druze,druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2020,2019-09,19,55341,55.94,15.81,56.93,26.67,0.0,3.2,2.79,5.93,-11.74
+druze,druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2021,2020,19,46606,46.08,24.56,53.46,21.08,0.0,8.75,-3.48,-5.59,0.0
+druze,druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2022,2021,19,51415,49.05,13.0,62.89,22.4,0.27,-11.56,9.43,1.32,0.27
+druze,druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2026,2022,19,74466,63.05,16.48,61.45,20.12,1.4,3.48,-1.44,-2.27,1.13
+mixed,mixed-cities,Mixed cities,ערים מעורבות,2013,2013,8,492950,59.86,38.57,48.32,7.31,2.65,,,,
+mixed,mixed-cities,Mixed cities,ערים מעורבות,2015,2013,8,535833,63.77,39.52,43.45,8.14,8.47,0.95,-4.87,0.83,5.82
+mixed,mixed-cities,Mixed cities,ערים מעורבות,2019-04,2015,8,530738,60.51,42.32,47.13,5.87,4.01,2.81,3.68,-2.27,-4.46
+mixed,mixed-cities,Mixed cities,ערים מעורבות,2019-09,2019-04,8,534949,60.53,35.02,47.52,8.32,8.5,-7.31,0.39,2.45,4.49
+mixed,mixed-cities,Mixed cities,ערים מעורבות,2020,2019-09,8,541626,60.83,37.23,52.09,10.28,0.0,2.21,4.57,1.97,-8.5
+mixed,mixed-cities,Mixed cities,ערים מעורבות,2021,2020,8,513878,57.18,35.3,56.28,6.88,0.0,-1.94,4.19,-3.4,0.0
+mixed,mixed-cities,Mixed cities,ערים מעורבות,2022,2021,8,535032,58.52,36.33,52.67,9.47,0.01,1.03,-3.6,2.59,0.01
+mixed,mixed-cities,Mixed cities,ערים מעורבות,2026,2022,8,633796,65.27,31.36,54.13,11.63,2.36,-4.97,1.45,2.16,2.35
+w-cities,cities-and-towns,Jewish and mixed cities and towns,ערים ועיירות יהודיות ומעורבות,2013,2013,118,2841355,64.0,54.15,38.66,1.52,3.23,,,,
+w-cities,cities-and-towns,Jewish and mixed cities and towns,ערים ועיירות יהודיות ומעורבות,2015,2013,118,3122000,68.15,56.1,32.63,1.62,9.34,1.95,-6.03,0.1,6.11
+w-cities,cities-and-towns,Jewish and mixed cities and towns,ערים ועיירות יהודיות ומעורבות,2019-04,2015,118,3237118,66.0,59.71,33.9,1.14,4.71,3.61,1.27,-0.48,-4.62
+w-cities,cities-and-towns,Jewish and mixed cities and towns,ערים ועיירות יהודיות ומעורבות,2019-09,2019-04,118,3239430,65.47,53.33,36.02,1.63,8.55,-6.38,2.12,0.49,3.84
+w-cities,cities-and-towns,Jewish and mixed cities and towns,ערים ועיירות יהודיות ומעורבות,2020,2019-09,118,3282557,65.74,56.65,40.92,2.09,0.0,3.32,4.9,0.46,-8.55
+w-cities,cities-and-towns,Jewish and mixed cities and towns,ערים ועיירות יהודיות ומעורבות,2021,2020,118,3173737,62.49,53.98,43.2,1.34,0.0,-2.67,2.29,-0.75,0.0
+w-cities,cities-and-towns,Jewish and mixed cities and towns,ערים ועיירות יהודיות ומעורבות,2022,2021,118,3381790,64.67,56.63,40.06,1.85,0.0,2.66,-3.14,0.51,0.0
+w-cities,cities-and-towns,Jewish and mixed cities and towns,ערים ועיירות יהודיות ומעורבות,2026,2022,119,3943625,69.98,52.07,41.48,2.52,3.08,-4.56,1.42,0.66,3.08
+w-arab-urban,arab-cities-and-towns,"Arab, Druze and Bedouin towns","עיירות וערים ערביות, דרוזיות ובדואיות",2013,2013,77,319618,57.7,4.92,9.35,84.49,0.42,,,,
+w-arab-urban,arab-cities-and-towns,"Arab, Druze and Bedouin towns","עיירות וערים ערביות, דרוזיות ובדואיות",2015,2013,78,394216,66.01,2.81,5.75,89.64,0.77,-2.11,-3.6,5.15,0.35
+w-arab-urban,arab-cities-and-towns,"Arab, Druze and Bedouin towns","עיירות וערים ערביות, דרוזיות ובדואיות",2019-04,2015,79,336406,49.41,5.28,13.12,79.44,0.55,2.47,7.37,-10.2,-0.22
+w-arab-urban,arab-cities-and-towns,"Arab, Druze and Bedouin towns","עיירות וערים ערביות, דרוזיות ובדואיות",2019-09,2019-04,79,418028,60.61,2.18,7.66,87.67,0.96,-3.1,-5.45,8.23,0.41
+w-arab-urban,arab-cities-and-towns,"Arab, Druze and Bedouin towns","עיירות וערים ערביות, דרוזיות ובדואיות",2020,2019-09,79,471495,66.99,1.39,3.72,94.42,0.0,-0.78,-3.94,6.75,-0.96
+w-arab-urban,arab-cities-and-towns,"Arab, Druze and Bedouin towns","עיירות וערים ערביות, דרוזיות ובדואיות",2021,2020,79,323323,44.78,4.3,6.45,88.39,0.0,2.9,2.73,-6.03,0.0
+w-arab-urban,arab-cities-and-towns,"Arab, Druze and Bedouin towns","עיירות וערים ערביות, דרוזיות ובדואיות",2022,2021,79,409927,54.36,1.75,4.16,93.42,0.02,-2.55,-2.3,5.03,0.02
+w-arab-urban,arab-cities-and-towns,"Arab, Druze and Bedouin towns","עיירות וערים ערביות, דרוזיות ובדואיות",2026,2022,79,672193,80.69,0.58,3.46,95.14,0.06,-1.17,-0.7,1.72,0.04
+w-arab-rural,arab-villages,Arab and Druze villages,כפרים ערביים ודרוזיים,2013,2013,45,58937,55.96,29.92,32.11,36.26,0.99,,,,
+w-arab-rural,arab-villages,Arab and Druze villages,כפרים ערביים ודרוזיים,2015,2013,45,65874,58.74,24.65,23.02,38.81,12.71,-5.27,-9.1,2.55,11.72
+w-arab-rural,arab-villages,Arab and Druze villages,כפרים ערביים ודרוזיים,2019-04,2015,47,68151,54.56,25.28,44.47,26.3,2.12,0.63,21.45,-12.52,-10.59
+w-arab-rural,arab-villages,Arab and Druze villages,כפרים ערביים ודרוזיים,2019-09,2019-04,47,69457,55.8,9.92,43.38,35.62,10.22,-15.36,-1.08,9.32,8.1
+w-arab-rural,arab-villages,Arab and Druze villages,כפרים ערביים ודרוזיים,2020,2019-09,47,75098,58.67,12.24,43.87,43.34,0.0,2.32,0.49,7.73,-10.22
+w-arab-rural,arab-villages,Arab and Druze villages,כפרים ערביים ודרוזיים,2021,2020,47,61538,47.05,20.54,44.01,34.64,0.0,8.3,0.14,-8.7,0.0
+w-arab-rural,arab-villages,Arab and Druze villages,כפרים ערביים ודרוזיים,2022,2021,47,69158,51.05,10.92,49.16,38.46,0.21,-9.62,5.15,3.83,0.21
+w-arab-rural,arab-villages,Arab and Druze villages,כפרים ערביים ודרוזיים,2026,2022,48,100392,66.65,12.32,48.41,37.6,1.02,1.4,-0.75,-0.86,0.81
+w-kibbutzim,kibbutzim,Kibbutzim,קיבוצים,2013,2013,262,87681,72.04,14.38,79.92,0.62,2.37,,,,
+w-kibbutzim,kibbutzim,Kibbutzim,קיבוצים,2015,2013,262,93643,73.68,14.81,78.79,0.29,5.77,0.43,-1.12,-0.32,3.4
+w-kibbutzim,kibbutzim,Kibbutzim,קיבוצים,2019-04,2015,264,100373,73.63,14.93,79.92,0.29,4.58,0.12,1.12,-0.01,-1.19
+w-kibbutzim,kibbutzim,Kibbutzim,קיבוצים,2019-09,2019-04,263,98836,72.11,14.01,82.06,0.37,3.16,-0.92,2.15,0.09,-1.42
+w-kibbutzim,kibbutzim,Kibbutzim,קיבוצים,2020,2019-09,263,99133,71.68,15.49,83.37,0.82,0.0,1.48,1.31,0.44,-3.16
+w-kibbutzim,kibbutzim,Kibbutzim,קיבוצים,2021,2020,264,100668,71.41,15.07,82.91,0.3,0.0,-0.42,-0.47,-0.52,0.0
+w-kibbutzim,kibbutzim,Kibbutzim,קיבוצים,2022,2021,264,101925,69.97,15.7,81.78,0.57,0.0,0.63,-1.12,0.28,0.0
+w-kibbutzim,kibbutzim,Kibbutzim,קיבוצים,2026,2022,264,117230,74.1,14.94,80.98,0.59,3.23,-0.76,-0.8,0.02,3.22
+w-moshavim,moshavim,Moshavim,מושבים,2013,2013,406,139231,75.17,44.09,49.73,0.3,3.78,,,,
+w-moshavim,moshavim,Moshavim,מושבים,2015,2013,407,153080,78.91,44.28,44.86,0.18,10.41,0.2,-4.87,-0.12,6.63
+w-moshavim,moshavim,Moshavim,מושבים,2019-04,2015,408,163804,77.71,47.33,46.45,0.13,5.76,3.04,1.59,-0.05,-4.65
+w-moshavim,moshavim,Moshavim,מושבים,2019-09,2019-04,408,162688,76.64,43.72,46.67,0.21,9.06,-3.6,0.22,0.08,3.3
+w-moshavim,moshavim,Moshavim,מושבים,2020,2019-09,408,163241,76.54,50.38,48.94,0.4,0.0,6.66,2.27,0.19,-9.06
+w-moshavim,moshavim,Moshavim,מושבים,2021,2020,409,161800,74.6,47.77,50.3,0.16,0.0,-2.61,1.36,-0.24,0.0
+w-moshavim,moshavim,Moshavim,מושבים,2022,2021,410,167758,75.53,50.45,47.67,0.3,0.0,2.68,-2.63,0.14,0.0
+w-moshavim,moshavim,Moshavim,מושבים,2026,2022,410,187949,79.43,47.04,48.81,0.3,3.6,-3.41,1.13,-0.01,3.6
+w-moshav-shitufi,moshav-shitufi,Moshav shitufi (cooperative moshavim),מושבים שיתופיים,2013,2013,41,13530,77.61,47.64,47.99,0.21,2.57,,,,
+w-moshav-shitufi,moshav-shitufi,Moshav shitufi (cooperative moshavim),מושבים שיתופיים,2015,2013,41,14750,79.31,47.4,45.61,0.13,6.65,-0.24,-2.38,-0.09,4.08
+w-moshav-shitufi,moshav-shitufi,Moshav shitufi (cooperative moshavim),מושבים שיתופיים,2019-04,2015,42,16220,78.99,47.73,45.91,0.17,5.92,0.32,0.29,0.04,-0.73
+w-moshav-shitufi,moshav-shitufi,Moshav shitufi (cooperative moshavim),מושבים שיתופיים,2019-09,2019-04,42,15914,76.88,48.29,47.72,0.19,3.46,0.57,1.81,0.02,-2.47
+w-moshav-shitufi,moshav-shitufi,Moshav shitufi (cooperative moshavim),מושבים שיתופיים,2020,2019-09,42,16043,76.72,50.51,48.83,0.38,0.0,2.22,1.11,0.19,-3.46
+w-moshav-shitufi,moshav-shitufi,Moshav shitufi (cooperative moshavim),מושבים שיתופיים,2021,2020,42,15398,71.8,49.56,48.78,0.11,0.0,-0.94,-0.05,-0.27,0.0
+w-moshav-shitufi,moshav-shitufi,Moshav shitufi (cooperative moshavim),מושבים שיתופיים,2022,2021,42,15733,70.71,50.75,47.29,0.31,0.03,1.18,-1.49,0.2,0.03
+w-moshav-shitufi,moshav-shitufi,Moshav shitufi (cooperative moshavim),מושבים שיתופיים,2026,2022,42,19094,78.53,46.02,49.59,0.32,3.55,-4.72,2.3,0.01,3.52
+w-community,community-settlements,Community settlements,יישובים קהילתיים,2013,2013,142,91548,78.01,59.72,35.39,0.27,3.06,,,,
+w-community,community-settlements,Community settlements,יישובים קהילתיים,2015,2013,150,102557,79.68,61.25,32.35,0.13,6.03,1.53,-3.03,-0.14,2.97
+w-community,community-settlements,Community settlements,יישובים קהילתיים,2019-04,2015,159,117212,77.91,60.63,32.17,0.14,6.82,-0.62,-0.18,0.0,0.79
+w-community,community-settlements,Community settlements,יישובים קהילתיים,2019-09,2019-04,160,115686,75.87,62.55,33.62,0.21,3.29,1.92,1.44,0.07,-3.53
+w-community,community-settlements,Community settlements,יישובים קהילתיים,2020,2019-09,160,116971,75.7,64.66,34.62,0.36,0.0,2.11,1.0,0.15,-3.29
+w-community,community-settlements,Community settlements,יישובים קהילתיים,2021,2020,159,117933,74.15,62.16,36.1,0.16,0.0,-2.49,1.48,-0.2,0.0
+w-community,community-settlements,Community settlements,יישובים קהילתיים,2022,2021,159,121879,73.63,64.06,34.06,0.27,0.0,1.89,-2.03,0.11,0.0
+w-community,community-settlements,Community settlements,יישובים קהילתיים,2026,2022,162,140783,77.93,61.11,35.1,0.33,3.01,-2.95,1.04,0.06,3.01
+w-haredi-towns,haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2013,2013,16,147144,80.76,94.66,2.5,0.04,2.44,,,,
+w-haredi-towns,haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2015,2013,16,156503,82.07,96.98,1.57,0.02,1.28,2.31,-0.93,-0.02,-1.17
+w-haredi-towns,haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2019-04,2015,14,153394,79.72,97.9,1.05,0.02,0.9,0.45,-0.35,0.0,-0.08
+w-haredi-towns,haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2019-09,2019-04,16,160956,80.15,98.27,1.23,0.01,0.4,0.45,0.2,-0.0,-0.6
+w-haredi-towns,haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2020,2019-09,17,206438,76.58,96.98,2.89,0.02,0.0,0.63,0.46,0.01,-1.07
+w-haredi-towns,haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2021,2020,18,206972,72.66,96.43,3.13,0.02,0.0,-0.57,0.27,-0.0,0.0
+w-haredi-towns,haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2022,2021,17,226562,75.82,97.18,2.49,0.02,0.0,0.77,-0.67,0.0,0.0
+w-haredi-towns,haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2026,2022,17,265035,76.76,93.54,2.48,0.03,0.46,-3.64,-0.0,0.01,0.46
+mov-kibbutz,kibbutz-movement,Kibbutz Movement,התנועה הקיבוצית,2013,2013,244,80716,71.57,9.63,84.63,0.67,2.21,,,,
+mov-kibbutz,kibbutz-movement,Kibbutz Movement,התנועה הקיבוצית,2015,2013,244,86606,73.3,10.36,83.11,0.31,5.9,0.72,-1.52,-0.35,3.7
+mov-kibbutz,kibbutz-movement,Kibbutz Movement,התנועה הקיבוצית,2019-04,2015,247,93250,73.27,11.06,84.04,0.31,4.3,0.71,0.93,-0.01,-1.6
+mov-kibbutz,kibbutz-movement,Kibbutz Movement,התנועה הקיבוצית,2019-09,2019-04,246,91930,71.81,9.89,86.02,0.39,3.3,-1.18,1.98,0.08,-1.0
+mov-kibbutz,kibbutz-movement,Kibbutz Movement,התנועה הקיבוצית,2020,2019-09,246,92269,71.38,11.38,87.43,0.87,0.0,1.49,1.41,0.48,-3.3
+mov-kibbutz,kibbutz-movement,Kibbutz Movement,התנועה הקיבוצית,2021,2020,247,93941,71.32,11.09,86.83,0.3,0.0,-0.29,-0.6,-0.57,0.0
+mov-kibbutz,kibbutz-movement,Kibbutz Movement,התנועה הקיבוצית,2022,2021,247,95057,69.84,11.96,85.41,0.62,0.01,0.87,-1.43,0.32,0.01
+mov-kibbutz,kibbutz-movement,Kibbutz Movement,התנועה הקיבוצית,2026,2022,247,109067,73.89,11.75,84.28,0.63,3.14,-0.22,-1.13,0.0,3.13
+mov-kibbutz-dati,religious-kibbutz-movement,Religious Kibbutz Movement,הקיבוץ הדתי,2013,2013,18,6086,77.85,79.15,15.33,0.12,4.73,,,,
+mov-kibbutz-dati,religious-kibbutz-movement,Religious Kibbutz Movement,הקיבוץ הדתי,2015,2013,18,6081,77.75,78.79,15.84,0.18,4.69,-0.36,0.51,0.07,-0.05
+mov-kibbutz-dati,religious-kibbutz-movement,Religious Kibbutz Movement,הקיבוץ הדתי,2019-04,2015,18,6272,78.25,71.21,17.97,0.06,10.55,-7.58,2.13,-0.12,5.87
+mov-kibbutz-dati,religious-kibbutz-movement,Religious Kibbutz Movement,הקיבוץ הדתי,2019-09,2019-04,18,5988,74.72,76.59,21.78,0.15,1.2,5.38,3.81,0.09,-9.35
+mov-kibbutz-dati,religious-kibbutz-movement,Religious Kibbutz Movement,הקיבוץ הדתי,2020,2019-09,18,6080,75.51,78.45,20.9,0.16,0.0,1.87,-0.87,0.01,-1.2
+mov-kibbutz-dati,religious-kibbutz-movement,Religious Kibbutz Movement,הקיבוץ הדתי,2021,2020,18,6157,75.02,75.17,23.55,0.11,0.0,-3.29,2.65,-0.05,0.0
+mov-kibbutz-dati,religious-kibbutz-movement,Religious Kibbutz Movement,הקיבוץ הדתי,2022,2021,18,6243,73.7,71.97,26.46,0.08,0.0,-3.2,2.91,-0.03,0.0
+mov-kibbutz-dati,religious-kibbutz-movement,Religious Kibbutz Movement,הקיבוץ הדתי,2026,2022,18,7208,76.28,61.68,31.28,0.18,6.01,-10.29,4.82,0.1,6.01
+mov-pai,poalei-agudat-yisrael,Poalei Agudat Yisrael (inferred),פועלי אגודת ישראל (הוסק),2013,2013,13,4318,81.73,90.74,3.77,0.09,4.82,,,,
+mov-pai,poalei-agudat-yisrael,Poalei Agudat Yisrael (inferred),פועלי אגודת ישראל (הוסק),2015,2013,13,4795,83.59,94.91,2.36,0.0,2.4,4.17,-1.42,-0.09,-2.42
+mov-pai,poalei-agudat-yisrael,Poalei Agudat Yisrael (inferred),פועלי אגודת ישראל (הוסק),2019-04,2015,13,5470,83.64,92.25,2.43,0.04,5.16,-2.66,0.07,0.04,2.76
+mov-pai,poalei-agudat-yisrael,Poalei Agudat Yisrael (inferred),פועלי אגודת ישראל (הוסק),2019-09,2019-04,13,5474,82.02,95.67,3.07,0.05,1.08,3.42,0.64,0.02,-4.08
+mov-pai,poalei-agudat-yisrael,Poalei Agudat Yisrael (inferred),פועלי אגודת ישראל (הוסק),2020,2019-09,13,5500,81.69,96.78,3.0,0.09,0.0,1.11,-0.07,0.04,-1.08
+mov-pai,poalei-agudat-yisrael,Poalei Agudat Yisrael (inferred),פועלי אגודת ישראל (הוסק),2021,2020,13,5505,79.31,95.15,3.96,0.0,0.0,-1.63,0.96,-0.09,0.0
+mov-pai,poalei-agudat-yisrael,Poalei Agudat Yisrael (inferred),פועלי אגודת ישראל (הוסק),2022,2021,13,5817,80.18,95.26,4.14,0.02,0.0,0.11,0.18,0.02,0.0
+mov-pai,poalei-agudat-yisrael,Poalei Agudat Yisrael (inferred),פועלי אגודת ישראל (הוסק),2026,2022,13,6761,81.83,91.73,5.25,0.19,1.55,-3.52,1.11,0.18,1.55
+mov-moshav,moshav-movement,Moshav Movement,תנועת המושבים,2013,2013,250,90393,74.47,37.12,56.66,0.34,3.73,,,,
+mov-moshav,moshav-movement,Moshav Movement,תנועת המושבים,2015,2013,250,99424,78.33,37.49,50.99,0.21,11.04,0.37,-5.66,-0.13,7.31
+mov-moshav,moshav-movement,Moshav Movement,תנועת המושבים,2019-04,2015,250,105775,77.11,40.8,52.9,0.15,5.79,3.3,1.91,-0.06,-5.25
+mov-moshav,moshav-movement,Moshav Movement,תנועת המושבים,2019-09,2019-04,250,105244,76.14,36.45,52.8,0.23,10.18,-4.34,-0.11,0.09,4.39
+mov-moshav,moshav-movement,Moshav Movement,תנועת המושבים,2020,2019-09,250,105070,75.75,43.5,55.78,0.44,0.0,7.05,2.99,0.21,-10.18
+mov-moshav,moshav-movement,Moshav Movement,תנועת המושבים,2021,2020,251,104072,73.94,41.1,56.8,0.2,0.0,-2.4,1.02,-0.24,0.0
+mov-moshav,moshav-movement,Moshav Movement,תנועת המושבים,2022,2021,251,107487,74.69,43.98,54.04,0.32,0.0,2.88,-2.76,0.12,0.0
+mov-moshav,moshav-movement,Moshav Movement,תנועת המושבים,2026,2022,251,120189,79.1,40.48,55.19,0.32,3.8,-3.5,1.15,0.0,3.79
+mov-mizrachi,hapoel-hamizrachi,Hapoel HaMizrachi,הפועל המזרחי,2013,2013,81,26397,77.48,84.98,9.72,0.06,4.39,,,,
+mov-mizrachi,hapoel-hamizrachi,Hapoel HaMizrachi,הפועל המזרחי,2015,2013,83,29734,81.43,84.92,7.51,0.09,7.21,-0.06,-2.21,0.03,2.82
+mov-mizrachi,hapoel-hamizrachi,Hapoel HaMizrachi,הפועל המזרחי,2019-04,2015,83,32999,80.23,85.48,8.08,0.03,6.18,0.57,0.57,-0.06,-1.03
+mov-mizrachi,hapoel-hamizrachi,Hapoel HaMizrachi,הפועל המזרחי,2019-09,2019-04,83,32724,79.03,86.62,9.54,0.1,3.47,1.14,1.46,0.07,-2.7
+mov-mizrachi,hapoel-hamizrachi,Hapoel HaMizrachi,הפועל המזרחי,2020,2019-09,83,33361,79.79,90.42,9.15,0.14,0.0,3.8,-0.39,0.05,-3.47
+mov-mizrachi,hapoel-hamizrachi,Hapoel HaMizrachi,הפועל המזרחי,2021,2020,83,32853,76.42,87.66,11.15,0.07,0.0,-2.76,2.0,-0.08,0.0
+mov-mizrachi,hapoel-hamizrachi,Hapoel HaMizrachi,הפועל המזרחי,2022,2021,83,34829,77.95,88.38,10.42,0.14,0.0,0.72,-0.73,0.08,0.0
+mov-mizrachi,hapoel-hamizrachi,Hapoel HaMizrachi,הפועל המזרחי,2026,2022,83,40007,80.51,83.71,12.63,0.15,3.11,-4.67,2.21,0.01,3.11
+mov-ihud,ihud-haklai,Ihud Haklai (inferred),האיחוד החקלאי (הוסק),2013,2013,54,17210,76.86,24.74,68.91,0.63,2.62,,,,
+mov-ihud,ihud-haklai,Ihud Haklai (inferred),האיחוד החקלאי (הוסק),2015,2013,54,18309,78.23,23.26,68.36,0.21,8.0,-1.47,-0.55,-0.42,5.38
+mov-ihud,ihud-haklai,Ihud Haklai (inferred),האיחוד החקלאי (הוסק),2019-04,2015,55,19683,76.9,24.46,70.08,0.28,4.81,1.2,1.72,0.07,-3.19
+mov-ihud,ihud-haklai,Ihud Haklai (inferred),האיחוד החקלאי (הוסק),2019-09,2019-04,55,19405,75.05,21.95,70.43,0.36,6.8,-2.5,0.35,0.08,1.99
+mov-ihud,ihud-haklai,Ihud Haklai (inferred),האיחוד החקלאי (הוסק),2020,2019-09,55,19339,74.38,25.98,72.86,0.78,0.0,4.03,2.43,0.41,-6.8
+mov-ihud,ihud-haklai,Ihud Haklai (inferred),האיחוד החקלאי (הוסק),2021,2020,55,19535,73.9,23.86,74.02,0.2,0.0,-2.12,1.15,-0.57,0.0
+mov-ihud,ihud-haklai,Ihud Haklai (inferred),האיחוד החקלאי (הוסק),2022,2021,55,19578,72.62,25.11,72.34,0.63,0.01,1.25,-1.67,0.43,0.01
+mov-ihud,ihud-haklai,Ihud Haklai (inferred),האיחוד החקלאי (הוסק),2026,2022,55,22173,77.57,22.88,73.04,0.51,3.36,-2.23,0.7,-0.12,3.35
+mov-oved,haoved-hatzioni,HaOved HaTzioni (inferred),העובד הציוני (הוסק),2013,2013,30,9119,74.58,30.27,64.25,0.29,2.81,,,,
+mov-oved,haoved-hatzioni,HaOved HaTzioni (inferred),העובד הציוני (הוסק),2015,2013,30,10180,78.38,28.06,58.79,0.12,12.71,-2.2,-5.46,-0.17,9.9
+mov-oved,haoved-hatzioni,HaOved HaTzioni (inferred),העובד הציוני (הוסק),2019-04,2015,30,11046,77.43,33.38,59.84,0.14,6.24,5.31,1.05,0.03,-6.47
+mov-oved,haoved-hatzioni,HaOved HaTzioni (inferred),העובד הציוני (הוסק),2019-09,2019-04,30,10985,76.44,26.75,60.0,0.25,12.53,-6.62,0.16,0.11,6.29
+mov-oved,haoved-hatzioni,HaOved HaTzioni (inferred),העובד הציוני (הוסק),2020,2019-09,30,10992,75.95,34.94,64.18,0.56,0.0,8.19,4.18,0.31,-12.53
+mov-oved,haoved-hatzioni,HaOved HaTzioni (inferred),העובד הציוני (הוסק),2021,2020,30,10259,69.42,33.72,63.97,0.19,0.0,-1.23,-0.21,-0.37,0.0
+mov-oved,haoved-hatzioni,HaOved HaTzioni (inferred),העובד הציוני (הוסק),2022,2021,30,10803,70.72,36.28,61.26,0.44,0.02,2.56,-2.71,0.24,0.02
+mov-oved,haoved-hatzioni,HaOved HaTzioni (inferred),העובד הציוני (הוסק),2026,2022,30,12783,78.65,32.85,63.08,0.33,3.51,-3.43,1.82,-0.11,3.49
+mov-herut,herut-betar,Herut-Betar (inferred),חרות-בית״ר (הוסק),2013,2013,29,9537,74.94,46.38,48.14,0.22,3.07,,,,
+mov-herut,herut-betar,Herut-Betar (inferred),חרות-בית״ר (הוסק),2015,2013,29,10755,78.0,47.52,42.05,0.14,10.03,1.14,-6.08,-0.08,6.96
+mov-herut,herut-betar,Herut-Betar (inferred),חרות-בית״ר (הוסק),2019-04,2015,29,12156,76.58,49.65,41.88,0.12,7.95,2.12,-0.17,-0.02,-2.08
+mov-herut,herut-betar,Herut-Betar (inferred),חרות-בית״ר (הוסק),2019-09,2019-04,29,12107,75.24,48.09,44.16,0.16,7.05,-1.56,2.28,0.04,-0.9
+mov-herut,herut-betar,Herut-Betar (inferred),חרות-בית״ר (הוסק),2020,2019-09,29,12404,75.57,52.73,46.68,0.29,0.0,4.65,2.51,0.13,-7.05
+mov-herut,herut-betar,Herut-Betar (inferred),חרות-בית״ר (הוסק),2021,2020,29,12295,72.65,49.83,47.8,0.08,0.0,-2.9,1.12,-0.21,0.0
+mov-herut,herut-betar,Herut-Betar (inferred),חרות-בית״ר (הוסק),2022,2021,29,12920,72.6,53.65,44.16,0.17,0.01,3.82,-3.64,0.09,0.01
+mov-herut,herut-betar,Herut-Betar (inferred),חרות-בית״ר (הוסק),2026,2022,29,15628,78.69,51.45,43.88,0.16,3.9,-2.21,-0.28,-0.01,3.9
+mov-amana,amana,Amana (inferred),אמנה (הוסק),2013,2013,41,17143,81.0,90.31,6.06,0.02,2.93,,,,
+mov-amana,amana,Amana (inferred),אמנה (הוסק),2015,2013,45,19971,82.92,91.44,4.91,0.07,3.35,1.14,-1.15,0.05,0.43
+mov-amana,amana,Amana (inferred),אמנה (הוסק),2019-04,2015,47,23381,81.5,86.48,5.5,0.03,7.86,-4.96,0.59,-0.04,4.5
+mov-amana,amana,Amana (inferred),אמנה (הוסק),2019-09,2019-04,47,22964,78.84,91.26,6.39,0.04,2.04,4.78,0.88,0.01,-5.81
+mov-amana,amana,Amana (inferred),אמנה (הוסק),2020,2019-09,47,23446,78.77,92.42,7.14,0.07,0.0,1.15,0.76,0.03,-2.04
+mov-amana,amana,Amana (inferred),אמנה (הוסק),2021,2020,47,24010,76.83,90.22,8.63,0.03,0.0,-2.2,1.49,-0.03,0.0
+mov-amana,amana,Amana (inferred),אמנה (הוסק),2022,2021,47,25706,76.51,91.17,7.69,0.02,0.01,0.95,-0.94,-0.01,0.01
+mov-amana,amana,Amana (inferred),אמנה (הוסק),2026,2022,48,31415,79.38,89.83,8.13,0.06,1.59,-1.34,0.44,0.04,1.58
+w-size-100k,population-100000-plus,"100,000 people or more","100,000 תושבים ומעלה",2013,2013,18,1731719,63.0,54.3,38.75,1.32,3.06,,,,
+w-size-100k,population-100000-plus,"100,000 people or more","100,000 תושבים ומעלה",2015,2013,18,1888071,66.84,56.04,33.02,1.36,9.27,1.75,-5.73,0.04,6.21
+w-size-100k,population-100000-plus,"100,000 people or more","100,000 תושבים ומעלה",2019-04,2015,18,1931141,64.44,59.66,34.32,0.97,4.53,3.61,1.3,-0.39,-4.74
+w-size-100k,population-100000-plus,"100,000 people or more","100,000 תושבים ומעלה",2019-09,2019-04,18,1927363,63.8,53.02,36.31,1.38,8.87,-6.64,1.99,0.41,4.34
+w-size-100k,population-100000-plus,"100,000 people or more","100,000 תושבים ומעלה",2020,2019-09,18,1946894,63.95,56.22,41.64,1.79,0.0,3.2,5.33,0.41,-8.87
+w-size-100k,population-100000-plus,"100,000 people or more","100,000 תושבים ומעלה",2021,2020,18,1875893,60.83,53.32,44.04,1.15,0.0,-2.9,2.4,-0.64,0.0
+w-size-100k,population-100000-plus,"100,000 people or more","100,000 תושבים ומעלה",2022,2021,18,1976356,62.68,55.86,41.12,1.57,0.0,2.54,-2.92,0.42,0.0
+w-size-100k,population-100000-plus,"100,000 people or more","100,000 תושבים ומעלה",2026,2022,18,2275555,67.59,50.78,43.03,2.16,3.06,-5.08,1.91,0.58,3.05
+w-size-20k,population-20000-99999,"20,000 to 99,999 people","20,000 עד 99,999 תושבים",2013,2013,81,1164112,63.37,45.54,32.62,16.87,2.92,,,,
+w-size-20k,population-20000-99999,"20,000 to 99,999 people","20,000 עד 99,999 תושבים",2015,2013,81,1321147,68.84,46.51,26.28,18.88,7.9,0.98,-6.35,2.01,4.98
+w-size-20k,population-20000-99999,"20,000 to 99,999 people","20,000 עד 99,999 תושבים",2019-04,2015,81,1345125,64.09,51.53,29.27,14.34,4.14,5.02,3.0,-4.54,-3.76
+w-size-20k,population-20000-99999,"20,000 to 99,999 people","20,000 עד 99,999 תושבים",2019-09,2019-04,81,1400658,66.06,44.17,29.68,18.28,7.17,-7.36,0.41,3.94,3.03
+w-size-20k,population-20000-99999,"20,000 to 99,999 people","20,000 עד 99,999 תושבים",2020,2019-09,81,1455583,67.77,46.05,32.18,21.41,0.0,1.88,2.5,3.13,-7.17
+w-size-20k,population-20000-99999,"20,000 to 99,999 people","20,000 עד 99,999 תושבים",2021,2020,81,1325174,60.27,47.2,36.28,15.13,0.0,1.14,4.1,-6.28,0.0
+w-size-20k,population-20000-99999,"20,000 to 99,999 people","20,000 עד 99,999 תושבים",2022,2021,81,1476097,64.52,48.22,32.21,18.25,0.0,1.03,-4.07,3.12,0.0
+w-size-20k,population-20000-99999,"20,000 to 99,999 people","20,000 עד 99,999 תושבים",2026,2022,81,1866554,74.56,42.15,31.06,23.71,2.39,-6.07,-1.15,5.46,2.39
+w-size-5k,population-5000-19999,"5,000 to 19,999 people","5,000 עד 19,999 תושבים",2013,2013,90,295812,64.2,32.43,30.47,33.7,2.13,,,,
+w-size-5k,population-5000-19999,"5,000 to 19,999 people","5,000 עד 19,999 תושבים",2015,2013,91,336900,68.77,30.24,23.81,38.67,6.61,-2.19,-6.66,4.97,4.47
+w-size-5k,population-5000-19999,"5,000 to 19,999 people","5,000 עד 19,999 תושבים",2019-04,2015,92,333382,60.65,35.21,31.92,28.14,3.6,4.97,8.11,-10.53,-3.01
+w-size-5k,population-5000-19999,"5,000 to 19,999 people","5,000 עד 19,999 תושבים",2019-09,2019-04,92,359394,64.8,27.62,29.56,37.45,4.39,-7.59,-2.36,9.31,0.79
+w-size-5k,population-5000-19999,"5,000 to 19,999 people","5,000 עד 19,999 תושבים",2020,2019-09,92,383258,67.89,27.83,28.23,43.49,0.0,0.21,-1.33,6.04,-4.39
+w-size-5k,population-5000-19999,"5,000 to 19,999 people","5,000 עד 19,999 תושבים",2021,2020,92,324574,55.91,33.2,32.82,32.87,0.0,5.37,4.59,-10.62,0.0
+w-size-5k,population-5000-19999,"5,000 to 19,999 people","5,000 עד 19,999 תושבים",2022,2021,93,372714,61.13,29.94,30.4,38.5,0.04,-3.26,-2.41,5.63,0.04
+w-size-5k,population-5000-19999,"5,000 to 19,999 people","5,000 עד 19,999 תושבים",2026,2022,94,515179,76.67,24.45,27.37,45.88,1.65,-5.49,-3.03,7.38,1.61
+w-size-1k,population-1000-4999,"1,000 to 4,999 people","1,000 עד 4,999 תושבים",2013,2013,347,216340,72.99,42.71,45.56,7.03,2.94,,,,
+w-size-1k,population-1000-4999,"1,000 to 4,999 people","1,000 עד 4,999 תושבים",2015,2013,351,242683,76.43,42.14,41.06,9.5,6.88,-0.57,-4.51,2.48,3.94
+w-size-1k,population-1000-4999,"1,000 to 4,999 people","1,000 עד 4,999 תושבים",2019-04,2015,354,259624,72.77,44.96,43.26,6.07,5.32,2.81,2.2,-3.43,-1.56
+w-size-1k,population-1000-4999,"1,000 to 4,999 people","1,000 עד 4,999 תושבים",2019-09,2019-04,354,263989,73.22,42.55,42.23,9.58,5.17,-2.41,-1.03,3.51,-0.14
+w-size-1k,population-1000-4999,"1,000 to 4,999 people","1,000 עד 4,999 תושבים",2020,2019-09,354,268884,73.86,45.19,42.71,11.77,0.0,2.65,0.48,2.19,-5.17
+w-size-1k,population-1000-4999,"1,000 to 4,999 people","1,000 עד 4,999 תושבים",2021,2020,354,259642,69.51,45.98,44.97,7.59,0.0,0.79,2.26,-4.18,0.0
+w-size-1k,population-1000-4999,"1,000 to 4,999 people","1,000 עד 4,999 תושבים",2022,2021,354,272771,70.33,46.65,42.0,9.86,0.02,0.67,-2.97,2.27,0.02
+w-size-1k,population-1000-4999,"1,000 to 4,999 people","1,000 עד 4,999 תושבים",2026,2022,354,326976,77.87,41.07,41.83,13.89,2.75,-5.58,-0.18,4.03,2.72
+w-size-small,population-under-1000,"Under 1,000 people","פחות מ-1,000 תושבים",2013,2013,617,159119,72.25,33.57,59.66,1.24,3.13,,,,
+w-size-small,population-under-1000,"Under 1,000 people","פחות מ-1,000 תושבים",2015,2013,622,173684,75.38,34.03,56.09,1.12,8.43,0.46,-3.57,-0.12,5.3
+w-size-small,population-under-1000,"Under 1,000 people","פחות מ-1,000 תושבים",2019-04,2015,637,187015,74.37,35.28,57.73,0.83,5.78,1.25,1.64,-0.29,-2.65
+w-size-small,population-under-1000,"Under 1,000 people","פחות מ-1,000 תושבים",2019-09,2019-04,637,185344,73.14,33.56,59.04,1.32,5.64,-1.72,1.31,0.49,-0.14
+w-size-small,population-under-1000,"Under 1,000 people","פחות מ-1,000 תושבים",2020,2019-09,637,186773,73.13,37.4,60.27,1.98,0.0,3.84,1.23,0.66,-5.64
+w-size-small,population-under-1000,"Under 1,000 people","פחות מ-1,000 תושבים",2021,2020,639,186196,71.5,35.78,61.26,1.09,0.0,-1.62,0.99,-0.89,0.0
+w-size-small,population-under-1000,"Under 1,000 people","פחות מ-1,000 תושבים",2022,2021,641,192346,71.55,37.66,58.89,1.61,0.01,1.88,-2.37,0.53,0.01
+w-size-small,population-under-1000,"Under 1,000 people","פחות מ-1,000 תושבים",2026,2022,647,222745,76.39,35.71,58.27,2.33,3.42,-1.95,-0.62,0.71,3.41
+w-jerusalem,jerusalem,Jerusalem,ירושלים,2013,2013,1,241139,65.12,73.63,21.0,1.06,3.24,,,,
+w-jerusalem,jerusalem,Jerusalem,ירושלים,2015,2013,1,255286,67.09,75.22,17.87,1.23,5.31,1.6,-3.14,0.18,2.08
+w-jerusalem,jerusalem,Jerusalem,ירושלים,2019-04,2015,1,260049,63.89,76.64,17.99,0.83,4.24,1.42,0.12,-0.41,-1.07
+w-jerusalem,jerusalem,Jerusalem,ירושלים,2019-09,2019-04,1,259977,63.37,76.46,18.77,1.38,3.11,-0.18,0.78,0.55,-1.13
+w-jerusalem,jerusalem,Jerusalem,ירושלים,2020,2019-09,1,261589,63.27,77.8,19.84,2.03,0.0,1.34,1.07,0.66,-3.11
+w-jerusalem,jerusalem,Jerusalem,ירושלים,2021,2020,1,248649,59.1,75.83,21.92,1.27,0.0,-1.97,2.08,-0.77,0.0
+w-jerusalem,jerusalem,Jerusalem,ירושלים,2022,2021,1,264700,61.6,77.34,19.84,1.89,0.0,1.52,-2.08,0.62,0.0
+w-jerusalem,jerusalem,Jerusalem,ירושלים,2026,2022,1,299415,65.95,70.95,20.67,4.56,1.85,-6.4,0.83,2.68,1.85
+w-d1,jerusalem-district,Jerusalem District,מחוז ירושלים,2013,2013,61,308228,65.67,71.24,22.84,1.52,3.29,,,,
+w-d1,jerusalem-district,Jerusalem District,מחוז ירושלים,2015,2013,61,331260,68.01,72.72,19.5,1.92,5.5,1.49,-3.33,0.4,2.2
+w-d1,jerusalem-district,Jerusalem District,מחוז ירושלים,2019-04,2015,62,345177,64.96,74.61,19.68,1.04,4.33,1.89,0.18,-0.88,-1.16
+w-d1,jerusalem-district,Jerusalem District,מחוז ירושלים,2019-09,2019-04,62,347253,64.68,73.79,20.36,1.87,3.66,-0.83,0.68,0.83,-0.68
+w-d1,jerusalem-district,Jerusalem District,מחוז ירושלים,2020,2019-09,62,350961,64.7,75.68,21.43,2.58,0.0,1.9,1.07,0.71,-3.66
+w-d1,jerusalem-district,Jerusalem District,מחוז ירושלים,2021,2020,62,335674,60.48,73.84,23.48,1.61,0.0,-1.84,2.06,-0.96,0.0
+w-d1,jerusalem-district,Jerusalem District,מחוז ירושלים,2022,2021,62,363803,63.3,75.64,20.9,2.51,0.0,1.8,-2.58,0.9,0.0
+w-d1,jerusalem-district,Jerusalem District,מחוז ירושלים,2026,2022,63,421063,67.54,69.95,21.25,4.71,1.99,-5.69,0.35,2.2,1.99
+w-d2,northern-district,Northern District,מחוז הצפון,2013,2013,409,555438,61.05,33.8,28.22,34.07,2.14,,,,
+w-d2,northern-district,Northern District,מחוז הצפון,2015,2013,410,636946,66.79,32.96,22.6,37.67,6.13,-0.84,-5.63,3.6,3.98
+w-d2,northern-district,Northern District,מחוז הצפון,2019-04,2015,414,614408,59.26,37.51,27.94,29.52,3.8,4.55,5.34,-8.14,-2.32
+w-d2,northern-district,Northern District,מחוז הצפון,2019-09,2019-04,414,659092,63.19,28.79,25.83,37.19,7.13,-8.72,-2.11,7.67,3.33
+w-d2,northern-district,Northern District,מחוז הצפון,2020,2019-09,414,699065,66.01,29.3,27.88,42.39,0.0,0.51,2.05,5.19,-7.13
+w-d2,northern-district,Northern District,מחוז הצפון,2021,2020,415,596781,55.31,32.98,32.39,33.34,0.0,3.68,4.51,-9.04,0.0
+w-d2,northern-district,Northern District,מחוז הצפון,2022,2021,415,663413,59.44,31.78,28.93,38.0,0.03,-1.2,-3.46,4.66,0.03
+w-d2,northern-district,Northern District,מחוז הצפון,2026,2022,415,883936,73.32,26.32,26.91,44.55,1.61,-5.46,-2.02,6.55,1.57
+w-d3,haifa-district,Haifa District,מחוז חיפה,2013,2013,91,430408,59.7,39.39,42.17,13.06,2.68,,,,
+w-d3,haifa-district,Haifa District,מחוז חיפה,2015,2013,90,487784,65.56,39.18,33.61,16.57,10.27,-0.21,-8.56,3.5,7.59
+w-d3,haifa-district,Haifa District,מחוז חיפה,2019-04,2015,91,479187,60.23,46.22,38.16,10.75,4.12,7.04,4.55,-5.82,-6.16
+w-d3,haifa-district,Haifa District,מחוז חיפה,2019-09,2019-04,91,493859,61.52,35.94,38.54,15.66,9.29,-10.28,0.38,4.92,5.18
+w-d3,haifa-district,Haifa District,מחוז חיפה,2020,2019-09,91,512004,63.15,38.01,42.52,19.04,0.0,2.07,3.97,3.38,-9.29
+w-d3,haifa-district,Haifa District,מחוז חיפה,2021,2020,91,458849,55.53,39.05,47.98,11.28,0.0,1.03,5.47,-7.76,0.0
+w-d3,haifa-district,Haifa District,מחוז חיפה,2022,2021,91,504671,58.98,39.57,44.09,14.7,0.01,0.53,-3.89,3.42,0.01
+w-d3,haifa-district,Haifa District,מחוז חיפה,2026,2022,91,650363,70.24,33.59,42.02,21.13,2.67,-5.99,-2.07,6.43,2.67
+w-d4,central-district,Central District,מחוז המרכז,2013,2013,232,957340,68.2,44.87,44.51,4.9,3.52,,,,
+w-d4,central-district,Central District,מחוז המרכז,2015,2013,234,1069115,72.49,46.15,37.91,5.76,9.89,1.28,-6.6,0.86,6.37
+w-d4,central-district,Central District,מחוז המרכז,2019-04,2015,237,1121474,69.8,50.09,40.54,4.16,4.74,3.93,2.63,-1.6,-5.15
+w-d4,central-district,Central District,מחוז המרכז,2019-09,2019-04,237,1129175,69.63,44.32,42.2,5.55,7.39,-5.76,1.66,1.4,2.65
+w-d4,central-district,Central District,מחוז המרכז,2020,2019-09,237,1149005,70.21,47.83,45.06,6.79,0.0,3.51,2.86,1.24,-7.39
+w-d4,central-district,Central District,מחוז המרכז,2021,2020,237,1105268,66.21,45.94,48.37,4.16,0.0,-1.89,3.31,-2.64,0.0
+w-d4,central-district,Central District,מחוז המרכז,2022,2021,237,1182751,68.67,47.56,44.97,5.95,0.0,1.62,-3.4,1.8,0.0
+w-d4,central-district,Central District,מחוז המרכז,2026,2022,237,1384624,74.51,42.36,45.84,7.65,3.56,-5.19,0.88,1.7,3.55
+w-d5,tel-aviv-district,Tel Aviv District,מחוז תל אביב,2013,2013,14,708508,64.39,43.36,49.96,1.29,2.7,,,,
+w-d5,tel-aviv-district,Tel Aviv District,מחוז תל אביב,2015,2013,14,756177,67.63,44.37,45.16,1.22,8.98,1.01,-4.8,-0.07,6.28
+w-d5,tel-aviv-district,Tel Aviv District,מחוז תל אביב,2019-04,2015,14,766919,65.36,47.1,47.51,0.91,4.04,2.73,2.35,-0.31,-4.94
+w-d5,tel-aviv-district,Tel Aviv District,מחוז תל אביב,2019-09,2019-04,14,765186,64.69,43.04,49.41,1.23,6.0,-4.06,1.9,0.32,1.96
+w-d5,tel-aviv-district,Tel Aviv District,מחוז תל אביב,2020,2019-09,14,769289,64.49,45.49,52.48,1.72,0.0,2.45,3.07,0.49,-6.0
+w-d5,tel-aviv-district,Tel Aviv District,מחוז תל אביב,2021,2020,14,752484,62.44,42.48,55.08,0.96,0.0,-3.01,2.6,-0.76,0.0
+w-d5,tel-aviv-district,Tel Aviv District,מחוז תל אביב,2022,2021,14,778835,63.4,44.25,52.81,1.48,0.0,1.77,-2.27,0.52,0.0
+w-d5,tel-aviv-district,Tel Aviv District,מחוז תל אביב,2026,2022,14,893905,68.54,38.78,56.17,1.62,2.73,-5.46,3.35,0.14,2.73
+w-d6,southern-district,Southern District,מחוז הדרום,2013,2013,257,471574,58.68,59.13,27.19,7.83,3.0,,,,
+w-d6,southern-district,Southern District,מחוז הדרום,2015,2013,263,533092,63.59,61.81,21.44,7.76,8.44,2.68,-5.75,-0.07,5.44
+w-d6,southern-district,Southern District,מחוז הדרום,2019-04,2015,270,558279,61.03,65.04,22.38,7.16,4.71,3.24,0.94,-0.6,-3.72
+w-d6,southern-district,Southern District,מחוז הדרום,2019-09,2019-04,270,577960,62.54,53.49,23.88,9.87,12.08,-11.55,1.51,2.71,7.36
+w-d6,southern-district,Southern District,מחוז הדרום,2020,2019-09,270,595274,63.73,57.3,30.66,11.63,0.0,3.81,6.78,1.76,-12.08
+w-d6,southern-district,Southern District,מחוז הדרום,2021,2020,271,552690,57.94,57.05,31.96,9.5,0.0,-0.25,1.29,-2.13,0.0
+w-d6,southern-district,Southern District,מחוז הדרום,2022,2021,272,612693,62.19,59.3,27.76,11.56,0.0,2.25,-4.2,2.06,0.0
+w-d6,southern-district,Southern District,מחוז הדרום,2026,2022,274,770300,71.4,52.92,25.64,18.1,2.67,-6.38,-2.12,6.54,2.67
+w-d7,judea-and-samaria,Judea and Samaria (West Bank),אזור יהודה ושומרון,2013,2013,115,144542,78.57,83.42,12.56,0.07,2.91,,,,
+w-d7,judea-and-samaria,Judea and Samaria (West Bank),אזור יהודה ושומרון,2015,2013,118,159371,80.31,85.5,9.66,0.05,4.57,2.08,-2.9,-0.02,1.66
+w-d7,judea-and-samaria,Judea and Samaria (West Bank),אזור יהודה ושומרון,2019-04,2015,121,180233,78.38,83.38,10.02,0.03,6.28,-2.12,0.36,-0.02,1.71
+w-d7,judea-and-samaria,Judea and Samaria (West Bank),אזור יהודה ושומרון,2019-09,2019-04,121,179424,76.83,84.88,11.13,0.04,3.69,1.5,1.11,0.01,-2.58
+w-d7,judea-and-samaria,Judea and Samaria (West Bank),אזור יהודה ושומרון,2020,2019-09,121,182107,76.71,86.61,13.02,0.06,0.0,1.74,1.88,0.02,-3.69
+w-d7,judea-and-samaria,Judea and Samaria (West Bank),אזור יהודה ושומרון,2021,2020,121,182442,73.98,84.12,14.75,0.03,0.0,-2.49,1.74,-0.03,0.0
+w-d7,judea-and-samaria,Judea and Samaria (West Bank),אזור יהודה ושומרון,2022,2021,123,199647,75.3,85.81,13.1,0.05,0.0,1.69,-1.65,0.02,0.0
+w-d7,judea-and-samaria,Judea and Samaria (West Bank),אזור יהודה ושומרון,2026,2022,129,236896,78.26,82.81,13.54,0.05,2.18,-3.0,0.44,0.01,2.17
+w-west-bank,west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2013,2013,115,144542,78.57,83.42,12.56,0.07,2.91,,,,
+w-west-bank,west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2015,2013,118,159371,80.31,85.5,9.66,0.05,4.57,2.08,-2.9,-0.02,1.66
+w-west-bank,west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2019-04,2015,121,180233,78.38,83.38,10.02,0.03,6.28,-2.12,0.36,-0.02,1.71
+w-west-bank,west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2019-09,2019-04,121,179424,76.83,84.88,11.13,0.04,3.69,1.5,1.11,0.01,-2.58
+w-west-bank,west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2020,2019-09,121,182107,76.71,86.61,13.02,0.06,0.0,1.74,1.88,0.02,-3.69
+w-west-bank,west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2021,2020,121,182442,73.98,84.12,14.75,0.03,0.0,-2.49,1.74,-0.03,0.0
+w-west-bank,west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2022,2021,123,199647,75.3,85.81,13.1,0.05,0.0,1.69,-1.65,0.02,0.0
+w-west-bank,west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2026,2022,129,236896,78.26,82.81,13.54,0.05,2.18,-3.0,0.44,0.01,2.17
+w-golan,golan,Golan Heights,רמת הגולן,2013,2013,35,10993,62.8,51.01,41.87,0.39,3.79,,,,
+w-golan,golan,Golan Heights,רמת הגולן,2015,2013,35,11988,64.75,49.83,37.29,0.33,12.09,-1.18,-4.58,-0.06,8.29
+w-golan,golan,Golan Heights,רמת הגולן,2019-04,2015,37,12965,62.15,50.52,40.27,0.12,8.29,0.69,2.98,-0.21,-3.8
+w-golan,golan,Golan Heights,רמת הגולן,2019-09,2019-04,37,12677,60.07,46.79,42.36,0.69,8.75,-3.73,2.09,0.56,0.46
+w-golan,golan,Golan Heights,רמת הגולן,2020,2019-09,37,12761,59.37,48.33,49.8,1.13,0.0,1.53,7.44,0.44,-8.75
+w-golan,golan,Golan Heights,רמת הגולן,2021,2020,37,13027,58.99,46.43,50.51,0.57,0.0,-1.89,0.71,-0.56,0.0
+w-golan,golan,Golan Heights,רמת הגולן,2022,2021,37,13508,56.58,46.84,49.08,0.92,0.46,0.4,-1.43,0.35,0.46
+w-golan,golan,Golan Heights,רמת הגולן,2026,2022,37,20048,63.17,40.09,53.44,1.58,4.35,-6.75,4.35,0.66,3.9

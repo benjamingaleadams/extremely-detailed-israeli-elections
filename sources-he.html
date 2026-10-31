@@ -6,21 +6,26 @@
 <title>מקורות וקרדיטים · בחירות ישראל ברזולוציה מלאה</title>
 <meta property="og:site_name" content="Extremely Detailed Israeli Elections">
 <meta name="description" content="מקורות הנתונים, התוכנה וההשראה למפת הבחירות.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
 <a class="skip" href="#content">דילוג לתוכן</a>
 <header class="site-header">
-  <a class="brand" href="index.html" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</a>
-  <nav aria-label="Site">
-    <a href="index.html" data-he="מפה">Map</a>
-    <a href="town/index.html" data-he="יישובים">Places</a>
-    <a href="sectors/index.html" data-he="מגזרים">Sectors</a>
-    <a href="about.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
-    <a href="sources.html" aria-current="page"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
-    <a href="index.html?lang=he" id="lang-switch" lang="he">עברית</a>
+  <a class="brand" href="index.html?lang=he"><span class="long">בחירות ישראל ברזולוציה מלאה</span><span class="short">בחירות ישראל</span></a>
+  <nav id="site-nav" aria-label="ניווט באתר">
+    <a href="index.html?lang=he">מפות</a>
+    <a href="town/he/index.html">יישובים</a>
+    <a href="sectors/he/index.html">מגזרים</a>
+    <a href="rank/he/index.html">דירוגים</a>
+    <a href="compare/index.html?lang=he">השוואה</a>
+    <a href="about-he.html"><span class="long">על השיטה</span><span class="short">שיטה</span></a>
+    <a href="sources-he.html" aria-current="page"><span class="long">מקורות וקרדיטים</span><span class="short">מקורות</span></a>
   </nav>
+  <a href="sources.html" id="lang-switch" class="lang" lang="en">English</a>
+  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">תפריט</button>
 </header>
+
 <main class="page" id="content">
   <h1>מקורות וקרדיטים</h1>
 
@@ -36,9 +41,17 @@
         <td>ועדת הבחירות המרכזית, התוצאות הרשמיות לפי קלפי לכנסת ה-26
           (<a href="https://media26.bechirot.gov.il/files/expb.csv">media26.bechirot.gov.il</a>), הקובץ מ-29 באוקטובר
           2026, 21:56 GMT, עם כל הקלפיות שברשימה והמעטפות הכפולות.</td></tr>
+      <tr><td>תוצאות הבחירות לפי קלפי, 2013 עד 2021</td>
+        <td>התוצאות לפי קלפי של ועדת הבחירות המרכזית לכנסות ה-19 עד ה-24 (ינואר 2013, מרץ 2015, אפריל 2019, ספטמבר 2019,
+          מרץ 2020, מרץ 2021), כפי שפורסמו ב-<a href="https://data.gov.il/dataset/votes-knesset">data.gov.il</a>. סכומי
+          הרשימות הארציים הושוו לתוצאות הרשמיות.</td></tr>
       <tr><td>גבולות האזורים הסטטיסטיים</td>
         <td>הלשכה המרכזית לסטטיסטיקה (למ״ס), אזורים סטטיסטיים 2022 (<a href="https://www.cbs.gov.il/">cbs.gov.il</a>).
           התקבל כעותק לא-ערוך של קובץ הלמ״ס מ-<a href="https://github.com/anatoly314/israeli-gis">anatoly314/israeli-gis</a>.</td></tr>
+      <tr><td>כתובות הקלפיות, 2013 עד 2021</td>
+        <td>רשימות הקלפיות הרשמיות של ועדת הבחירות המרכזית ("טופס ב") לכנסות ה-19 עד ה-24, שפורסמו במקור באתרי הבחירות
+          של הוועדה, כפי שנשמרו במאגר <a href="https://github.com/JacobWeinbren/Israel-Data">Israel-Data</a> של ג'ייקוב
+          ויינברן (נעשה שימוש רק בקבצים של הוועדה עצמה).</td></tr>
       <tr><td>כתובות הקלפיות ב-2022</td>
         <td>ועדת הבחירות המרכזית, רשימת הקלפיות הרשמית לכנסת ה-25 (27 באוקטובר 2022), שפורסמה ב-gov.il; עותק
           מ-<a href="https://web.archive.org/web/20221109194623/https://www.gov.il/BlobFolder/guide/knesset25-elections-info/he/kalpiplaces_kalpieslist_27-10.xlsx">Internet Archive</a>.</td></tr>
@@ -62,8 +75,11 @@
         <td>קווי מתאר של מבנים מ-<a href="https://github.com/microsoft/GlobalMLBuildingFootprints">Microsoft Global ML
           Building Footprints</a> (ODbL), מהדורת פברואר 2026: אזורים סטטיסטיים גדולים עם מעט תושבים מוצגים רק היכן
           שגרים אנשים, בסמוך למבנים, ויישובים ללא גבול למ״ס משורטטים סביב המבנים שלהם.</td></tr>
-      <tr><td>קו המתאר של הגדה המערבית</td>
+      <tr><td>קווי המתאר של הגדה המערבית ורצועת עזה</td>
         <td><a href="https://www.geoboundaries.org/">geoBoundaries</a> (gbOpen, מדינת פלסטין, רמה 1), CC BY 4.0.</td></tr>
+      <tr><td>הקו ברמת הגולן</td>
+        <td>הקו שלפני 1967 בין הגולן לשאר ישראל, לפי גבול נפת גולן באזורים הסטטיסטיים 2022 של הלמ״ס וברשימת היישובים
+          שלה (באותם תנאים של הלמ״ס כמו למעלה).</td></tr>
     </tbody>
   </table>
 
@@ -93,14 +109,8 @@
   Central Bureau of Statistics. Data built 2026-10-31. <a href="sources.html">Sources and credits</a>.
 </footer>
 <script>
-  // Hebrew page: header and footer to Hebrew, language link to the English page
-  for (const el of document.querySelectorAll("[data-he]")) el.innerHTML = el.dataset.he;
-  for (const a of document.querySelectorAll(".site-header a[href$='.html']:not(#lang-switch)")) {
-    a.href = a.getAttribute("href").replace("about.html", "about-he.html").replace("sources.html", "sources-he.html")
-      .replace(/^index\.html$/, "index.html?lang=he").replace(/^(town|sectors)\/index\.html$/, "$1/he/index.html");
-  }
-  const sw = document.getElementById("lang-switch");
-  if (sw) { sw.href = "sources.html"; sw.textContent = "English"; sw.lang = "en"; }
+  // Hebrew page: the footer to Hebrew (build_site.py writes the header in Hebrew)
+  for (const el of document.querySelectorAll(".site-footer[data-he]")) el.innerHTML = el.dataset.he;
 </script>
 </body>
 </html>

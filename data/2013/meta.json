@@ -5,16 +5,19 @@
  "bloc_order": [
   "Right-wing bloc",
   "Centre-left bloc",
+  "Uncommitted",
   "Arab parties"
  ],
  "bloc_he": {
   "Right-wing bloc": "גוש הימין",
   "Centre-left bloc": "גוש המרכז-שמאל",
+  "Uncommitted": "לא התחייבו לגוש",
   "Arab parties": "המפלגות הערביות"
  },
  "bloc_side": {
   "Right-wing bloc": "right",
   "Centre-left bloc": "left",
+  "Uncommitted": "uncommitted",
   "Arab parties": "arab"
  },
  "parties": [
@@ -23,84 +26,128 @@
    "english": "Likud Beytenu",
    "transliteration": "haLikud Beytenu",
    "hebrew": "הליכוד ביתנו",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "טב",
    "english": "The Jewish Home",
    "transliteration": "haBayit haYehudi",
    "hebrew": "הבית היהודי",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "שס",
    "english": "Shas",
    "transliteration": "Shas",
    "hebrew": "ש״ס",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "ג",
    "english": "United Torah Judaism",
    "transliteration": "Yahadut haTorah",
    "hebrew": "יהדות התורה",
-   "bloc": "Right-wing bloc"
+   "bloc": "Right-wing bloc",
+   "below_threshold": 0
   },
   {
    "letters": "פה",
    "english": "Yesh Atid",
    "transliteration": "Yesh Atid",
    "hebrew": "יש עתיד",
-   "bloc": "Centre-left bloc"
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
   },
   {
    "letters": "אמת",
    "english": "Labor",
    "transliteration": "haAvoda",
    "hebrew": "העבודה",
-   "bloc": "Centre-left bloc"
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
   },
   {
    "letters": "צפ",
    "english": "Hatnua",
    "transliteration": "haTnua",
    "hebrew": "התנועה",
-   "bloc": "Centre-left bloc"
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
   },
   {
    "letters": "מרצ",
    "english": "Meretz",
    "transliteration": "Meretz",
    "hebrew": "מרצ",
-   "bloc": "Centre-left bloc"
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
   },
   {
    "letters": "כן",
    "english": "Kadima",
    "transliteration": "Kadima",
    "hebrew": "קדימה",
-   "bloc": "Centre-left bloc"
+   "bloc": "Centre-left bloc",
+   "below_threshold": 0
   },
   {
    "letters": "עם",
    "english": "Ra'am-Ta'al",
    "transliteration": "Ra'am-Ta'al",
    "hebrew": "רע״ם-תע״ל",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
   },
   {
    "letters": "ו",
    "english": "Hadash",
    "transliteration": "Hadash",
    "hebrew": "חד״ש",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
   },
   {
    "letters": "ד",
    "english": "Balad",
    "transliteration": "Balad",
    "hebrew": "בל״ד",
-   "bloc": "Arab parties"
+   "bloc": "Arab parties",
+   "below_threshold": 0
+  },
+  {
+   "letters": "נץ",
+   "english": "Otzma LeYisrael",
+   "transliteration": "Otzma LeYisrael",
+   "hebrew": "עוצמה לישראל",
+   "bloc": "Right-wing bloc",
+   "below_threshold": 1
+  },
+  {
+   "letters": "ץ",
+   "english": "Am Shalem",
+   "transliteration": "Am Shalem",
+   "hebrew": "עם שלם",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "קנ",
+   "english": "Ale Yarok",
+   "transliteration": "Ale Yarok",
+   "hebrew": "עלה ירוק",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
+  },
+  {
+   "letters": "פז",
+   "english": "Koah Lehashpia",
+   "transliteration": "Koah Lehashpia",
+   "hebrew": "כח להשפיע",
+   "bloc": "Uncommitted",
+   "below_threshold": 1
   }
  ],
  "colors": {
@@ -115,7 +162,11 @@
   "כן": "#f7c6dd",
   "עם": "#03771a",
   "ו": "#5eb814",
-  "ד": "#07d51f"
+  "ד": "#07d51f",
+  "נץ": "#ff4500",
+  "ץ": "#c08a5a",
+  "קנ": "#c2c48a",
+  "פז": "#b9a38a"
  },
  "states": {
   "none": "#f6eea0",
@@ -166,7 +217,11 @@
     "כן": 4751,
     "עם": 2434,
     "ו": 1844,
-    "ד": 1406
+    "ד": 1406,
+    "נץ": 5113,
+    "ץ": 2581,
+    "קנ": 8599,
+    "פז": 1419
    }
   },
   "unplaced": {
@@ -237,5 +292,6 @@
   36.0,
   33.5
  ],
+ "surround": "plain",
  "built": "2026-10-31"
 }

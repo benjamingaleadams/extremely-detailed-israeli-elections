@@ -6,25 +6,29 @@
 <title>Sources and Credits · Extremely Detailed Israeli Elections</title>
 <meta property="og:site_name" content="Extremely Detailed Israeli Elections">
 <meta name="description" content="Data sources, credits and software behind the election map.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
 <header class="site-header">
-  <a class="brand" href="index.html" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</a>
-  <nav aria-label="Site">
-    <a href="index.html" data-he="מפה">Map</a>
-    <a href="town/index.html" data-he="יישובים">Places</a>
-    <a href="sectors/index.html" data-he="מגזרים">Sectors</a>
-    <a href="about.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
-    <a href="sources.html" aria-current="page"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
-    <a href="index.html?lang=he" id="lang-switch" lang="he">עברית</a>
+  <a class="brand" href="index.html" data-he-href="index.html?lang=he"><span class="long" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</span><span class="short" data-he="בחירות ישראל">Israeli Elections</span></a>
+  <nav id="site-nav" aria-label="Site" data-he-label="ניווט באתר">
+    <a href="index.html" data-he-href="index.html?lang=he" data-he="מפות">Maps</a>
+    <a href="town/index.html" data-he-href="town/he/index.html" data-he="יישובים">Places</a>
+    <a href="sectors/index.html" data-he-href="sectors/he/index.html" data-he="מגזרים">Sectors</a>
+    <a href="rank/index.html" data-he-href="rank/he/index.html" data-he="דירוגים">Rankings</a>
+    <a href="compare/index.html" data-he-href="compare/index.html?lang=he" data-he="השוואה">Compare</a>
+    <a href="about.html" data-he-href="about-he.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
+    <a href="sources.html" data-he-href="sources-he.html" aria-current="page"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
   </nav>
+  <a href="sources-he.html" id="lang-switch" class="lang" lang="he">עברית</a>
+  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" data-he="תפריט" onclick="var h=this.parentNode;h.classList.toggle('open');this.setAttribute('aria-expanded',h.classList.contains('open'))">Menu</button>
 </header>
+
 <main class="page" id="content">
   <h1>Sources and credits</h1>
-  <p class="lede">Every number on the map is rebuilt from the public sources below. Thank you to everyone who
-    collected and shared them.</p>
+  <p class="lede">Every number on the map is rebuilt from the public sources below.</p>
 
   <h2>Data</h2>
   <table>
@@ -38,10 +42,20 @@
         <td>Central Elections Committee, official per-station results for the 26th Knesset
           (<a href="https://media26.bechirot.gov.il/files/expb.csv">media26.bechirot.gov.il</a>), file of 29 October
           2026, 21:56 GMT, with every listed station and the double envelopes counted.</td></tr>
+      <tr><td>2013 to 2021 election results by polling station</td>
+        <td>Central Elections Committee per-station results for the 19th to 24th Knesset (January 2013, March 2015,
+          April 2019, September 2019, March 2020, March 2021), as published on
+          <a href="https://data.gov.il/dataset/votes-knesset">data.gov.il</a> (dataset votes-knesset). National list
+          totals checked against the official results.</td></tr>
       <tr><td>Statistical area boundaries</td>
         <td>Israel Central Bureau of Statistics (CBS), statistical areas 2022
           (<a href="https://www.cbs.gov.il/">cbs.gov.il</a>). Obtained as an unmodified copy of the CBS file from
           <a href="https://github.com/anatoly314/israeli-gis">anatoly314/israeli-gis</a>.</td></tr>
+      <tr><td>2013 to 2021 polling station addresses</td>
+        <td>Central Elections Committee official station lists ("Tofes B") for the 19th to 24th Knesset, originally on
+          the committee's election sites, as kept in Jacob Weinbren's
+          <a href="https://github.com/JacobWeinbren/Israel-Data">Israel-Data</a> repository (only the committee's own
+          files are used).</td></tr>
       <tr><td>2022 polling station addresses</td>
         <td>Central Elections Committee, official list of polling stations for the 25th Knesset (27 October 2022),
           published on gov.il; copy from the <a href="https://web.archive.org/web/20221109194623/https://www.gov.il/BlobFolder/guide/knesset25-elections-info/he/kalpiplaces_kalpieslist_27-10.xlsx">Internet
@@ -69,8 +83,11 @@
           Building Footprints</a> (ODbL), release of February 2026: big statistical areas with few residents are drawn
           only where people live, within reach of buildings, and localities without a CBS boundary are outlined
           round their buildings.</td></tr>
-      <tr><td>West Bank outline</td>
+      <tr><td>West Bank and Gaza outlines</td>
         <td><a href="https://www.geoboundaries.org/">geoBoundaries</a> (gbOpen, State of Palestine, level 1), CC BY 4.0.</td></tr>
+      <tr><td>Golan Heights line</td>
+        <td>The pre-1967 line between the Golan and the rest of Israel, taken from the edge of the Golan sub-district in
+          the CBS statistical areas 2022 and its list of localities (same CBS terms as above).</td></tr>
     </tbody>
   </table>
 
