@@ -542,6 +542,8 @@ function initMap(base) {
     style: { version: 8, sources: {}, glyphs: new URL("fonts/", location.href).href + `{fontstack}/{range}.${PREVIEW ? "woff" : "pbf"}`,
       layers: [{ id: "bg", type: "background", paint: { "background-color": mapBg } }] },
     bounds: meta.bounds, fitBoundsOptions: { padding: padding() },
+    // with a frame, panning stops a little past it (more to the sides, where the panels sit)
+    maxBounds: meta.frame ? [[meta.frame[0] - 2.5, meta.frame[1] - 0.6], [meta.frame[2] + 2.5, meta.frame[3] + 0.6]] : undefined,
     hash: true, attributionControl: false, dragRotate: false, pitchWithRotate: false, maxZoom: 16, minZoom: 4,
   });
   // sea and large water follow the page theme, also when it changes after load
@@ -625,6 +627,26 @@ function initMap(base) {
         12, ["interpolate", ["linear"], ["get", "valid"], 0, 5, 3000, 14]] } });
     map.addLayer({ id: "wb-line", type: "line", source: "west-bank",
       paint: { "line-color": meta.states.west_bank_line || "#5c5c5c", "line-width": 1.2, "line-dasharray": [3, 2] } });
+    // the Dead Sea as one solid water shape over every line, when the build includes it (build_site --dead-sea)
+    if (meta.dead_sea) {
+      map.addSource("dead-sea", { type: "geojson", data: "data/dead_sea.geojson" });
+      map.addLayer({ id: "dead-sea", type: "fill", source: "dead-sea", paint: { "fill-color": meta.states.water || "#c6dcea" } });
+    }
+
+    // the frame: everything outside the sea's rectangle in the page colour, with a thin border (build_site --frame)
+    if (meta.frame) {
+      const [w, s, e, n] = meta.frame, ring = [[w, s], [e, s], [e, n], [w, n], [w, s]];
+      map.addSource("frame", { type: "geojson", data: { type: "Feature", properties: {}, geometry: { type: "Polygon",
+        coordinates: [[[-179, -85], [179, -85], [179, 85], [-179, 85], [-179, -85]], ring.slice().reverse()] } } });
+      map.addSource("frame-line", { type: "geojson", data: { type: "Feature", properties: {},
+        geometry: { type: "LineString", coordinates: ring } } });
+      const pageBg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || "#f7f7f5";
+      const ink = getComputedStyle(document.documentElement).getPropertyValue("--muted").trim() || "#5f6368";
+      map.once("idle", () => {  // above the labels, so nothing spills past the border
+        map.addLayer({ id: "frame", type: "fill", source: "frame", paint: { "fill-color": pageBg } });
+        map.addLayer({ id: "frame-line", type: "line", source: "frame-line", paint: { "line-color": ink, "line-width": 1.2 } });
+      });
+    }
 
     // town names in capitals, as on the reference; bigger places win when labels collide
     map.addSource("labels", { type: "geojson", data: base + "labels.geojson" });
