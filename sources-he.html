@@ -14,6 +14,8 @@
   <a class="brand" href="index.html" data-he="בחירות ישראל ברזולוציה מלאה">Extremely Detailed Israeli Elections</a>
   <nav aria-label="Site">
     <a href="index.html" data-he="מפה">Map</a>
+    <a href="town/index.html" data-he="יישובים">Places</a>
+    <a href="sectors/index.html" data-he="מגזרים">Sectors</a>
     <a href="about.html"><span class="long" data-he="על השיטה">About the method</span><span class="short" data-he="שיטה">Method</span></a>
     <a href="sources.html" aria-current="page"><span class="long" data-he="מקורות וקרדיטים">Sources and credits</span><span class="short" data-he="מקורות">Sources</span></a>
     <a href="index.html?lang=he" id="lang-switch" lang="he">עברית</a>
@@ -95,7 +97,7 @@
   for (const el of document.querySelectorAll("[data-he]")) el.innerHTML = el.dataset.he;
   for (const a of document.querySelectorAll(".site-header a[href$='.html']:not(#lang-switch)")) {
     a.href = a.getAttribute("href").replace("about.html", "about-he.html").replace("sources.html", "sources-he.html")
-      .replace(/^index\.html$/, "index.html?lang=he");
+      .replace(/^index\.html$/, "index.html?lang=he").replace(/^(town|sectors)\/index\.html$/, "$1/he/index.html");
   }
   const sw = document.getElementById("lang-switch");
   if (sw) { sw.href = "sources.html"; sw.textContent = "English"; sw.lang = "en"; }

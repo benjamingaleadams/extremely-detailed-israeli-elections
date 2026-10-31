@@ -1,0 +1,153 @@
+sector,sector_en,sector_he,election,localities,eligible,votes,valid,turnout,right,left,arab,uncommitted,other,leading_lists
+israel,Israel,ישראל,2013,1184,5656705,3617857,3579793,63.96,46.21,37.32,9.59,0.0,6.89,Likud Beytenu 23.3; Yesh Atid 14.2; Labor 11.4
+jerusalem,Jerusalem,ירושלים,2013,1,373238,243038,241139,65.12,70.18,21.0,1.06,0.0,7.76,United Torah Judaism 22.2; Likud Beytenu 20.6; Shas 15.6
+mixed-cities,Mixed cities,ערים מעורבות,2013,8,833839,499113,492950,59.86,37.32,48.32,7.31,0.0,7.05,Likud Beytenu 23.8; Yesh Atid 17.1; Labor 14.2
+haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2013,17,211499,164631,163707,77.84,91.29,3.38,0.05,0.0,5.28,United Torah Judaism 52.9; Shas 26.1; Likud Beytenu 6.6
+west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2013,115,185154,145481,144542,78.57,76.05,12.56,0.07,0.0,11.33,The Jewish Home 27.8; Likud Beytenu 21.0; United Torah Judaism 17.6
+community-settlements,Community settlements,יישובים קהילתיים,2013,142,117887,91960,91548,78.01,53.27,35.39,0.27,0.0,11.07,The Jewish Home 30.6; Likud Beytenu 16.9; Yesh Atid 13.5
+kibbutzim,Kibbutzim,קיבוצים,2013,262,122292,88095,87681,72.04,13.68,79.92,0.62,0.0,5.79,Labor 35.7; Meretz 19.7; Yesh Atid 15.6
+kibbutzim-secular,"Kibbutzim, secular",קיבוצים חילוניים,2013,246,115320,82659,82270,71.68,9.66,84.15,0.65,0.0,5.54,Labor 37.6; Meretz 20.9; Yesh Atid 16.3
+kibbutzim-religious,"Kibbutzim, religious",קיבוצים דתיים,2013,16,6972,5436,5411,77.97,74.72,15.56,0.07,0.0,9.65,The Jewish Home 63.0; Likud Beytenu 10.5; Labor 7.1
+moshavim,Moshavim,מושבים,2013,342,159987,119998,119314,75.0,36.22,56.27,0.34,0.0,7.17,Yesh Atid 20.2; Likud Beytenu 20.0; Labor 18.2
+moshavim-religious,"Moshavim, religious",מושבים דתיים,2013,64,26302,20042,19917,76.2,79.17,10.57,0.07,0.0,10.19,The Jewish Home 35.8; Likud Beytenu 24.5; Shas 17.0
+moshav-shitufi,Moshav shitufi,מושבים שיתופיים,2013,41,17512,13591,13530,77.61,44.58,47.99,0.21,0.0,7.22,The Jewish Home 26.7; Labor 17.6; Yesh Atid 16.4
+druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2013,18,83454,46124,45299,55.27,35.68,38.84,23.69,0.0,1.79,Likud Beytenu 21.0; Kadima 16.1; Hadash 14.3
+christian,Christian Arab towns,יישובים ערביים נוצריים,2013,6,22858,13931,13746,60.95,10.26,12.67,75.56,0.0,1.51,Hadash 42.6; Balad 25.0; Ra'am-Ta'al 8.0
+southern-bedouin,Southern Bedouin,בדואים בדרום,2013,35,88059,40325,39626,45.79,4.78,3.3,89.79,0.0,2.12,Ra'am-Ta'al 61.6; Balad 26.0; Shas 3.3
+northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2013,23,40129,18872,18485,47.03,13.58,24.12,59.82,0.0,2.47,Ra'am-Ta'al 31.7; Balad 20.7; Labor 8.1
+other-arab,Other Arab towns,יישובים ערביים אחרים,2013,61,462498,273193,269784,59.07,4.39,8.88,85.56,0.0,1.17,Ra'am-Ta'al 33.6; Hadash 27.8; Balad 24.1
+unmatched,Unmatched locality codes,סמלי יישוב שלא הותאמו,2013,2,462,376,373,81.39,38.61,25.47,0.0,0.0,35.92,נץ 34.3; The Jewish Home 25.5; Yesh Atid 13.1
+double-envelopes,Double envelopes (not in any sector),מעטפות כפולות (לא בשום מגזר),2013,1,0,215789,212949,,49.22,37.65,2.67,0.0,10.47,Likud Beytenu 24.5; Yesh Atid 16.2; The Jewish Home 15.1
+israel,Israel,ישראל,2015,1195,5881696,4020139,3978203,68.35,45.79,31.41,11.04,7.41,4.34,Likud 23.3; Zionist Union 18.7; Joint List 11.0
+jerusalem,Jerusalem,ירושלים,2015,1,385888,258879,255286,67.09,68.04,17.87,1.23,4.68,8.18,Likud 24.2; United Torah Judaism 21.1; Shas 12.0
+mixed-cities,Mixed cities,ערים מעורבות,2015,8,849369,541670,535833,63.77,38.09,43.45,8.14,7.47,2.85,Zionist Union 25.7; Likud 22.2; Yesh Atid 9.9
+haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2015,17,227751,180571,175963,79.28,88.2,2.33,0.01,1.32,8.13,United Torah Judaism 51.9; Shas 23.1; Likud 8.3
+west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2015,118,200937,161365,159371,80.31,75.78,9.66,0.05,3.62,10.89,The Jewish Home 24.9; Likud 23.7; United Torah Judaism 17.1
+community-settlements,Community settlements,יישובים קהילתיים,2015,150,129169,102917,102557,79.68,53.05,32.35,0.13,4.93,9.53,The Jewish Home 27.6; Likud 20.0; Zionist Union 19.7
+kibbutzim,Kibbutzim,קיבוצים,2015,262,127572,93992,93643,73.68,14.11,78.79,0.29,4.04,2.76,Zionist Union 53.5; Meretz 15.7; Yesh Atid 9.5
+kibbutzim-secular,"Kibbutzim, secular",קיבוצים חילוניים,2015,246,120600,88592,88254,73.46,10.37,82.63,0.31,4.04,2.65,Zionist Union 56.3; Meretz 16.6; Yesh Atid 9.7
+kibbutzim-religious,"Kibbutzim, religious",קיבוצים דתיים,2015,16,6972,5400,5389,77.45,75.39,16.01,0.07,4.05,4.47,The Jewish Home 56.9; Likud 17.4; Zionist Union 8.1
+moshavim,Moshavim,מושבים,2015,342,167127,131270,130654,78.55,35.32,51.23,0.2,9.18,4.08,Zionist Union 33.6; Likud 23.6; Yesh Atid 12.0
+moshavim-religious,"Moshavim, religious",מושבים דתיים,2015,65,27788,22540,22426,81.11,73.68,7.75,0.12,7.83,10.61,Likud 38.2; The Jewish Home 25.0; קץ 9.5
+moshav-shitufi,Moshav shitufi,מושבים שיתופיים,2015,41,18677,14812,14750,79.31,42.3,45.61,0.13,5.25,6.71,Zionist Union 30.6; The Jewish Home 22.8; Likud 13.9
+druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2015,18,88464,50193,49480,56.74,29.68,26.49,24.0,15.96,3.87,Joint List 24.0; Zionist Union 20.8; Kulanu 16.0
+christian,Christian Arab towns,יישובים ערביים נוצריים,2015,6,23946,15864,15697,66.25,7.61,15.81,72.92,2.83,0.83,Joint List 72.9; Zionist Union 8.8; Meretz 6.6
+southern-bedouin,Southern Bedouin,בדואים בדרום,2015,36,98894,46502,45898,47.02,2.28,6.07,87.28,1.21,3.15,Joint List 87.3; Meretz 2.7; Zionist Union 2.7
+northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2015,23,43054,22896,22598,53.18,5.1,13.78,74.74,2.19,4.2,Joint List 74.7; Zionist Union 9.5; Yesh Atid 2.3
+other-arab,Other Arab towns,יישובים ערביים אחרים,2015,61,493300,339389,336984,68.8,2.36,5.06,91.26,0.49,0.84,Joint List 91.3; Meretz 2.5; Zionist Union 2.3
+unmatched,Unmatched locality codes,סמלי יישוב שלא הותאמו,2015,2,448,352,352,78.57,43.18,19.32,0.0,4.83,32.67,קץ 32.4; The Jewish Home 30.1; Likud 12.5
+double-envelopes,Double envelopes (not in any sector),מעטפות כפולות (לא בשום מגזר),2015,1,0,234599,232681,,49.18,31.68,3.14,8.81,7.2,Likud 25.6; Zionist Union 17.7; The Jewish Home 12.4
+israel,Israel,ישראל,2019-04,1213,6339729,4099470,4070448,64.66,49.66,34.03,8.11,0.0,8.2,Likud 26.3; Blue and White 26.0; Shas 6.1
+jerusalem,Jerusalem,ירושלים,2019-04,1,410258,262103,260049,63.89,72.18,17.99,0.83,0.0,9.01,Likud 24.8; United Torah Judaism 23.3; Shas 13.8
+mixed-cities,Mixed cities,ערים מעורבות,2019-04,8,883449,534539,530738,60.51,40.31,47.13,5.87,0.0,6.69,Blue and White 34.6; Likud 24.7; Meretz 6.3
+haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2019-04,17,262037,199991,197161,76.32,94.96,1.93,0.02,0.0,3.09,United Torah Judaism 55.1; Shas 25.2; Likud 9.1
+west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2019-04,121,231650,181556,180233,78.38,72.84,10.02,0.03,0.0,17.11,Likud 22.8; United Torah Judaism 19.5; Union of Right-Wing Parties 18.3
+community-settlements,Community settlements,יישובים קהילתיים,2019-04,159,150874,117542,117212,77.91,48.89,32.17,0.14,0.0,18.8,Blue and White 24.8; Likud 20.6; Union of Right-Wing Parties 20.0
+kibbutzim,Kibbutzim,קיבוצים,2019-04,264,136682,100634,100373,73.63,11.44,79.92,0.29,0.0,8.36,Blue and White 47.9; Labor 19.8; Meretz 12.2
+kibbutzim-secular,"Kibbutzim, secular",קיבוצים חילוניים,2019-04,248,129515,95033,94790,73.38,10.01,83.54,0.3,0.0,6.15,Blue and White 50.0; Labor 20.8; Meretz 12.8
+kibbutzim-religious,"Kibbutzim, religious",קיבוצים דתיים,2019-04,16,7167,5601,5583,78.15,35.63,18.32,0.05,0.0,46.0,נ 35.0; Union of Right-Wing Parties 19.3; Likud 13.8
+moshavim,Moshavim,מושבים,2019-04,343,180743,139828,139428,77.36,37.47,53.09,0.15,0.0,9.3,Blue and White 41.2; Likud 26.8; Labor 7.8
+moshavim-religious,"Moshavim, religious",מושבים דתיים,2019-04,65,30632,24439,24376,79.78,73.59,8.5,0.04,0.0,17.87,Likud 43.9; Union of Right-Wing Parties 14.6; נ 11.8
+moshav-shitufi,Moshav shitufi,מושבים שיתופיים,2019-04,42,20618,16286,16220,78.99,37.52,45.91,0.17,0.0,16.4,Blue and White 34.4; Union of Right-Wing Parties 15.7; Likud 14.0
+druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2019-04,19,97685,53880,53322,55.16,29.71,50.27,14.75,0.0,5.27,Blue and White 33.4; Meretz 14.0; Hadash-Ta'al 10.2
+christian,Christian Arab towns,יישובים ערביים נוצריים,2019-04,6,25710,14610,14435,56.83,9.24,27.2,62.06,0.0,1.5,Hadash-Ta'al 51.0; Blue and White 13.2; Meretz 12.7
+southern-bedouin,Southern Bedouin,בדואים בדרום,2019-04,38,122097,45752,45219,37.47,3.11,8.99,86.03,0.0,1.87,Ra'am-Balad 66.7; Hadash-Ta'al 19.3; Blue and White 4.4
+northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2019-04,22,49009,19162,18828,39.1,10.18,36.26,48.18,0.0,5.38,Ra'am-Balad 27.6; Blue and White 24.7; Hadash-Ta'al 20.6
+other-arab,Other Arab towns,יישובים ערביים אחרים,2019-04,61,554368,284345,281362,51.29,5.0,11.94,80.93,0.0,2.14,Hadash-Ta'al 48.7; Ra'am-Balad 32.3; Meretz 8.4
+unmatched,Unmatched locality codes,סמלי יישוב שלא הותאמו,2019-04,1,285,226,226,79.3,78.32,3.1,0.0,0.0,18.58,Union of Right-Wing Parties 69.5; ז 9.3; נ 9.3
+double-envelopes,Double envelopes (not in any sector),מעטפות כפולות (לא בשום מגזר),2019-04,1,0,240783,238822,,46.74,36.83,2.93,0.0,13.5,Likud 29.3; Blue and White 28.8; ז 6.6
+israel,Israel,ישראל,2019-09,1213,6391218,4182726,4156590,65.44,44.3,34.76,11.02,7.12,2.8,Blue and White 25.7; Likud 24.9; Joint List 11.0
+jerusalem,Jerusalem,ירושלים,2019-09,1,413140,261817,259977,63.37,73.08,18.77,1.38,3.04,3.73,United Torah Judaism 25.0; Likud 23.0; Shas 16.0
+mixed-cities,Mixed cities,ערים מעורבות,2019-09,8,889044,538157,534949,60.53,33.91,47.52,8.32,8.43,1.82,Blue and White 33.0; Likud 24.0; Democratic Union 8.9
+haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2019-09,17,266724,204769,202549,76.77,93.66,2.42,0.02,1.04,2.86,United Torah Judaism 55.4; Shas 27.0; Likud 7.8
+west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2019-09,121,234997,180545,179424,76.83,77.87,11.13,0.04,3.61,7.34,Yamina 24.5; Likud 22.2; United Torah Judaism 21.1
+community-settlements,Community settlements,יישובים קהילתיים,2019-09,160,152913,116011,115686,75.87,55.8,33.62,0.21,3.13,7.25,Yamina 28.0; Blue and White 24.6; Likud 20.7
+kibbutzim,Kibbutzim,קיבוצים,2019-09,263,137475,99138,98836,72.11,13.38,82.06,0.37,2.89,1.29,Blue and White 48.0; Democratic Union 18.2; Labor-Gesher 15.9
+kibbutzim-secular,"Kibbutzim, secular",קיבוצים חילוניים,2019-09,247,130295,93784,93508,71.98,9.95,85.49,0.39,3.02,1.15,Blue and White 49.9; Democratic Union 19.2; Labor-Gesher 16.4
+kibbutzim-religious,"Kibbutzim, religious",קיבוצים דתיים,2019-09,16,7180,5354,5328,74.57,73.61,21.9,0.11,0.66,3.72,Yamina 57.3; Likud 14.9; Blue and White 14.9
+moshavim,Moshavim,מושבים,2019-09,343,182111,138911,138544,76.28,34.92,53.04,0.23,2.75,9.07,Blue and White 38.9; Likud 24.7; Labor-Gesher 7.5
+moshavim-religious,"Moshavim, religious",מושבים דתיים,2019-09,65,30729,24200,24144,78.75,79.25,10.12,0.12,0.84,9.67,Likud 41.2; Yamina 23.7; Shas 12.0
+moshav-shitufi,Moshav shitufi,מושבים שיתופיים,2019-09,42,20760,15960,15914,76.88,44.59,47.72,0.19,2.73,4.78,Blue and White 34.2; Yamina 23.3; Likud 14.5
+druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2019-09,19,96769,51917,51389,53.65,12.47,54.14,20.74,11.65,1.0,Blue and White 42.6; Joint List 20.7; Yisrael Beytenu 11.6
+christian,Christian Arab towns,יישובים ערביים נוצריים,2019-09,6,25921,16753,16618,64.63,3.1,17.72,69.58,8.58,1.03,Joint List 69.6; Blue and White 9.7; Yisrael Beytenu 8.6
+southern-bedouin,Southern Bedouin,בדואים בדרום,2019-09,38,124745,64948,64303,52.06,1.77,8.34,86.43,0.12,3.34,Joint List 86.4; Blue and White 4.9; Democratic Union 1.9
+northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2019-09,22,49647,25754,25501,51.87,5.04,24.88,66.72,0.69,2.67,Joint List 66.7; Blue and White 16.8; Democratic Union 4.1
+other-arab,Other Arab towns,יישובים ערביים אחרים,2019-09,61,560579,347982,344216,62.08,1.89,5.97,89.95,0.71,1.47,Joint List 90.0; Democratic Union 2.7; Blue and White 2.3
+unmatched,Unmatched locality codes,סמלי יישוב שלא הותאמו,2019-09,1,296,230,230,77.7,57.83,3.91,0.0,0.43,37.83,Yamina 45.7; כף 37.4; Likud 10.4
+double-envelopes,Double envelopes (not in any sector),מעטפות כפולות (לא בשום מגזר),2019-09,1,0,282442,280216,,47.11,39.87,4.27,5.0,3.74,Blue and White 30.2; Likud 27.8; Yamina 8.9
+israel,Israel,ישראל,2020,1213,6453255,4284926,4262360,66.4,48.08,37.92,13.22,0.0,0.78,Likud 29.2; Blue and White 26.3; Joint List 13.2
+jerusalem,Jerusalem,ירושלים,2020,1,415991,263214,261589,63.27,77.12,19.84,2.03,0.0,1.01,Likud 27.8; United Torah Judaism 24.4; Shas 17.1
+mixed-cities,Mixed cities,ערים מעורבות,2020,8,895404,544672,541626,60.83,36.97,52.09,10.28,0.0,0.66,Blue and White 35.5; Likud 27.5; Joint List 10.3
+haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2020,17,272021,208319,206438,76.58,96.37,2.89,0.02,0.0,0.72,United Torah Judaism 55.3; Shas 28.1; Likud 9.9
+west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2020,121,238642,183068,182107,76.71,85.06,13.02,0.06,0.0,1.87,Likud 29.5; Yamina 22.8; United Torah Judaism 21.8
+community-settlements,Community settlements,יישובים קהילתיים,2020,160,154850,117222,116971,75.7,63.16,34.62,0.36,0.0,1.86,Likud 28.2; Yamina 26.4; Blue and White 26.4
+kibbutzim,Kibbutzim,קיבוצים,2020,263,138659,99384,99133,71.68,15.32,83.37,0.82,0.0,0.48,Blue and White 55.0; Labor-Gesher-Meretz 26.2; Likud 9.3
+kibbutzim-secular,"Kibbutzim, secular",קיבוצים חילוניים,2020,247,131443,93980,93756,71.5,11.75,86.94,0.86,0.0,0.45,Blue and White 57.2; Labor-Gesher-Meretz 27.5; Likud 8.6
+kibbutzim-religious,"Kibbutzim, religious",קיבוצים דתיים,2020,16,7216,5404,5377,74.89,77.63,21.22,0.15,0.0,1.0,Yamina 53.9; Likud 21.8; Blue and White 16.8
+moshavim,Moshavim,מושבים,2020,343,182900,138893,138506,75.94,42.93,55.94,0.44,0.0,0.68,Blue and White 44.5; Likud 32.1; Labor-Gesher-Meretz 9.5
+moshavim-religious,"Moshavim, religious",מושבים דתיים,2020,65,30973,24797,24735,80.06,88.67,9.73,0.18,0.0,1.42,Likud 50.8; Yamina 21.9; Shas 13.1
+moshav-shitufi,Moshav shitufi,מושבים שיתופיים,2020,42,20976,16093,16043,76.72,49.75,48.83,0.38,0.0,1.05,Blue and White 38.2; Yamina 22.9; Likud 19.2
+druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2020,19,99857,55862,55341,55.94,15.74,56.93,26.67,0.0,0.66,Blue and White 39.0; Joint List 26.7; Likud 11.7
+christian,Christian Arab towns,יישובים ערביים נוצריים,2020,6,26097,17511,17395,67.1,3.53,15.77,80.29,0.0,0.41,Joint List 80.3; Blue and White 7.1; Yisrael Beytenu 4.8
+southern-bedouin,Southern Bedouin,בדואים בדרום,2020,38,127892,71644,71132,56.02,1.04,3.76,94.37,0.0,0.83,Joint List 94.4; Labor-Gesher-Meretz 1.9; Blue and White 1.7
+northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2020,22,50387,29442,29268,58.43,2.89,11.91,84.27,0.0,0.93,Joint List 84.3; Blue and White 6.8; Labor-Gesher-Meretz 4.9
+other-arab,Other Arab towns,יישובים ערביים אחרים,2020,61,568352,391083,389022,68.81,1.23,2.68,95.67,0.0,0.42,Joint List 95.7; Labor-Gesher-Meretz 1.2; Blue and White 1.0
+unmatched,Unmatched locality codes,סמלי יישוב שלא הותאמו,2020,1,297,216,215,72.73,79.53,1.4,0.0,0.0,19.07,Yamina 45.6; Likud 20.9; נץ 18.1
+double-envelopes,Double envelopes (not in any sector),מעטפות כפולות (לא בשום מגזר),2020,1,0,330209,327702,,52.2,41.13,5.52,0.0,1.16,Likud 32.7; Blue and White 29.9; Yamina 8.3
+israel,Israel,ישראל,2021,1214,6578084,4010853,3988433,60.97,48.22,41.27,9.07,0.0,1.44,Likud 24.2; Yesh Atid 13.9; Shas 7.3
+jerusalem,Jerusalem,ירושלים,2021,1,423130,250088,248649,59.1,75.83,21.92,1.27,0.0,0.99,United Torah Judaism 23.6; Likud 20.6; Shas 15.7
+mixed-cities,Mixed cities,ערים מעורבות,2021,8,903501,516667,513878,57.18,35.3,56.28,6.88,0.0,1.54,Likud 22.5; Yesh Atid 18.0; Labor 9.8
+haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2021,17,283101,205996,204162,72.76,96.41,3.16,0.02,0.0,0.41,United Torah Judaism 54.4; Shas 26.6; Religious Zionism 7.1
+west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2021,121,248029,183500,182442,73.98,84.12,14.75,0.03,0.0,1.1,Religious Zionism 21.7; United Torah Judaism 20.0; Likud 19.2
+community-settlements,Community settlements,יישובים קהילתיים,2021,159,159458,118246,117933,74.15,62.16,36.1,0.16,0.0,1.58,Religious Zionism 22.7; Likud 18.4; Yamina 15.1
+kibbutzim,Kibbutzim,קיבוצים,2021,264,141297,100905,100668,71.41,15.07,82.91,0.3,0.0,1.73,Labor 24.0; Yesh Atid 21.9; Meretz 17.6
+kibbutzim-secular,"Kibbutzim, secular",קיבוצים חילוניים,2021,248,133957,95424,95200,71.23,11.62,86.31,0.31,0.0,1.76,Labor 25.2; Yesh Atid 22.9; Meretz 18.5
+kibbutzim-religious,"Kibbutzim, religious",קיבוצים דתיים,2021,16,7340,5481,5468,74.67,75.15,23.63,0.09,0.0,1.13,Yamina 45.6; Religious Zionism 16.6; Likud 12.2
+moshavim,Moshavim,מושבים,2021,344,185740,138065,137697,74.33,40.88,57.06,0.17,0.0,1.88,Likud 25.5; Yesh Atid 18.8; Blue and White 13.1
+moshavim-religious,"Moshavim, religious",מושבים דתיים,2021,65,31724,24173,24103,76.2,87.13,11.69,0.09,0.0,1.08,Likud 39.8; Religious Zionism 17.9; Yamina 16.4
+moshav-shitufi,Moshav shitufi,מושבים שיתופיים,2021,42,21500,15436,15398,71.8,49.56,48.78,0.11,0.0,1.55,Religious Zionism 17.6; Yesh Atid 15.9; Yamina 13.7
+druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2021,19,102336,47156,46606,46.08,24.56,53.46,21.08,0.0,0.91,Yisrael Beytenu 23.3; Likud 17.1; Joint List 14.9
+christian,Christian Arab towns,יישובים ערביים נוצריים,2021,6,26471,14506,14355,54.8,9.3,22.9,67.2,0.0,0.6,Joint List 58.9; Meretz 10.2; Likud 8.3
+southern-bedouin,Southern Bedouin,בדואים בדרום,2021,38,134991,57151,56567,42.34,4.8,3.03,90.36,0.0,1.81,Ra'am 74.5; Joint List 15.9; Likud 4.4
+northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2021,22,52037,20615,20368,39.62,12.49,9.52,77.12,0.0,0.87,Ra'am 58.7; Joint List 18.4; Likud 11.1
+other-arab,Other Arab towns,יישובים ערביים אחרים,2021,61,584348,262007,259000,44.84,3.44,6.28,89.62,0.0,0.66,Joint List 53.4; Ra'am 36.2; Meretz 3.4
+unmatched,Unmatched locality codes,סמלי יישוב שלא הותאמו,2021,1,309,201,201,65.05,93.03,2.49,0.0,0.0,4.48,Religious Zionism 81.1; Yamina 5.5; Likud 5.5
+double-envelopes,Double envelopes (not in any sector),מעטפות כפולות (לא בשום מגזר),2021,1,0,425512,421619,,49.24,44.82,4.22,0.0,1.72,Likud 24.4; Yesh Atid 13.8; Yamina 9.4
+israel,Israel,ישראל,2022,1215,6788804,4331786,4306028,63.81,48.25,37.85,11.34,0.0,2.56,Likud 23.4; Yesh Atid 17.9; Religious Zionism 10.3
+jerusalem,Jerusalem,ירושלים,2022,1,432125,266196,264700,61.6,75.44,19.84,1.89,0.0,2.84,United Torah Judaism 23.8; Likud 19.1; Shas 18.3
+mixed-cities,Mixed cities,ערים מעורבות,2022,8,920045,538365,535032,58.52,35.58,52.67,9.47,0.0,2.28,Yesh Atid 25.0; Likud 21.7; National Unity 9.2
+haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2022,17,301254,228404,226562,75.82,96.71,2.49,0.02,0.0,0.78,United Torah Judaism 53.7; Shas 29.2; Religious Zionism 8.2
+west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2022,123,266620,200767,199647,75.3,82.13,13.1,0.05,0.0,4.73,Religious Zionism 31.4; United Torah Judaism 20.0; Likud 19.1
+community-settlements,Community settlements,יישובים קהילתיים,2022,159,166039,122252,121879,73.63,59.61,34.06,0.27,0.0,6.06,Religious Zionism 33.2; Likud 19.2; Yesh Atid 17.0
+kibbutzim,Kibbutzim,קיבוצים,2022,264,146129,102247,101925,69.97,13.85,81.78,0.57,0.0,3.79,Yesh Atid 35.0; Labor 16.7; National Unity 15.3
+kibbutzim-secular,"Kibbutzim, secular",קיבוצים חילוניים,2022,248,138512,96667,96364,69.79,11.78,84.95,0.6,0.0,2.66,Yesh Atid 36.6; Labor 17.5; National Unity 15.3
+kibbutzim-religious,"Kibbutzim, religious",קיבוצים דתיים,2022,16,7617,5580,5561,73.26,49.67,26.83,0.05,0.0,23.45,Religious Zionism 31.3; ב 22.0; Likud 16.8
+moshavim,Moshavim,מושבים,2022,345,190242,142629,142214,74.97,42.65,54.33,0.33,0.0,2.7,Yesh Atid 26.9; Likud 25.3; National Unity 15.2
+moshavim-religious,"Moshavim, religious",מושבים דתיים,2022,65,32507,25612,25544,78.79,82.99,10.62,0.18,0.0,6.2,Likud 37.4; Religious Zionism 30.3; Shas 13.3
+moshav-shitufi,Moshav shitufi,מושבים שיתופיים,2022,42,22311,15775,15733,70.71,46.05,47.29,0.31,0.0,6.35,Religious Zionism 25.5; Yesh Atid 23.7; Likud 13.6
+druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2022,19,106056,52017,51415,49.05,11.15,62.89,22.4,0.0,3.57,National Unity 24.6; Yisrael Beytenu 16.0; Meretz 11.1
+christian,Christian Arab towns,יישובים ערביים נוצריים,2022,6,27005,15945,15826,59.04,4.83,18.48,75.8,0.0,0.9,Hadash-Ta'al 43.4; Balad 23.8; Ra'am 8.5
+southern-bedouin,Southern Bedouin,בדואים בדרום,2022,38,144860,73873,73181,51.0,1.81,3.44,93.91,0.0,0.84,Ra'am 73.9; Hadash-Ta'al 11.9; Balad 8.1
+northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2022,22,54258,27589,27283,50.85,3.86,6.6,88.65,0.0,0.9,Ra'am 67.2; Hadash-Ta'al 11.1; Balad 10.4
+other-arab,Other Arab towns,יישובים ערביים אחרים,2022,61,606222,329470,326290,54.35,1.54,3.57,94.23,0.0,0.66,Hadash-Ta'al 36.2; Ra'am 29.4; Balad 28.6
+unmatched,Unmatched locality codes,סמלי יישוב שלא הותאמו,2022,1,338,215,215,63.61,95.81,0.93,0.0,0.0,3.26,Religious Zionism 88.4; Likud 5.6; ב 3.3
+double-envelopes,Double envelopes (not in any sector),מעטפות כפולות (לא בשום מגזר),2022,1,0,462807,458714,,49.55,41.53,5.05,0.0,3.87,Likud 23.5; Yesh Atid 16.9; Religious Zionism 15.5
+israel,Israel,ישראל,2026,1224,7331981,5264684,5241325,71.8,41.8,37.53,15.47,0.0,5.19,Likud 20.7; Yashar! 16.1; The Joint List 9.3
+jerusalem,Jerusalem,ירושלים,2026,1,455862,300647,299415,65.95,68.27,20.67,4.56,0.0,6.5,United Torah Judaism 23.3; Likud 16.9; Shas 14.0
+mixed-cities,Mixed cities,ערים מעורבות,2026,8,975795,636885,633796,65.27,30.1,54.13,11.63,0.0,4.14,Yashar! 21.0; Likud 18.9; The Democrats 13.7
+haredi-towns,Haredi towns (our rule),יישובים חרדיים (הכלל שלנו),2026,17,346933,266299,265035,76.76,92.97,2.48,0.03,0.0,4.51,United Torah Judaism 55.1; Shas 22.5; Likud 5.7
+west-bank-settlements,West Bank settlements,התנחלויות ביהודה ושומרון,2026,129,303747,237724,236896,78.26,79.1,13.54,0.05,0.0,7.3,Religious Zionism and Zehut 24.2; United Torah Judaism 20.9; Likud 16.1
+community-settlements,Community settlements,יישובים קהילתיים,2026,162,181061,141107,140783,77.93,56.4,35.1,0.33,0.0,8.17,Religious Zionism and Zehut 27.9; Likud 16.3; Yashar! 15.4
+kibbutzim,Kibbutzim,קיבוצים,2026,264,158523,117462,117230,74.1,12.85,80.98,0.59,0.0,5.58,Yashar! 35.1; The Democrats 25.7; Together 15.5
+kibbutzim-secular,"Kibbutzim, secular",קיבוצים חילוניים,2026,248,149922,110933,110718,73.99,10.79,83.89,0.62,0.0,4.71,Yashar! 36.4; The Democrats 27.1; Together 15.5
+kibbutzim-religious,"Kibbutzim, religious",קיבוצים דתיים,2026,16,8601,6529,6512,75.91,47.87,31.56,0.18,0.0,20.39,Religious Zionism and Zehut 34.6; Together 14.2; ך 13.2
+moshavim,Moshavim,מושבים,2026,345,201602,159492,159164,79.11,38.18,55.29,0.31,0.0,6.21,Yashar! 27.6; Likud 23.3; Together 12.5
+moshavim-religious,"Moshavim, religious",מושבים דתיים,2026,65,35519,28848,28785,81.22,78.0,12.93,0.19,0.0,8.88,Likud 37.1; Religious Zionism and Zehut 17.5; Otzma Yehudit 15.0
+moshav-shitufi,Moshav shitufi,מושבים שיתופיים,2026,42,24373,19140,19094,78.53,41.55,49.59,0.32,0.0,8.54,Yashar! 24.1; Religious Zionism and Zehut 20.9; Together 11.3
+druze-circassian,Druze and Circassian,דרוזים וצ'רקסים,2026,19,119218,75165,74466,63.05,14.99,61.45,20.12,0.0,3.43,Yashar! 31.6; Yisrael Beytenu 21.5; Likud 14.1
+christian,Christian Arab towns,יישובים ערביים נוצריים,2026,6,27813,21104,20972,75.88,2.77,22.99,73.32,0.0,0.92,The Joint List 62.9; The Democrats 12.5; Ra'am 10.4
+southern-bedouin,Southern Bedouin,בדואים בדרום,2026,39,170058,138507,137867,81.45,0.32,0.89,98.05,0.0,0.74,Ra'am 86.7; The Joint List 11.3; The Democrats 0.6
+northern-bedouin,Northern Bedouin (our list),בדואים בצפון (הרשימה שלנו),2026,22,59199,46690,46386,78.87,0.72,5.95,92.29,0.0,1.04,Ra'am 68.1; The Joint List 24.2; The Democrats 3.2
+other-arab,Other Arab towns,יישובים ערביים אחרים,2026,61,657301,528566,525982,80.41,0.44,3.32,95.33,0.0,0.9,The Joint List 68.4; Ra'am 26.9; The Democrats 1.9
+unmatched,Unmatched locality codes,סמלי יישוב שלא הותאמו,2026,1,349,238,238,68.19,92.02,0.0,0.0,0.0,7.98,Religious Zionism and Zehut 63.9; Otzma Yehudit 22.7; ני 5.9
+double-envelopes,Double envelopes (not in any sector),מעטפות כפולות (לא בשום מגזר),2026,1,0,451981,449357,,45.74,40.42,5.86,0.0,7.98,Likud 18.7; Yashar! 15.1; Together 13.5

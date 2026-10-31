@@ -12,6 +12,7 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isPhone = () => matchMedia("(max-width: 720px)").matches;
 const getJSON = url => fetch(url).then(r => { if (!r.ok) throw new Error(url + " " + r.status); return r.json(); });
 
+let PAGES = {};  // locality code -> town page slug (data/places.json)
 let NAMES = {};  // "<locality code x 10000 + area>": [English, Hebrew, [w, s, e, n], other CBS names in Hebrew]
 let meta, A = null, DOTS = { type: "FeatureCollection", features: [] }, map, parties, colors, blocColor = {};
 let hovered = null, mode = "party";
@@ -74,7 +75,8 @@ function applyLanguage() {
   for (const el of document.querySelectorAll("[data-he-label]")) el.setAttribute("aria-label", el.dataset.heLabel);
   $("town").placeholder = "למשל חיפה או Haifa";
   for (const a of document.querySelectorAll(".site-header nav a:not(#lang-switch), .site-footer a"))
-    a.href = a.getAttribute("href").replace("about.html", "about-he.html").replace("sources.html", "sources-he.html");
+    a.href = a.getAttribute("href").replace("about.html", "about-he.html").replace("sources.html", "sources-he.html")
+      .replace(/^(town|sectors)\/index\.html$/, "$1/he/index.html");
 }
 const FS = PREVIEW ? { source: "areas" } : { source: "areas", sourceLayer: "areas" };
 
@@ -247,6 +249,7 @@ async function start() {
   $("names").addEventListener("change", e => setNames(e.target.checked));
   setNames(showNames);
   const namesReady = getJSON("data/area_names.json").then(d => { NAMES = d; }).catch(e => console.error(e));
+  getJSON("data/places.json").then(d => { PAGES = d; }).catch(e => console.error(e));
   const areasReady = Promise.all([getJSON(base + "areas.json"), namesReady])
     .then(([d]) => { A = d; buildSearch(); applyShares(); });
   const dotsReady = getJSON(base + "dots.geojson").then(d => { DOTS = d; });
@@ -389,14 +392,14 @@ function sharesFromArray(arr) { return arr ? A.parties.map((l, k) => [l, arr[k]]
 function areaRecord(i) {
   const r = A.areas[i], t = A.towns[r[0]];
   const nb = NAMES[t[0] * 10000 + r[1]];
-  return { name: t[2] || t[1], he: t[1], stat: r[1], nb: nb ? nb[HE ? 1 : 0] : "", valid: r[2], stations: r[3], approx: r[4],
+  return { code: t[0], name: t[2] || t[1], he: t[1], stat: r[1], nb: nb ? nb[HE ? 1 : 0] : "", valid: r[2], stations: r[3], approx: r[4],
     bloc: r[5], shares: sharesFromArray(r[8]), other: r[9] || 0, kind: t[5],
     estFrom: r[10], estVotes: r[11], population: r[12], placeholder: r[13], grey: r[14] === 1, bloc2: r[15] };
 }
 
 function dotRecord(p) {
   const shares = Object.keys(p).filter(k => k.startsWith("pct_") && k !== "pct_other").map(k => [k.slice(4), +p[k]]);
-  return { name: p.SHEM_YISHUV_ENGLISH || p.SHEM_YISHUV, he: p.SHEM_YISHUV, valid: +p.valid, stations: +p.stations,
+  return { code: +p.SEMEL_YISHUV, name: p.SHEM_YISHUV_ENGLISH || p.SHEM_YISHUV, he: p.SHEM_YISHUV, valid: +p.valid, stations: +p.stations,
     approx: +p.approx_stations, bloc: p.bloc, shares, other: +(p.pct_other || 0), kind: "dot", shape: p.shape_source, bloc2: p.bloc2 };
 }
 
@@ -443,10 +446,14 @@ function resultsHtml(rec, verdict) {
   return html + `<tr><td>${tr("Other lists", "רשימות אחרות")}</td><td class="n">${pctFmt(rec.other)}</td></tr></table>`;
 }
 
+// link to the town's own page, when it has one
+const pageLink = code => PAGES[code]
+  ? ` · <a href="town/${PAGES[code]}/${HE ? "he/" : ""}">${tr("Town page", "דף היישוב")}</a>` : "";
+
 function recordHtml(rec) {
   const isDot = rec.kind === "dot";
   let html = `<h3>${esc(HE ? rec.he : rec.name)}${rec.stat ? ` <span class="sub">${rec.nb ? esc(rec.nb) + ", " : ""}${tr("area", "אזור")} ${rec.stat}</span>` : ""}</h3>
-    <div class="he">${esc(HE ? rec.name : rec.he)}</div>`;
+    <div class="he">${esc(HE ? rec.name : rec.he)}${pageLink(rec.code)}</div>`;
   if (isDot && rec.shape !== "cbs_merged") html += `<div class="sub">${dotKind(rec.he || "")}</div>`;
   if (rec.bloc === "no_station") return html + `<div class="sub">${rec.grey
     ? tr("Built up, but nobody lives here (campus, industry or offices), so no polling station.",
@@ -496,7 +503,7 @@ function townHtml(ti) {
     A.parties.forEach((l, k) => { votes[l] += r[8][k] * r[2] / 100; });
     other += (r[9] || 0) * r[2] / 100;
   }
-  let html = `<h3>${esc(HE ? t[1] : (t[2] || t[1]))}</h3><div class="he">${esc(HE ? (t[2] || "") : t[1])}</div>
+  let html = `<h3>${esc(HE ? t[1] : (t[2] || t[1]))}</h3><div class="he">${esc(HE ? (t[2] || "") : t[1])}${pageLink(t[0])}</div>
     <div class="sub">${tr(`Whole town: ${nAreas} statistical areas, ${withStations} with polling stations.
     Hover an area for its own result.`, `כל היישוב: ${nAreas} אזורים סטטיסטיים, מהם ${withStations} עם קלפיות.
     ריחוף מעל אזור מציג את התוצאה שלו.`)}</div>`;
